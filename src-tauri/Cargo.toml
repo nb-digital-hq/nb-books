@@ -201,7 +201,7 @@ candle-transformers = { version = "0.11", default-features = false }
 # El tokenizador del modelo. **No añade ningún crate**: `candle-core` ya lo trae,
 # con la opción `onig`, y se declara con la misma para usarlo directamente sin
 # pedir nada distinto de lo que la unificación de opciones ya decidió.
-tokenizers = { version = "0.22", default-features = false, features = ["onig"] }
+tokenizers = { version = "0.23", default-features = false, features = ["onig"] }
 # El grupo de hilos propio de la inferencia. **Tampoco añade ningún
 # crate**: `candle-core` ya lo trae, en la misma versión, y es por donde reparte su
 # trabajo. Se declara para poder construir un grupo con tope en lugar de dejar que

@@ -135,7 +135,7 @@ jobs:
         if: ${{ !matrix.verificada }}
         run: echo "::warning::${{ matrix.nombre }} se construyó, pero nadie la ha ejecutado en su plataforma."
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.nombre }}
           path: src-tauri/target/release/bundle/

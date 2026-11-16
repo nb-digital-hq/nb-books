@@ -1,0 +1,21 @@
+[package]
+name = "metadatos-academicos"
+version = "1.0.0"
+edition = "2021"
+publish = false
+license = "Apache-2.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wit-bindgen = "0.61"
+# La respuesta de Crossref es JSON anidado -títulos en lista, autores en objetos,
+# fecha en partes-, así que se lee con un analizador de verdad. Escribir uno a
+# mano para ahorrarse la dependencia sería justo lo contrario de lo que este
+# proyecto hace con `zip.rs`: aquí no hay límites de seguridad que tengan que
+# vivir dentro del lector, hay un formato ajeno que hay que leer bien.
+#
+# Va en la extensión, no en la aplicación: no entra en el binario de NB Books ni
+# en su lista de avisos de terceros.
+serde_json = "1"

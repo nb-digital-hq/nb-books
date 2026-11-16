@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+title: "NB Books"
+abstract: >-
+  Local-first desktop application for reading, organising and studying large digital libraries
+  (EPUB, PDF and comic archives), with anchored annotations, full-text and semantic search,
+  on-device AI and read-aloud, and no telemetry.
+type: software
+authors:
+  - name: "NB Digital"
+  - name: "The NB Books Authors"
+version: "1.0.0"
+license: Apache-2.0
+repository-code: "https://github.com/nb-digital-hq/nb-books"
+keywords:
+  - local-first
+  - ebook reader
+  - digital library
+  - annotations
+  - privacy
+  - tauri
+  - rust
+  - svelte
+date-released: 2026-11-16

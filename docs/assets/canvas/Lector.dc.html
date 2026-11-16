@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif; }
+    a { color: #d9a441; text-decoration: none; }
+    a:hover { color: #e8bb66; }
+    * { box-sizing: border-box; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; display: flex; background: #16130f; color: #f0e9e0; font-size: 14px; overflow: hidden;">
+
+  <!-- Barra lateral plegada: leyendo, el ancho es del texto -->
+  <nav style="width: 56px; flex: 0 0 56px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px 0; background: #1a1613; border-right: 1px solid #2c2521;">
+    <div style="width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5h4v15H4zM10 4.5h4v15h-4z"/><path d="m16.2 5.4 3.6 1-3.4 13-3.6-1z"/></svg>
+    </div>
+    <div style="width: 38px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 7px; color: #6f6558;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 4l8.5 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-4v-6h-6v6h-4A1.5 1.5 0 0 1 3.5 19z"/></svg></div>
+    <div style="width: 38px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 7px; color: #6f6558;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5h4v15H4zM10 4.5h4v15h-4z"/><path d="m16.2 5.4 3.6 1-3.4 13-3.6-1z"/></svg></div>
+    <div style="width: 38px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 7px; background: #2a2218; color: #d9a441;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5S10 4.5 4 4.5v13c6 0 8 2 8 2s2-2 8-2v-13c-6 0-8 2-8 2z"/><path d="M12 6.5v13"/></svg></div>
+    <div style="width: 38px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 7px; color: #6f6558;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 4.5h11l4 4v11h-15z"/><path d="M15.5 4.5v4h4"/><path d="M8 12.5h8M8 16h5"/></svg></div>
+  </nav>
+
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+    <header style="display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 18px; border-bottom: 1px solid #241e1a; background: #1a1613;">
+      <div style="display: flex; align-items: baseline; gap: 9px; min-width: 0;">
+        <span style="font-family: Literata, Georgia, serif; font-size: 15px; font-weight: 600; white-space: nowrap;">Cien Años de Soledad</span>
+        <span style="font-size: 12.5px; color: #7d7266; white-space: nowrap;">Capítulo 11</span>
+      </div>
+      <div style="flex: 1;"></div>
+      <!-- Controles derivados de las capacidades del formato -->
+      <div style="display: flex; gap: 2px;">
+        <span style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 7px; color: #a2988c;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 6h2M5 12h2M5 18h2M10 6h9M10 12h9M10 18h9"/></svg></span>
+        <span style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 7px; background: #2a2218; color: #d9a441;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18 10 6l5 12M6.8 14.5h6.4M17 9.5h3M18.5 9.5V18"/></svg></span>
+        <span style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 7px; color: #a2988c;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M4.2 4.2l1.5 1.5M18.3 18.3l1.5 1.5M3 12h2M19 12h2M4.2 19.8l1.5-1.5M18.3 5.7l1.5-1.5"/></svg></span>
+        <span style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 7px; color: #a2988c;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 4.5 4.5"/></svg></span>
+        <span style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 7px; color: #a2988c;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M12 4.5v15"/></svg></span>
+        <span style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 7px; color: #a2988c;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/></svg></span>
+      </div>
+    </header>
+
+    <div style="flex: 1; display: flex; min-height: 0;">
+
+      <!-- Superficie de lectura: fondo del MODO, no del tema de la aplicación -->
+      <div style="flex: 1; min-width: 0; background: {{fondo}}; overflow: hidden; position: relative;">
+        <div style="max-width: 66ch; margin: 0 auto; padding: 52px 32px; font-family: Literata, Georgia, serif; font-size: 19px; line-height: 1.72; color: {{tinta}};">
+          <h2 style="margin: 0 0 26px; font-size: 15px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: {{tintaSuave}};">Capítulo 11</h2>
+          <p style="margin: 0 0 1.15em;">Muchos años después, frente al pelotón de fusilamiento, el coronel Aureliano Buendía había de recordar aquella tarde remota en que su padre lo llevó a conocer el hielo.</p>
+          <!-- Bloque seleccionado: la unidad que el teclado mueve -->
+          <p style="margin: 0 0 1.15em; background: {{seleccion}}; box-shadow: 0 0 0 6px {{seleccion}}; border-radius: 2px;">Macondo era entonces una aldea de veinte casas de barro y cañabrava construidas a la orilla de un río de aguas diáfanas que se precipitaban por un lecho de piedras pulidas, blancas y enormes como huevos prehistóricos.</p>
+          <p style="margin: 0 0 1.15em;">El mundo era tan reciente, que muchas cosas carecían de nombre, y para mencionarlas había que señalarlas con el dedo. Todos los años, por el mes de marzo, una familia de gitanos desarrapados plantaba su carpa cerca de la aldea.</p>
+          <p style="margin: 0;">Con un grande alboroto de pitos y timbales daban a conocer los nuevos inventos. Primero llevaron el imán. Un gitano corpulento, de barba montaraz y manos de gorrión, que se presentó con el nombre de Melquíades, hizo una truculenta demostración pública.</p>
+        </div>
+
+        <!-- Anotar sale de la selección, con la nota primero -->
+        <div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 26px; display: flex; align-items: center; gap: 6px; padding: 7px; border-radius: 11px; background: #1e1a16; border: 1px solid #382f28; box-shadow: 0 14px 34px rgba(0,0,0,.5);">
+          <button style="display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border: none; border-radius: 7px; background: #d9a441; color: #211803; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5h9l5 5v10H5z"/><path d="M14 4.5v5h5"/><path d="M8.5 13h7M8.5 16.5h4"/></svg>
+            Escribir una nota
+            <span style="padding: 1px 5px; border-radius: 4px; background: rgba(0,0,0,.18); font-size: 10.5px; font-weight: 500;">Enter</span>
+          </button>
+          <span style="width: 1px; height: 22px; background: #382f28;"></span>
+          <span style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 11px; border-radius: 7px; color: #b8ada0; font-size: 12.5px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 19 2-4 8-8 4 4-8 8z"/><path d="M4 21h16"/></svg>
+            Resaltar <span style="color: #6f6558;">R</span>
+          </span>
+          <span style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 11px; border-radius: 7px; color: #b8ada0; font-size: 12.5px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5h10v15l-5-4-5 4z"/></svg>
+            Marcador <span style="color: #6f6558;">B</span>
+          </span>
+          <span style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 11px; border-radius: 7px; color: #b8ada0; font-size: 12.5px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5.5A1.5 1.5 0 0 1 6.5 4H19v14H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M9 8.5h6M9 12h4"/></svg>
+            Definir
+          </span>
+        </div>
+      </div>
+
+      <!-- Panel del plano del libro: los ajustes se ven sobre el texto -->
+      <aside style="width: 288px; flex: 0 0 288px; border-left: 1px solid #2c2521; background: #1a1613; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; justify-content: space-between; height: 46px; padding: 0 16px; border-bottom: 1px solid #241e1a;">
+          <span style="font-size: 11.5px; letter-spacing: 0.09em; text-transform: uppercase; color: #8a7f73;">Ajustes del Libro</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6f6558" stroke-width="1.7" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </div>
+
+        <div style="padding: 16px; display: flex; flex-direction: column; gap: 20px; overflow: hidden;">
+          <div style="display: flex; flex-direction: column; gap: 9px;">
+            <span style="font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #7d7266;">Modo</span>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px;">
+              <sc-for list="{{modos}}" as="m" hint-placeholder-count="6">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 9px 4px; border: 1px solid {{m.borde}}; border-radius: 8px;">
+                  <span style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{m.fondo}}; color: {{m.tinta}}; font-family: Literata, Georgia, serif; font-size: 13px;">Aa</span>
+                  <span style="font-size: 10.5px; color: #9d9285;">{{m.nombre}}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <sc-for list="{{controles}}" as="c" hint-placeholder-count="4">
+              <div style="display: flex; flex-direction: column; gap: 7px;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; font-size: 12.5px;">
+                  <span style="color: #b8ada0;">{{c.nombre}}</span>
+                  <span style="color: #7d7266; font-variant-numeric: tabular-nums;">{{c.valor}}</span>
+                </div>
+                <div style="height: 4px; border-radius: 2px; background: #2c2521; position: relative;">
+                  <div style="position: absolute; left: 0; top: 0; bottom: 0; width: {{c.ancho}}; border-radius: 2px; background: #5c4f42;"></div>
+                  <div style="position: absolute; left: {{c.ancho}}; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 6px; background: #d9a441; box-shadow: 0 1px 4px rgba(0,0,0,.5);"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: #b8ada0;">
+              <span>Justificar el texto</span>
+              <span style="width: 34px; height: 19px; border-radius: 10px; background: #2c2521; position: relative;"><span style="position: absolute; top: 2px; left: 2px; width: 15px; height: 15px; border-radius: 8px; background: #6f6558;"></span></span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; color: #b8ada0;">
+              <span>Pasar páginas</span>
+              <span style="width: 34px; height: 19px; border-radius: 10px; background: #4a3a1c; position: relative;"><span style="position: absolute; top: 2px; right: 2px; width: 15px; height: 15px; border-radius: 8px; background: #d9a441;"></span></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex: 1;"></div>
+        <div style="padding: 14px 16px; border-top: 1px solid #241e1a; font-size: 11.5px; line-height: 1.5; color: #6f6558;">
+          El brillo y la temperatura se emulan sobre el texto. No cambian el panel.
+        </div>
+      </aside>
+    </div>
+
+    <!-- Pie de lectura -->
+    <div style="display: flex; align-items: center; gap: 16px; height: 40px; padding: 0 18px; border-top: 1px solid #241e1a; background: #1a1613; font-size: 12px; color: #7d7266;">
+      <span>Capítulo 11 de 20</span>
+      <div style="flex: 1; height: 3px; border-radius: 2px; background: #2c2521; overflow: hidden;"><div style="width: 42%; height: 100%; background: #d9a441;"></div></div>
+      <span style="font-variant-numeric: tabular-nums;">42 %</span>
+      <span style="color: #574e44;">·</span>
+      <span>18 anotaciones</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"modo":{"editor":"enum","default":"sepia","options":["dia","sepia","nocturno","altoContraste","papelMonocromo","papelAtenuado"],"section":"Lectura"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const catalogo = {
+      dia:            { fondo: '#fbfbf9', tinta: '#16191b', suave: '#6b7280', seleccion: '#e8dcc0' },
+      sepia:          { fondo: '#f3e9d8', tinta: '#3a2f21', suave: '#8a7757', seleccion: '#e2cfa8' },
+      nocturno:       { fondo: '#12161a', tinta: '#d8dee3', suave: '#7d8790', seleccion: '#2a3540' },
+      altoContraste:  { fondo: '#000000', tinta: '#ffffff', suave: '#c9c9c9', seleccion: '#3a3a3a' },
+      papelMonocromo: { fondo: '#eeeeec', tinta: '#101010', suave: '#5c5c5c', seleccion: '#d5d5d0' },
+      papelAtenuado:  { fondo: '#e9e3d6', tinta: '#2c2822', suave: '#7a715f', seleccion: '#d6cbb4' }
+    };
+    const elegido = this.props.modo ?? 'sepia';
+    const m = catalogo[elegido] ?? catalogo.sepia;
+
+    const nombres = { dia: 'Día', sepia: 'Sepia', nocturno: 'Nocturno', altoContraste: 'Contraste', papelMonocromo: 'Papel', papelAtenuado: 'Atenuado' };
+
+    return {
+      fondo: m.fondo,
+      tinta: m.tinta,
+      tintaSuave: m.suave,
+      seleccion: m.seleccion,
+      modos: Object.keys(catalogo).map((k) => ({
+        nombre: nombres[k],
+        fondo: catalogo[k].fondo,
+        tinta: catalogo[k].tinta,
+        borde: k === elegido ? '#6b5a3a' : '#2c2521'
+      })),
+      controles: [
+        { nombre: 'Cuerpo', valor: '19 px', ancho: '34%' },
+        { nombre: 'Interlineado', valor: '1,72', ancho: '58%' },
+        { nombre: 'Ancho de línea', valor: '66 caracteres', ancho: '46%' },
+        { nombre: 'Márgenes', valor: '32 px', ancho: '22%' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "id": "lat.nbdigitallabs.books.metadata.academico",
+  "name": "Metadatos Académicos",
+  "version": "1.0.0",
+  "type": "core",
+  "apiVersion": "1.0",
+  "license": "Apache-2.0",
+  "capabilities": ["network:fetch"],
+  "permissions": {
+    "network:fetch": {
+      "urls": ["https://api.crossref.org/works/*"]
+    }
+  },
+  "contributes": {
+    "providers": {
+      "metadata": "metadatos_academicos.wasm"
+    }
+  }
+}

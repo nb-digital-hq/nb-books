@@ -1,0 +1,207 @@
+name: CI
+
+# Ningún cambio entra en main sin pasar por aquí.
+# Ver docs/developer/ci-cd.md
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  procedencia:
+    name: Procedencia y convenciones
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Declaracion de origen (DCO)
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          fallo=0
+          for c in $(git rev-list "$BASE".."$HEAD"); do
+            if ! git log -1 --format=%B "$c" | grep -qiE '^Signed-off-by: .+ <.+@.+>'; then
+              echo "::error::El commit $c no lleva Signed-off-by."
+              fallo=1
+            fi
+          done
+          if [ "$fallo" -ne 0 ]; then
+            echo "Corrigelo con: git rebase --signoff origin/main"
+            exit 1
+          fi
+
+      - name: Convencion de commits
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          patron='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore)(\([a-z0-9._/-]+\))?!?: .+'
+          fallo=0
+          for c in $(git rev-list "$BASE".."$HEAD"); do
+            asunto=$(git log -1 --format=%s "$c")
+            case "$asunto" in "Merge "*|"Revert "*) continue ;; esac
+            if ! echo "$asunto" | grep -qE "$patron"; then
+              echo "::error::Asunto fuera de convencion en $c: $asunto"
+              fallo=1
+            fi
+          done
+          exit $fallo
+
+  documentacion:
+    name: Integridad de la documentacion
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: node scripts/check-docs.mjs
+
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Formato y lints
+        run: pnpm lint
+      - name: Tipos
+        run: pnpm check
+      - name: Pruebas unitarias
+        run: pnpm test
+      - name: Contrato de errores
+        run: node scripts/check-error-contract.mjs
+      - name: Compilacion
+        run: pnpm build
+
+  backend:
+    name: Backend (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dependencias del sistema (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev \
+            librsvg2-dev patchelf libssl-dev
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Formato
+        working-directory: src-tauri
+        run: cargo fmt --all -- --check
+
+      - name: Lints
+        working-directory: src-tauri
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Pruebas
+        working-directory: src-tauri
+        run: cargo test --all-features
+
+      - name: Los tipos generados estan al dia
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          if ! git diff --exit-code -- src/lib/bindings; then
+            echo "::error::Los tipos del puente IPC cambiaron sin regenerarse."
+            echo "Ejecuta: cd src-tauri && cargo test"
+            exit 1
+          fi
+
+  suministro:
+    name: Dependencias y licencias
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Auditoria del frontend
+        run: pnpm audit --audit-level high
+
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          manifest-path: src-tauri/Cargo.toml
+          command: check advisories licenses bans sources
+
+      - name: Avisos de terceros al dia
+        run: node scripts/generate-notices.mjs --check
+
+  humo:
+    name: Humo del binario
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dependencias del sistema
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev \
+            librsvg2-dev patchelf libssl-dev xvfb
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Compilar el binario
+        working-directory: src-tauri
+        run: cargo build
+
+      # El binario abre una ventana: en CI necesita un servidor grafico virtual.
+      # La prueba comprueba los efectos del arranque, no la interaccion con el
+      # webview, que requiere WebDriver. Ver docs/developer/testing/regression.md
+      - name: Prueba de humo del arranque
+        working-directory: src-tauri
+        run: xvfb-run -a cargo test --test arranque_e2e -- --nocapture
+
+      - name: Pruebas de caos
+        working-directory: src-tauri
+        run: cargo test --test caos

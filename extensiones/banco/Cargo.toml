@@ -1,0 +1,46 @@
+# Espacio de trabajo propio, deliberadamente fuera del de `src-tauri`.
+#
+# Estos módulos se compilan para `wasm32-wasip1` y no para el anfitrión, así
+# que meterlos en el espacio de trabajo del runtime rompería `cargo build` de
+# la aplicación. Se construyen aparte, y quien los construye es la prueba de
+# integración `banco_de_extensiones.rs`.
+
+[workspace]
+resolver = "2"
+members = [
+  "abre-una-conexion",
+  "carga-remota-v1",
+  "carga-remota-v2",
+  "entra-en-bucle",
+  "formato-de-texto",
+  "fuente-de-metadatos",
+  "lee-un-archivo",
+  "manifiesto-invalido",
+  "pide-lo-que-no-existe",
+  "reserva-sin-freno",
+  "usa-el-mundo",
+  "vista-de-estudio",
+  "version-futura",
+]
+
+# `usa-el-mundo` se compila a `wasm32-wasip2`, que es lo que produce un
+# componente; los demás, a `wasm32-wasip1`. Sacarlo de los miembros por defecto
+# es lo que permite construir cada grupo para su objetivo sin que el otro
+# estorbe.
+default-members = [
+  "abre-una-conexion",
+  "carga-remota-v1",
+  "carga-remota-v2",
+  "entra-en-bucle",
+  "formato-de-texto",
+  "lee-un-archivo",
+  "manifiesto-invalido",
+  "pide-lo-que-no-existe",
+  "reserva-sin-freno",
+  "version-futura",
+]
+
+# Sin optimizar: lo que se mide aquí es la conducta, no el rendimiento, y el
+# perfil de depuración construye los ocho módulos en menos de un segundo.
+[profile.dev]
+panic = "abort"

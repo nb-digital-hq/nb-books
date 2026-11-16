@@ -1,0 +1,88 @@
+{
+  "campos": {
+    "apiVersion": {
+      "aceptados": [
+        "0.1",
+        "1.0",
+        "99.0"
+      ],
+      "rechazados": [
+        "1",
+        "1.0.0",
+        "01.0",
+        "",
+        "uno.cero"
+      ]
+    },
+    "capabilities": {
+      "aceptados": [
+        "network:fetch"
+      ],
+      "rechazados": [
+        "network",
+        "filesystem:read",
+        "network:*"
+      ]
+    },
+    "id": {
+      "aceptados": [
+        "lat.nbdigitallabs.books.metadata.openlibrary",
+        "com.ejemplo.mi-tema"
+      ],
+      "rechazados": [
+        "",
+        "openlibrary",
+        "lat.nbdigitallabs",
+        "Lat.NbDigitalLabs.X",
+        "org..x",
+        "1org.x.y"
+      ]
+    },
+    "license": {
+      "aceptados": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "rechazados": [
+        ""
+      ]
+    },
+    "name": {
+      "aceptados": [
+        "Open Library Metadata Provider"
+      ],
+      "rechazados": [
+        ""
+      ]
+    },
+    "type": {
+      "aceptados": [
+        "core",
+        "ui",
+        "theme"
+      ],
+      "rechazados": [
+        "nucleo",
+        "Core",
+        "plugin",
+        ""
+      ]
+    },
+    "version": {
+      "aceptados": [
+        "1.0.0",
+        "0.1.0",
+        "10.20.30"
+      ],
+      "rechazados": [
+        "1.0",
+        "1",
+        "01.0.0",
+        "1.0.0-beta",
+        "v1.0.0",
+        ""
+      ]
+    }
+  },
+  "description": "Generado desde la tabla CAMPOS de src-tauri/src/extensions/manifest.rs. Cada ejemplo lo comprueban a la vez la prueba de Rust, contra la funcion del anfitrion, y scripts/check-esquema.mjs, contra la expresion del esquema."
+}

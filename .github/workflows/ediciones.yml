@@ -1,0 +1,141 @@
+name: Ediciones
+
+# Las ediciones que se empaquetan de NB Books.
+#
+# Por qué hay varias: la inferencia local depende de cómo se compila, no solo de
+# la máquina. Los núcleos cuantizados de Candle eligen su versión vectorizada al
+# compilar (AVX2 en x86-64: diez veces más rápido, medido), y la GPU solo se usa
+# si la edición trae CUDA o Metal. Se ofrecen todas, la aplicación dice cuál
+# conviene a cada equipo, y elige quien lo tiene.
+#
+# Lo verificado en equipo real son las dos de Linux x86-64, universal y rápida.
+# El resto se construye aquí y se marca como no verificada.
+#
+# Por qué CUDA y Metal no son opciones del manifiesto: `cargo clippy
+# --all-features`, que es verificación obligatoria, las activaría en cualquier
+# máquina, y CUDA exige la cadena de NVIDIA y Metal exige macOS. Se activan aquí
+# con la sintaxis `dependencia/opción`, que no pasa por el manifiesto. Ver
+# src-tauri/src/ai/hardware.rs, `acelerador`.
+#
+# Manual y no en cada push: son compilaciones de release con LTO, de más de
+# diez minutos cada una, y solo tienen sentido al preparar una entrega.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  edicion:
+    name: ${{ matrix.nombre }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Funciona en cualquier procesador x86-64. La IA local va despacio.
+          - nombre: Linux universal
+            os: ubuntu-latest
+            rustflags: ''
+            opciones: ''
+            verificada: true
+          # Procesadores con AVX2 (2013 en adelante). No arranca en uno anterior,
+          # y por eso no sustituye a la universal: se ofrece al lado.
+          - nombre: Linux rápida (AVX2)
+            os: ubuntu-latest
+            rustflags: '-C target-cpu=x86-64-v3'
+            opciones: ''
+            verificada: true
+          - nombre: Linux con CUDA (sin probar)
+            os: ubuntu-latest
+            rustflags: '-C target-cpu=x86-64-v3'
+            opciones: 'candle-core/cuda,candle-nn/cuda,candle-transformers/cuda'
+            cuda: true
+            verificada: false
+          - nombre: Windows universal (sin probar)
+            os: windows-latest
+            rustflags: ''
+            opciones: ''
+            verificada: false
+          - nombre: Windows rápida (AVX2, sin probar)
+            os: windows-latest
+            rustflags: '-C target-cpu=x86-64-v3'
+            opciones: ''
+            verificada: false
+          - nombre: Windows con CUDA (sin probar)
+            os: windows-latest
+            rustflags: '-C target-cpu=x86-64-v3'
+            opciones: 'candle-core/cuda,candle-nn/cuda,candle-transformers/cuda'
+            cuda: true
+            verificada: false
+          # En Apple Silicon NEON es parte de la arquitectura: no hay edición lenta.
+          - nombre: macOS (sin probar)
+            os: macos-latest
+            rustflags: ''
+            opciones: ''
+            verificada: false
+          - nombre: macOS con Metal (sin probar)
+            os: macos-latest
+            rustflags: ''
+            opciones: 'candle-core/metal,candle-nn/metal,candle-transformers/metal'
+            verificada: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dependencias del sistema (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev \
+            librsvg2-dev patchelf libssl-dev
+
+      - name: Cadena de CUDA
+        if: matrix.cuda
+        uses: Jimver/cuda-toolkit@v0.2.19
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Motor de PDF
+        run: pnpm pdfium
+
+      # Solo los complementos de GStreamer que la aplicación usa, todos LGPL: el
+      # complemento de linuxdeploy copiaría todos los del sistema, incluidos los
+      # GPL. Ver scripts/preparar-gstreamer.mjs y docs/developer/deployment/linux.md 2.1.
+      - name: GStreamer para el AppImage (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y gstreamer1.0-plugins-base gstreamer1.0-plugins-good
+          node scripts/preparar-gstreamer.mjs
+
+      - name: Empaquetar
+        shell: bash
+        env:
+          RUSTFLAGS: ${{ matrix.rustflags }}
+          # Sin esto el AppImage no se genera: ver docs/developer/deployment/linux.md 1.1.
+          NO_STRIP: '1'
+        run: |
+          if [ -n "${{ matrix.opciones }}" ]; then
+            pnpm tauri build -- --features "${{ matrix.opciones }}"
+          else
+            pnpm tauri build
+          fi
+
+      - name: Avisar de que no está verificada
+        if: ${{ !matrix.verificada }}
+        run: echo "::warning::${{ matrix.nombre }} se construyó, pero nadie la ha ejecutado en su plataforma."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.nombre }}
+          path: src-tauri/target/release/bundle/

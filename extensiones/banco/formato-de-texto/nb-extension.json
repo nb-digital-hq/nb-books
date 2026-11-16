@@ -1,0 +1,15 @@
+{
+  "id": "lat.nbdigitallabs.books.banco.formato-de-texto",
+  "name": "Texto con encabezados",
+  "version": "1.0.0",
+  "type": "core",
+  "apiVersion": "1.0",
+  "license": "Apache-2.0",
+  "capabilities": [],
+  "permissions": {},
+  "contributes": {
+    "providers": {
+      "format:text/x-nb-secciones": "formato_de_texto.wasm"
+    }
+  }
+}

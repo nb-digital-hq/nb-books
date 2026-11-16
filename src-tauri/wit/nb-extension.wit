@@ -1,0 +1,322 @@
+// El contrato entre el anfitrión y una extensión.
+//
+// Se versiona con el paquete: `nb:extension@1.0.0`. Subir de mayor aquí es un
+// cambio mayor de la API de extensiones, con todo lo que eso arrastra en la
+// seccion 2 de docs/architecture/versioning.md.
+//
+// La lista de funciones del anfitrion es **corta a proposito**, y hay una regla
+// que lo sostiene: ninguna funcion se exporta al invitado sin un permiso
+// detras. Lo comprueba scripts/check-capacidades.mjs.
+
+package nb:extension@1.0.0;
+
+/// Lo que el anfitrion ofrece a una extension.
+interface host {
+    /// Por que no se pudo salir.
+    variant fetch-error {
+        /// Quien usa la aplicacion no ha concedido ese anfitrion a **esta**
+        /// extension. Concederselo a otra no vale: ver la migracion V21.
+        denied,
+        /// El interruptor general de red esta puesto.
+        offline,
+        /// Se intento y no se pudo.
+        failed,
+    }
+
+    /// Lo que devuelve el anfitrion. Deliberadamente pobre: aqui no se
+    /// interpreta nada.
+    record response {
+        status: u16,
+        body: list<u8>,
+    }
+
+    /// Sale a la red por la puerta del anfitrion.
+    ///
+    /// Capacidad: network:fetch
+    fetch: func(url: string) -> result<response, fetch-error>;
+}
+
+/// El mundo de una extension.
+world extension {
+    import host;
+    use host.{fetch-error};
+
+    /// Por que no se pudo ejecutar una orden.
+    variant command-error {
+        /// La extension no aporta esa orden. Su manifiesto y su codigo
+        /// discrepan, y eso es un defecto suyo, no del anfitrion.
+        unknown,
+        /// No se pudo salir a la red. Se conserva el motivo porque los tres
+        /// piden acciones distintas de quien la escribio.
+        network(fetch-error),
+        /// Fallo por su cuenta.
+        failed,
+    }
+
+    /// Ejecuta una orden que la extension declara en su manifiesto.
+    ///
+    /// El anfitrion la llama **cuando alguien la invoca, y no antes**: hasta
+    /// entonces la orden esta en la interfaz sin que exista una sola
+    /// instruccion compilada de la extension. Es de lo que vive la activacion
+    /// perezosa.
+    ///
+    /// Devuelve un texto corto que la interfaz ensena como aviso, o nada. Ese
+    /// texto es de la extension y no se traduce: es suyo, igual que el titulo
+    /// de la orden en su manifiesto.
+    ///
+    /// **Devuelve un resultado tipado.** La primera
+    /// version no devolvia nada, y al escribir el primer invitado se vio lo que
+    /// eso implicaba: para decir como le habia ido tenia que escribir por la
+    /// salida estandar, es decir, necesitaba una capacidad **solo para
+    /// contarlo**. Un contrato que obliga a pedir permisos para hablar del
+    /// resultado esta mal hecho.
+    ///
+    /// Después pasó de llamarse `activate` a `run-command` y a recibir
+    /// que orden se invoca: una extension puede aportar varias, y un punto de
+    /// entrada sin nombre obligaria a una extension por orden.
+    export run-command: func(id: string) -> result<option<string>, command-error>;
+}
+
+/// Lo que aporta una extension que anade un formato de documento.
+///
+/// **No importa `host`, y es deliberado.** Un proveedor de formato no necesita
+/// salir a la red, asi que no puede: lo que un invitado puede hacer se amplia
+/// dandole lo que necesita, no dandoselo por si acaso.
+///
+/// Recibe **los bytes**, no una ruta. Una extension no toca el disco ni sabe
+/// donde vive el archivo: eso lo hace el anfitrion, que ya sabe canonicalizar y
+/// acotar.
+///
+/// Y devuelve **secciones**, no un lector. El lector es del nucleo, y por eso
+/// el modelo de Locator de ADR-004, el saneado del marcado y las garantias de
+/// accesibilidad no dependen de codigo de terceros. Una extension dice de que
+/// esta hecho un documento; como se lee, no.
+world format-provider {
+    /// Una seccion del documento.
+    record section {
+        /// Identificador estable dentro del documento. Es lo que ancla.
+        href: string,
+        /// Titulo para la navegacion.
+        title: string,
+        /// El texto, ya sin marcado.
+        text: string,
+    }
+
+    /// Por que no se pudo abrir.
+    variant open-error {
+        /// No tiene la forma que este formato espera.
+        malformed,
+        /// Es mas grande de lo que la extension admite.
+        too-large,
+    }
+
+    /// Abre un documento y devuelve sus secciones, en orden.
+    export open-document: func(bytes: list<u8>) -> result<list<section>, open-error>;
+}
+
+/// Lo que aporta una extension que anade una fuente de metadatos.
+///
+/// **Importa `host`**, al reves que el proveedor de formato: consultar una
+/// fuente en linea es salir a la red, y sale por la puerta del anfitrion con el
+/// permiso de esa extension. Sin permiso concedido recibe `denied` y no llega
+/// ni al transporte.
+///
+/// Lo que devuelve son **candidatos, no metadatos**. Nada de lo que diga una
+/// extension sobrescribe una edicion manual: todo pasa por `metadata::propose`,
+/// igual que el proveedor en linea del nucleo.
+world metadata-provider {
+    import host;
+
+    /// Lo que se sabe del documento, y sale del catalogo local.
+    record query {
+        title: string,
+        author: option<string>,
+        /// Identificadores conocidos, como DOI o ISBN.
+        identifiers: list<string>,
+    }
+
+    /// Una ficha propuesta. Cada campo es opcional porque una fuente puede
+    /// saber unas cosas y no otras, y proponer vacio borraria lo que si se
+    /// sabia.
+    record candidate {
+        title: string,
+        authors: option<string>,
+        published-date: option<string>,
+        publisher: option<string>,
+        language: option<string>,
+    }
+
+    /// Por que no se pudo consultar.
+    variant lookup-error {
+        /// El usuario no ha concedido esa fuente a esta extension.
+        denied,
+        /// El interruptor general de red esta puesto.
+        offline,
+        /// Se consulto y no se pudo interpretar la respuesta.
+        failed,
+    }
+
+    /// Consulta la fuente. Devolver lista vacia no es un error: es no saber.
+    export lookup: func(q: query) -> result<list<candidate>, lookup-error>;
+}
+
+/// Lo que aporta una extension que anade una vista.
+///
+/// **Devuelve bloques tipados, no marcado.** Una extension aporta el contenido
+/// de un panel; la interfaz la pinta el nucleo con sus propios componentes.
+///
+/// Es la misma frontera que en los formatos, y por los mismos tres motivos: el
+/// sistema de diseno, las garantias de accesibilidad y el presupuesto de
+/// fotograma dejarian de ser nuestros si dependieran de marcado de terceros.
+/// Ademas, marcado ajeno habria que sanearlo, y sanear bien es dificil.
+///
+/// Y hay un cuarto, que es el criterio: **una extension que entra en
+/// bucle no congela la aplicacion**. No la congela porque no corre en el hilo
+/// de la interfaz: corre en el anfitrion, con su plazo, y la interfaz solo
+/// espera una respuesta que llega o no llega.
+world view-provider {
+    import host;
+    use host.{fetch-error};
+
+    /// Un trozo de la vista. La lista es corta a proposito: solo entra lo que
+    /// el nucleo sabe pintar con sus componentes.
+    variant block {
+        /// Un encabezado dentro de la vista.
+        heading(string),
+        /// Un parrafo de texto.
+        paragraph(string),
+        /// Una lista de lineas.
+        items(list<string>),
+        /// Un dato con su etiqueta: primero la etiqueta, despues el valor.
+        field(tuple<string, string>),
+    }
+
+    /// Lo que se pinta.
+    record view {
+        /// Titulo de la vista. Lo pone su autor y no se traduce.
+        title: string,
+        blocks: list<block>,
+    }
+
+    /// Por que no se pudo componer.
+    variant view-error {
+        /// La extension no aporta esa vista.
+        unknown,
+        /// No se pudo salir a la red.
+        network(fetch-error),
+        /// Fallo por su cuenta.
+        failed,
+    }
+
+    /// Compone una vista que la extension declara en su manifiesto.
+    export render: func(id: string) -> result<view, view-error>;
+}
+
+/// Lo que aporta una extension que anade un formato de cita.
+///
+/// **No importa `host`**, igual que el proveedor de formato: dar una lista de
+/// referencias con un texto de vuelta no necesita salir a ninguna parte.
+///
+/// El sentido del dato es **del nucleo hacia la extension**, y ese es el punto:
+/// las citas salen de las anotaciones y del catalogo, que son del usuario, y la
+/// extension recibe lo justo para componer la referencia. No consulta la
+/// biblioteca, no elige que documentos entran y no escribe nada: recibe lo que
+/// se le da y devuelve texto.
+world citation-provider {
+    /// Una referencia, tal y como el nucleo la compone.
+    record reference {
+        /// Clave de cita, estable dentro del archivo.
+        key: string,
+        /// `book` o `article`. La lista es corta porque es lo que el catalogo
+        /// distingue hoy.
+        kind: string,
+        title: string,
+        /// Cada autor por separado: componer la lista es cosa del formato, y
+        /// cada formato la compone distinto.
+        authors: list<string>,
+        year: option<string>,
+        publisher: option<string>,
+        /// Identificadores en forma `esquema:valor`, como `doi:10.1000/x`.
+        identifiers: list<string>,
+        /// La cita literal, si la anotacion tenia texto.
+        quote: option<string>,
+        /// La nota propia de quien anoto.
+        note: option<string>,
+    }
+
+    /// Por que no se pudo componer.
+    variant format-error {
+        /// La extension no aporta ese formato.
+        unknown,
+        /// Fallo por su cuenta.
+        failed,
+    }
+
+    /// Compone el archivo entero con las referencias que se le den.
+    ///
+    /// Devuelve **el texto completo**, no una linea por referencia: un archivo
+    /// bibliografico tiene cabecera, orden y separadores propios de cada
+    /// formato, y trocearlo obligaria al anfitrion a saber de cada uno.
+    export format-citations: func(id: string, refs: list<reference>) -> result<string, format-error>;
+}
+
+/// Lo que aporta una extension que corrige metadatos por lotes.
+///
+/// **Propone y no escribe.** Devuelve sugerencias que el anfitrion registra por
+/// el mismo camino que las de cualquier proveedor: una edicion manual gana
+/// siempre, y lo que discrepe queda como propuesta hasta que alguien la acepte.
+/// Es lo que hace que corregir mil documentos de una vez sea reversible: no hay
+/// nada que revertir, porque no se ha escrito nada.
+///
+/// Recibe **lo que ya esta en el catalogo local**, no la biblioteca: el
+/// anfitrion elige que documentos entran y compone la lista. Una extension que
+/// pudiera recorrer la biblioteca por su cuenta seria la segunda clase de
+/// extension con permisos elevados que la seccion 6 de plugin-system descarto.
+world bulk-metadata {
+    /// Lo que se sabe de un documento, tal y como esta guardado.
+    record document {
+        /// Identificador de la edicion. Vuelve tal cual en la sugerencia.
+        id: string,
+        title: string,
+        /// Cada autor por separado, en el orden declarado.
+        authors: list<string>,
+        publisher: option<string>,
+        year: option<string>,
+    }
+
+    /// Que campo se propone cambiar. Los tres son de la **edicion**, que es la
+    /// entidad que el lote recibe. El nombre de un autor no esta aqui porque
+    /// vive en otra entidad -un autor es de muchas ediciones-, y proponer sobre
+    /// el pidiendo su identificador habria sido darle a la extension una
+    /// referencia a algo que no se le dio.
+    enum field {
+        title,
+        subtitle,
+        publisher,
+    }
+
+    /// Un cambio propuesto para un documento.
+    record suggestion {
+        /// El `id` del documento tal y como llego.
+        document: string,
+        field: field,
+        /// El valor propuesto. Vacio no vale: proponer vacio borraria lo que se
+        /// sabia, y eso el anfitrion no lo acepta.
+        value: string,
+        /// Por que, en una linea. Lo escribe su autor y **no se traduce**: es lo
+        /// que se le ensena a quien decide si acepta.
+        reason: string,
+    }
+
+    /// Por que no se pudo revisar.
+    variant review-error {
+        /// Fallo por su cuenta.
+        failed,
+    }
+
+    /// Revisa un lote y devuelve lo que propondria cambiar.
+    ///
+    /// Devolver lista vacia es lo normal: la mayoria de los documentos no tienen
+    /// nada que corregir.
+    export suggest: func(docs: list<document>) -> result<list<suggestion>, review-error>;
+}

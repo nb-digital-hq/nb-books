@@ -1,0 +1,90 @@
+{
+  "artboards": [
+    { "file": "Inicio.dc.html", "x": 0, "y": 0, "w": 1440, "h": 900, "title": "Inicio" },
+    { "file": "Main.dc.html", "x": 1560, "y": 0, "w": 1440, "h": 900, "title": "Biblioteca" },
+    { "file": "Lector.dc.html", "x": 3120, "y": 0, "w": 1440, "h": 900, "title": "Lector" },
+    {
+      "file": "LectorInmersivo.dc.html",
+      "x": 4680,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "Lector · inmersivo"
+    },
+    { "file": "Estudio.dc.html", "x": 0, "y": 1060, "w": 1440, "h": 900, "title": "Estudio" },
+    { "file": "Ajustes.dc.html", "x": 1560, "y": 1060, "w": 1440, "h": 900, "title": "Ajustes" },
+    { "file": "Temas.dc.html", "x": 3120, "y": 1060, "w": 1440, "h": 1180, "title": "Temas" },
+    {
+      "file": "DireccionPapel.dc.html",
+      "x": 0,
+      "y": 2420,
+      "w": 1440,
+      "h": 900,
+      "page": "page-2",
+      "title": "Dirección: Papel"
+    },
+    {
+      "file": "DireccionTinta.dc.html",
+      "x": 1560,
+      "y": 2420,
+      "w": 1440,
+      "h": 900,
+      "page": "page-2",
+      "title": "Dirección: Tinta"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "nota-vertical",
+      "x": 0,
+      "y": -190,
+      "w": 500,
+      "text": "Nada se desplaza en horizontal.\n\nLo que no cabe en una fila baja a la siguiente, sea cual sea el ancho de la ventana. Un carrusel esconde contenido detrás de un gesto y deja fuera a quien no lo hace."
+    },
+    {
+      "id": "nota-estanterias",
+      "x": 1560,
+      "y": -190,
+      "w": 500,
+      "text": "Las estanterías y las colecciones bajan a la barra de filtros, junto a Todos / Empezados / Duplicados.\n\nEn la barra lateral, doscientas estanterías la dejaban inservible. Aquí la fila se desplaza sola y la barra no se entera."
+    },
+    {
+      "id": "nota-inmersivo",
+      "x": 4680,
+      "y": -190,
+      "w": 500,
+      "text": "En inmersión no queda nada: ni barra, ni panel, ni pie.\n\nLo que se necesita se llama con una tecla y se va igual. El recordatorio de abajo aparece al entrar y se retira solo."
+    },
+    {
+      "id": "nota-vida",
+      "x": 0,
+      "y": 940,
+      "w": 500,
+      "text": "Lo que da vida a la barra lateral no es una animación suelta: es que abajo pase algo real.\n\nLa portada de lo que estás leyendo y su hilo de progreso avanzando. El indicador del destino activo se desliza al cambiar; con movimiento reducido, salta."
+    },
+    {
+      "id": "nota-estudio",
+      "x": 0,
+      "y": 1990,
+      "w": 500,
+      "text": "Estudio tiene una barra de vistas, y ahí es donde entrará el lienzo cuando exista, con el mismo aspecto que Notas o Vocabulario.\n\nSin ese sitio reservado, un plugin llega siempre como un injerto."
+    },
+    {
+      "id": "nota-temas",
+      "x": 4680,
+      "y": 1060,
+      "w": 500,
+      "text": "Tu reflexión, hecha producto.\n\nUn tema no es una paleta: cambia la letra, el ritmo del movimiento, la textura y el redondeo. Siete más el del sistema, y cada uno sugiere con qué modo leer.\n\nNinguno se publica sin medir su contraste."
+    },
+    {
+      "id": "nota-direcciones",
+      "x": 0,
+      "y": 2240,
+      "w": 520,
+      "page": "page-2",
+      "text": "Las dos alternativas de paleta que quedaron sin elegir. Ahora viven además como temas en la pantalla de Temas, así que no hay que escoger una sola: son dos de los siete."
+    }
+  ],
+  "pages": [{ "id": "page-1", "name": "Pantallas" }, { "id": "page-2", "name": "Direcciones" }],
+  "launch": { "view": "canvas", "page": "page-1" }
+}

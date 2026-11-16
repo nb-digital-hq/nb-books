@@ -1,0 +1,268 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 2380,
+      "title": "Inicio — página completa",
+      "page": "inicio"
+    },
+    {
+      "file": "Chromebook.dc.html",
+      "x": 1560,
+      "y": 0,
+      "w": 1280,
+      "h": 800,
+      "title": "Chromebook 1280×800 — lo que se ve al abrir",
+      "page": "inicio"
+    },
+    {
+      "file": "Biblioteca.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "Biblioteca — con la ficha de la obra",
+      "page": "destinos"
+    },
+    {
+      "file": "Lector.dc.html",
+      "x": 1560,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "Lector — con las anotaciones",
+      "page": "destinos"
+    },
+    {
+      "file": "Estudio.dc.html",
+      "x": 0,
+      "y": 1020,
+      "w": 1440,
+      "h": 900,
+      "title": "Estudio — una nota con sus enlaces",
+      "page": "destinos"
+    },
+    {
+      "file": "Descubrir.dc.html",
+      "x": 1560,
+      "y": 1020,
+      "w": 1440,
+      "h": 900,
+      "title": "Descubrir — un catálogo abierto",
+      "page": "destinos"
+    },
+    {
+      "file": "Ajustes.dc.html",
+      "x": 0,
+      "y": 2040,
+      "w": 1440,
+      "h": 900,
+      "title": "Ajustes — Apariencia",
+      "page": "destinos"
+    },
+    {
+      "file": "AcercaDe.dc.html",
+      "x": 1560,
+      "y": 2040,
+      "w": 1440,
+      "h": 900,
+      "title": "Ajustes — Acerca de",
+      "page": "destinos"
+    },
+    {
+      "file": "MenuImportar.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "Importar — abierto, con una importación en marcha",
+      "page": "menus"
+    },
+    {
+      "file": "MenuColecciones.dc.html",
+      "x": 1560,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "Colecciones — abierto",
+      "page": "menus"
+    },
+    {
+      "file": "MenuEstanterias.dc.html",
+      "x": 0,
+      "y": 1020,
+      "w": 1440,
+      "h": 900,
+      "title": "Estanterías — autores, series y materias",
+      "page": "menus"
+    },
+    {
+      "file": "MenuBusqueda.dc.html",
+      "x": 1560,
+      "y": 1020,
+      "w": 1440,
+      "h": 900,
+      "title": "Búsqueda — resultados bajo la barra",
+      "page": "menus"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "tema",
+      "x": 0,
+      "y": -320,
+      "w": 520,
+      "text": "Tema de partida: Grafito. Grises de verdad, sin matiz, y el color solo en el acento, semilla #D97757. Los demás son los temas de la aplicación, cada uno su semilla: Gabinete, Tinta, Vigilia y Musgo en oscuro, Papel y Pergamino en claro.",
+      "page": "inicio"
+    },
+    {
+      "id": "barra-superior",
+      "x": 580,
+      "y": -320,
+      "w": 520,
+      "text": "Barra superior: plegar y buscar, como en la aplicación, y dos botones que abren un menú, Colecciones e Importar, de la misma clase que Estanterías en la Biblioteca.\n\nEl estado del runtime sale de aquí: pasa a Ajustes, a un apartado «Acerca de». Las metas no aparecen porque no existen.",
+      "page": "inicio"
+    },
+    {
+      "id": "barra-lateral",
+      "x": 1160,
+      "y": -320,
+      "w": 520,
+      "text": "Barra lateral con el orden de la aplicación: la marca a 7,5 rem, los destinos, las tarjetas dinámicas —hoy, el índice de búsqueda; mañana lo que se añada— y Ajustes al pie.",
+      "page": "inicio"
+    },
+    {
+      "id": "sin-bordes",
+      "x": 1740,
+      "y": -320,
+      "w": 520,
+      "text": "Ni un solo borde. La jerarquía la dan las capas tonales de Material: fondo, lienzo un tono por encima, tarjetas otro más.",
+      "page": "inicio"
+    },
+    {
+      "id": "filas",
+      "x": 2320,
+      "y": -320,
+      "w": 520,
+      "text": "Filas tipo Netflix. La última tarjeta cortada dice que hay más; las flechas y «Ver todo» existen para que nada dependa del gesto horizontal.\n\nConstruirlas exige cambiar la regla «Nada se desplaza en horizontal» de ui-conventions. La marquesina no cambia sola: nada se anima en reposo.",
+      "page": "inicio"
+    },
+    {
+      "id": "continuidad",
+      "x": 0,
+      "y": -260,
+      "w": 520,
+      "page": "destinos",
+      "text": "Todas las pantallas salen de la carcasa aprobada de Inicio: la misma barra lateral, la misma barra superior y los mismos tokens. Cambiar la carcasa cambia todas."
+    },
+    {
+      "id": "biblioteca",
+      "x": 580,
+      "y": -260,
+      "w": 520,
+      "page": "destinos",
+      "text": "Biblioteca: filtros, orden y forma de la vista como en la aplicación; la ficha es el panel de la obra elegida. Estanterías solo aparece aquí, como ahora."
+    },
+    {
+      "id": "lector",
+      "x": 1160,
+      "y": -260,
+      "w": 520,
+      "page": "destinos",
+      "text": "Lector: la barra superior cede el sitio al título del documento, a buscar en él y a cerrarlo. Abajo, las órdenes del lector; a la derecha, las anotaciones. El texto de muestra es de dominio público."
+    },
+    {
+      "id": "leyendo",
+      "x": 1740,
+      "y": -260,
+      "w": 520,
+      "page": "destinos",
+      "text": "La tarjeta Leyendo ya existe en la aplicación. Se ve fuera de Inicio y del Lector, donde ya se cuenta lo mismo."
+    },
+    {
+      "id": "estudio",
+      "x": 2320,
+      "y": -260,
+      "w": 520,
+      "page": "destinos",
+      "text": "Estudio: las notas con sus enlaces [[…]], los pasajes que citan y lo que apunta a cada una. Anotaciones, Vocabulario y Tableros siguen la misma forma de pestañas."
+    },
+    {
+      "id": "descubrir",
+      "x": 2900,
+      "y": -260,
+      "w": 520,
+      "page": "destinos",
+      "text": "Descubrir aparece solo con catálogos añadidos. La salida a la red se marca siempre, y cada obra dice si ya estaba en tu biblioteca. Las obras de muestra son de dominio público."
+    },
+    {
+      "id": "ajustes",
+      "x": 3480,
+      "y": -260,
+      "w": 520,
+      "page": "destinos",
+      "text": "Ajustes tiene su propia navegación, como la configuración de Windows. Los temas son los siete de la aplicación con su nombre, y Sistema, que es Grafito de noche y Papel de día. Brasa se retira: su semilla era el mismo naranja que Grafito."
+    },
+    {
+      "id": "acerca",
+      "x": 4060,
+      "y": -260,
+      "w": 520,
+      "page": "destinos",
+      "text": "Acerca de reúne el estado del runtime, que sale de la barra superior, con la versión, las especificaciones y el diagnóstico, al estilo de la Información de Windows."
+    },
+    {
+      "id": "menus",
+      "x": 0,
+      "y": -260,
+      "w": 520,
+      "page": "menus",
+      "text": "Los menús salen del botón que los abre, sin velo encima: el botón pasa a su color de contenedor y la flecha se invierte. La elevación es la única sombra de la interfaz."
+    },
+    {
+      "id": "importar",
+      "x": 580,
+      "y": -260,
+      "w": 520,
+      "page": "menus",
+      "text": "Importar tiene lo mismo que el panel actual: carpeta o documentos, ruta, copiar o solo registrar, y el avance con sus cuatro cifras. Se puede cerrar y seguir usando la aplicación."
+    },
+    {
+      "id": "estanterias",
+      "x": 1160,
+      "y": -260,
+      "w": 520,
+      "page": "menus",
+      "text": "Estanterías solo aparece en la Biblioteca. Cada sección dice cuántas muestra de cuántas hay, porque con 18.840 autores nunca caben todas."
+    },
+    {
+      "id": "busqueda",
+      "x": 1740,
+      "y": -260,
+      "w": 520,
+      "page": "menus",
+      "text": "La búsqueda abre sus resultados bajo la barra, con los dos alcances. Mientras el índice no termina lo dice, en lugar de dar por completo lo que no lo es."
+    }
+  ],
+  "launch": {
+    "view": "canvas",
+    "page": "destinos"
+  },
+  "pages": [
+    {
+      "id": "inicio",
+      "name": "Inicio"
+    },
+    {
+      "id": "destinos",
+      "name": "Destinos"
+    },
+    {
+      "id": "menus",
+      "name": "Menús y Paneles"
+    }
+  ]
+}

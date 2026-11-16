@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif; }
+    a { color: #4ec9b0; text-decoration: none; }
+    a:hover { color: #7ce0cb; }
+    * { box-sizing: border-box; }
+    ::selection { background: #12433a; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; display: flex; background: #0d1117; color: #e6edf3; font-size: 14px; overflow: hidden;">
+
+  <!-- Barra lateral de alto completo -->
+  <nav style="width: 232px; flex: 0 0 232px; display: flex; flex-direction: column; background: #141a21; border-right: 1px solid #232b35;">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 18px 18px 22px;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5h4v15H4zM10 4.5h4v15h-4z"/><path d="m16.2 5.4 3.6 1-3.4 13-3.6-1z"/></svg>
+      <span style="font-family: Literata, Georgia, serif; font-size: 17px; font-weight: 600; letter-spacing: -0.01em;">NB Books</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 2px; padding: 0 10px;">
+      <div style="display: flex; align-items: center; gap: 11px; height: 38px; padding: 0 10px; border-radius: 7px; color: #93a1b0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 4l8.5 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-4v-6h-6v6h-4A1.5 1.5 0 0 1 3.5 19z"/></svg>
+        <span style="flex: 1;">Inicio</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; height: 38px; padding: 0 10px; border-radius: 7px; background: #1b2733; color: #e6edf3; box-shadow: inset 2px 0 0 {{accent}};">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5h4v15H4zM10 4.5h4v15h-4z"/><path d="m16.2 5.4 3.6 1-3.4 13-3.6-1z"/></svg>
+        <span style="flex: 1; font-weight: 500;">Biblioteca</span>
+        <span style="font-size: 11px; color: #6e7d8c; font-variant-numeric: tabular-nums;">152.080</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; height: 38px; padding: 0 10px; border-radius: 7px; color: #93a1b0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5S10 4.5 4 4.5v13c6 0 8 2 8 2s2-2 8-2v-13c-6 0-8 2-8 2z"/><path d="M12 6.5v13"/></svg>
+        <span style="flex: 1;">Lector</span>
+        <span style="width: 6px; height: 6px; border-radius: 3px; background: {{accent}};"></span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; height: 38px; padding: 0 10px; border-radius: 7px; color: #93a1b0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 4.5h11l4 4v11h-15z"/><path d="M15.5 4.5v4h4"/><path d="M8 12.5h8M8 16h5"/></svg>
+        <span style="flex: 1;">Estudio</span>
+        <span style="font-size: 11px; color: #6e7d8c; font-variant-numeric: tabular-nums;">34</span>
+      </div>
+    </div>
+
+    <div style="height: 1px; background: #232b35; margin: 14px 18px;"></div>
+
+    <!-- Estanterías: lo que el runtime ya sabía agrupar y no se veía -->
+    <div style="padding: 0 18px 8px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #5a6672;">Estanterías</div>
+    <div style="display: flex; flex-direction: column; gap: 1px; padding: 0 10px; overflow: hidden;">
+      <div style="display: flex; align-items: center; justify-content: space-between; height: 30px; padding: 0 10px; border-radius: 6px; color: #93a1b0; font-size: 13px;"><span>Gabriel García Márquez</span><span style="color: #5a6672; font-variant-numeric: tabular-nums;">31</span></div>
+      <div style="display: flex; align-items: center; justify-content: space-between; height: 30px; padding: 0 10px; border-radius: 6px; color: #93a1b0; font-size: 13px;"><span>Filosofía política</span><span style="color: #5a6672; font-variant-numeric: tabular-nums;">412</span></div>
+      <div style="display: flex; align-items: center; justify-content: space-between; height: 30px; padding: 0 10px; border-radius: 6px; color: #93a1b0; font-size: 13px;"><span>Episodios Nacionales</span><span style="color: #5a6672; font-variant-numeric: tabular-nums;">46</span></div>
+      <div style="display: flex; align-items: center; justify-content: space-between; height: 30px; padding: 0 10px; border-radius: 6px; color: #93a1b0; font-size: 13px;"><span>Sin leer</span><span style="color: #5a6672; font-variant-numeric: tabular-nums;">149.204</span></div>
+    </div>
+
+    <div style="flex: 1;"></div>
+
+    <div style="display: flex; align-items: center; gap: 11px; height: 38px; margin: 0 10px 10px; padding: 0 10px; border-radius: 7px; color: #6e7d8c;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M4.2 7.5l2.2 1.3M17.6 15.2l2.2 1.3M4.2 16.5l2.2-1.3M17.6 8.8l2.2-1.3"/></svg>
+      <span>Ajustes</span>
+    </div>
+  </nav>
+
+  <!-- Columna principal -->
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+    <header style="display: flex; align-items: center; gap: 16px; height: 56px; padding: 0 22px; border-bottom: 1px solid #232b35; background: #141a21;">
+      <h1 style="margin: 0; font-family: Literata, Georgia, serif; font-size: 19px; font-weight: 600;">Biblioteca</h1>
+      <span style="color: #5a6672; font-size: 13px; font-variant-numeric: tabular-nums;">152.080 documentos</span>
+
+      <div style="flex: 1;"></div>
+
+      <label style="display: flex; align-items: center; gap: 8px; width: 300px; height: 34px; padding: 0 12px; border: 1px solid #2b3542; border-radius: 8px; background: #0a0e13; color: #5a6672;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 4.5 4.5"/></svg>
+        <span style="font-size: 13px;">Buscar en la biblioteca</span>
+      </label>
+
+      <button style="display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border: none; border-radius: 8px; background: {{accent}}; color: #04241f; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10M8 10.5l4 4 4-4"/><path d="M4.5 16.5v2a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2"/></svg>
+        Importar
+      </button>
+    </header>
+
+    <!-- Filtros como fichas, no como selectores del sistema -->
+    <div style="display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 22px; border-bottom: 1px solid #1c232c;">
+      <div style="display: flex; gap: 4px; padding: 3px; border-radius: 8px; background: #0a0e13;">
+        <span style="height: 26px; padding: 0 11px; display: flex; align-items: center; border-radius: 6px; background: #222c38; color: #e6edf3; font-size: 12.5px; font-weight: 500;">Todos</span>
+        <span style="height: 26px; padding: 0 11px; display: flex; align-items: center; border-radius: 6px; color: #6e7d8c; font-size: 12.5px;">Empezados</span>
+        <span style="height: 26px; padding: 0 11px; display: flex; align-items: center; border-radius: 6px; color: #6e7d8c; font-size: 12.5px;">Duplicados</span>
+        <span style="height: 26px; padding: 0 11px; display: flex; align-items: center; border-radius: 6px; color: #6e7d8c; font-size: 12.5px;">No disponibles</span>
+      </div>
+
+      <div style="flex: 1;"></div>
+
+      <span style="color: #5a6672; font-size: 12.5px;">Ordenar por</span>
+      <span style="display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border: 1px solid #2b3542; border-radius: 7px; font-size: 12.5px; color: #c9d3dd;">
+        Añadido
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 10 6 6 6-6"/></svg>
+      </span>
+      <div style="display: flex; gap: 2px; padding: 2px; border-radius: 7px; background: #0a0e13;">
+        <span style="width: 28px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 5px; background: #222c38; color: #e6edf3;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1"/></svg>
+        </span>
+        <span style="width: 28px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 5px; color: #5a6672;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 6.5h16M4 12h16M4 17.5h16"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <div style="flex: 1; display: flex; min-height: 0;">
+      <!-- Rejilla de portadas generadas -->
+      <div style="flex: 1; min-width: 0; padding: 20px 22px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; align-content: start;">
+        <sc-for list="{{libros}}" as="libro" hint-placeholder-count="10">
+          <div style="display: flex; flex-direction: column; gap: 9px;">
+            <div style="position: relative; aspect-ratio: 2 / 3; border-radius: 4px; overflow: hidden; background: {{libro.fondo}}; box-shadow: 0 6px 18px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.06);">
+              <!-- Lomo: el detalle que hace que una portada generada parezca un libro -->
+              <div style="position: absolute; inset: 0 auto 0 0; width: 9px; background: linear-gradient(90deg, rgba(0,0,0,.45), rgba(255,255,255,.05));"></div>
+              <div style="position: absolute; inset: 0; padding: 18px 14px 14px 22px; display: flex; flex-direction: column;">
+                <div style="font-family: Literata, Georgia, serif; font-size: 15px; line-height: 1.25; font-weight: 600; color: {{libro.tinta}};">{{libro.titulo}}</div>
+                <div style="flex: 1;"></div>
+                <div style="font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; color: {{libro.tintaSuave}};">{{libro.autor}}</div>
+              </div>
+              <sc-if value="{{libro.progreso}}" hint-placeholder-val="{{true}}">
+                <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(0,0,0,.35);">
+                  <div style="height: 100%; width: {{libro.progresoAncho}}; background: {{accent}};"></div>
+                </div>
+              </sc-if>
+            </div>
+            <div>
+              <div style="font-size: 12.5px; font-weight: 500; line-height: 1.3; color: #dbe3ea; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{libro.titulo}}</div>
+              <div style="font-size: 11.5px; color: #66747f; margin-top: 2px;">{{libro.pie}}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- Panel de detalle: la vista deja de estar vacía porque hay algo seleccionado -->
+      <aside style="width: 300px; flex: 0 0 300px; border-left: 1px solid #232b35; background: #141a21; padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+        <div style="width: 128px; aspect-ratio: 2/3; border-radius: 4px; background: #6b2f28; box-shadow: 0 8px 22px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.07); position: relative; overflow: hidden;">
+          <div style="position: absolute; inset: 0 auto 0 0; width: 7px; background: linear-gradient(90deg, rgba(0,0,0,.45), rgba(255,255,255,.05));"></div>
+          <div style="position: absolute; inset: 0; padding: 14px 11px 11px 16px; display: flex; flex-direction: column;">
+            <div style="font-family: Literata, Georgia, serif; font-size: 13px; line-height: 1.2; font-weight: 600; color: #f3e2d5;">Cien Años de Soledad</div>
+          </div>
+        </div>
+
+        <div>
+          <h2 style="margin: 0 0 4px; font-family: Literata, Georgia, serif; font-size: 17px; font-weight: 600; line-height: 1.25;">Cien Años de Soledad</h2>
+          <div style="color: #8593a2; font-size: 13px;">Gabriel García Márquez</div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="flex: 1; height: 4px; border-radius: 2px; background: #232b35; overflow: hidden;">
+            <div style="width: 42%; height: 100%; background: {{accent}};"></div>
+          </div>
+          <span style="font-size: 12px; color: #8593a2; font-variant-numeric: tabular-nums;">42 %</span>
+        </div>
+
+        <button style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 38px; border: none; border-radius: 8px; background: {{accent}}; color: #04241f; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;">
+          Seguir Leyendo
+        </button>
+
+        <div style="display: flex; flex-direction: column; gap: 0;">
+          <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #1c232c; font-size: 12.5px;"><span style="color: #66747f;">Editorial</span><span style="color: #b8c3cf;">Sudamericana</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #1c232c; font-size: 12.5px;"><span style="color: #66747f;">Publicado</span><span style="color: #b8c3cf; font-variant-numeric: tabular-nums;">1967</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #1c232c; font-size: 12.5px;"><span style="color: #66747f;">Formato</span><span style="color: #b8c3cf;">EPUB · 1,4 MB</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #1c232c; font-size: 12.5px;"><span style="color: #66747f;">Anotaciones</span><span style="color: #b8c3cf; font-variant-numeric: tabular-nums;">18</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 9px 0; font-size: 12.5px;"><span style="color: #66747f;">Copias</span><span style="color: #4ec9b0;">2 en la biblioteca</span></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#4ec9b0","options":["#4ec9b0","#c8674a","#7fa88b","#8a9ac9"],"section":"Tema"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const libros = [
+      { titulo: 'Cien Años de Soledad', autor: 'García Márquez', fondo: '#6b2f28', tinta: '#f3e2d5', tintaSuave: '#d2ab9b', progreso: true, progresoAncho: '42%', pie: 'García Márquez · 42 %' },
+      { titulo: 'La Ciudad y los Perros', autor: 'Vargas Llosa', fondo: '#2f4a52', tinta: '#e4f1f3', tintaSuave: '#a7c6cc', progreso: true, progresoAncho: '8%', pie: 'Vargas Llosa · 8 %' },
+      { titulo: 'Rayuela', autor: 'Julio Cortázar', fondo: '#4a3f6b', tinta: '#eae5f5', tintaSuave: '#b8afd2', progreso: false, progresoAncho: '0%', pie: 'Julio Cortázar' },
+      { titulo: 'Pedro Páramo', autor: 'Juan Rulfo', fondo: '#5c4a24', tinta: '#f5ecd9', tintaSuave: '#cbb890', progreso: true, progresoAncho: '100%', pie: 'Juan Rulfo · Terminado' },
+      { titulo: 'El Aleph', autor: 'Jorge Luis Borges', fondo: '#233b2e', tinta: '#e2f0e7', tintaSuave: '#a5c4b2', progreso: false, progresoAncho: '0%', pie: 'Jorge Luis Borges' },
+      { titulo: 'Los Detectives Salvajes', autor: 'Roberto Bolaño', fondo: '#5e2f3f', tinta: '#f6e3ea', tintaSuave: '#cfa5b5', progreso: true, progresoAncho: '61%', pie: 'Roberto Bolaño · 61 %' },
+      { titulo: 'Ficciones', autor: 'Jorge Luis Borges', fondo: '#3a3a3a', tinta: '#eeeeee', tintaSuave: '#b5b5b5', progreso: false, progresoAncho: '0%', pie: 'Jorge Luis Borges' },
+      { titulo: 'La Casa de los Espíritus', autor: 'Isabel Allende', fondo: '#6b4a1f', tinta: '#f7e9d3', tintaSuave: '#d1b78d', progreso: false, progresoAncho: '0%', pie: 'Isabel Allende' },
+      { titulo: 'Trilogía de la Guerra', autor: 'Agustín Fernández Mallo', fondo: '#28405e', tinta: '#e5edf7', tintaSuave: '#a8bcd6', progreso: true, progresoAncho: '23%', pie: 'Fernández Mallo · 23 %' },
+      { titulo: 'Fortunata y Jacinta', autor: 'Benito Pérez Galdós', fondo: '#4d2d2d', tinta: '#f4e3e3', tintaSuave: '#c9a5a5', progreso: false, progresoAncho: '0%', pie: 'Pérez Galdós' }
+    ];
+    return { accent: this.props.accent ?? '#4ec9b0', libros };
+  }
+}
+</script>
+</body>
+</html>

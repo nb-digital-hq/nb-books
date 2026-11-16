@@ -1,0 +1,19 @@
+{
+  "id": "lat.nbdigitallabs.books.vista.resumen",
+  "name": "Resumen de Estudio",
+  "version": "1.0.0",
+  "type": "ui",
+  "apiVersion": "1.0",
+  "license": "Apache-2.0",
+  "contributes": {
+    "views": [
+      {
+        "id": "estudio.resumen",
+        "title": "Resumen de Estudio"
+      }
+    ],
+    "providers": {
+      "view": "vista_resumen.wasm"
+    }
+  }
+}

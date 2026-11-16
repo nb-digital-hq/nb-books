@@ -1,0 +1,21 @@
+{
+  "id": "lat.nbdigitallabs.books.temas.crepusculo",
+  "name": "Crepúsculo",
+  "version": "1.0.0",
+  "type": "theme",
+  "apiVersion": "0.1",
+  "license": "Apache-2.0",
+  "capabilities": [],
+  "permissions": {},
+  "contributes": {
+    "theme": {
+      "--nb-surface": "#161a22",
+      "--nb-surface-raised": "#1c2029",
+      "--nb-text": "#e8ecf2",
+      "--nb-text-muted": "#aab3c0",
+      "--nb-accent": "#7fb2e5",
+      "--nb-on-accent": "#0d1420",
+      "--nb-focus": "#7fb2e5"
+    }
+  }
+}

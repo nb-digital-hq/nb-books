@@ -1,0 +1,20 @@
+Capítulo 7. Cuánta agua pide un riego
+
+El agua que una plantación necesita en un día no se mide echando agua hasta que la tierra parece mojada: se calcula. La cifra de partida es la evapotranspiración de referencia, que se escribe ET0 y se expresa en milímetros de agua por día. Un milímetro equivale a un litro por metro cuadrado, de modo que una parcela de mil metros cuadrados con una ET0 de cinco milímetros pierde cinco mil litros en un día.
+
+La cantidad que pide un cultivo concreto no es esa, sino ETc = ET0 × Kc, donde Kc es el coeficiente del cultivo. El coeficiente cambia con la fase: en la siembra la planta cubre poco suelo y evapora poco; en plena floración cubre todo el suelo y evapora lo máximo.
+
+| Cultivo | Kc inicial | Kc en floración | Kc final |
+|---|---|---|---|
+| Tomate | 0,60 | 1,15 | 0,80 |
+| Maíz | 0,30 | 1,20 | 0,60 |
+| Trigo | 0,40 | 1,15 | 0,35 |
+| Lechuga | 0,70 | 1,00 | 0,95 |
+
+Con una ET0 de cinco milímetros y un tomate en floración, ETc = 5 × 1,15 = 5,75 milímetros al día, es decir, 5.750 litros por cada mil metros cuadrados.
+
+A esa cifra hay que añadirle lo que el riego pierde por el camino. La lámina bruta se obtiene dividiendo la neta por la eficiencia del sistema: Lb = Ln / Ef. El goteo trabaja con una eficiencia de 0,90, la aspersión con 0,75 y el riego por surcos con 0,55. Los mismos 5,75 milímetros netos son 6,4 brutos por goteo, 7,7 por aspersión y 10,5 por surcos. Esa diferencia, sostenida a lo largo de una campaña de cien días, son más de cuatro mil metros cúbicos por hectárea entre el primer sistema y el último.
+
+El tiempo de riego sale de la lámina bruta y del caudal instalado: t = Lb / (q × n / S), donde q es el caudal de un gotero en litros por hora, n el número de goteros y S la superficie en metros cuadrados. Con goteros de cuatro litros por hora colocados cada medio metro en líneas separadas un metro hay dos goteros por metro cuadrado, de modo que el sistema aporta ocho milímetros por hora y los 6,4 milímetros brutos se riegan en cuarenta y ocho minutos.
+
+Queda una comprobación que se olvida a menudo: el suelo tiene que poder retener lo que se le echa. La reserva útil de un suelo franco ronda los ciento cuarenta milímetros por metro de profundidad, y se recomienda no agotar más de la mitad entre riego y riego. Con raíces a sesenta centímetros, la reserva disponible es de 140 × 0,6 = 84 milímetros, y la mitad son cuarenta y dos. Regar más de esa cantidad de una vez no llena el suelo: lo atraviesa y se pierde por debajo de las raíces, llevándose además los nutrientes disueltos.

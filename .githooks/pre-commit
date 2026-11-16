@@ -1,0 +1,184 @@
+#!/bin/sh
+# Verificación previa al commit.
+# La política de dependencias desaconseja añadir un paquete para algo que cabe
+# en cien líneas propias, así que no usamos gestores de ganchos externos.
+# Activación: pnpm run prepare  (o  git config core.hooksPath .githooks)
+set -e
+
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+[ -z "$staged" ] && exit 0
+
+fail() { printf '\n  %s\n\n' "$1" >&2; exit 1; }
+
+# --- Frontend -------------------------------------------------------------
+# Los `.svelte` entran aquí, y no solo en Prettier, porque un componente es
+# precisamente lo que la regla de frontera IPC existe para vigilar: Biome les
+# aplica esa única regla (ver el override de biome.json).
+if echo "$staged" | grep -qE '\.(ts|js|json|svelte)$'; then
+  pnpm exec biome check --no-errors-on-unmatched $staged \
+    || fail "Biome encontró problemas. Ejecuta: pnpm lint:fix"
+fi
+
+if echo "$staged" | grep -qE '\.(svelte|css)$'; then
+  echo "$staged" | grep -E '\.(svelte|css)$' | xargs pnpm exec prettier --check \
+    || fail "Prettier encontró problemas de formato. Ejecuta: pnpm format"
+
+  # Reglas de ADR-012 que ninguna herramienta general conoce: colores fuera de
+  # la paleta, contorno de foco apagado, puntos de corte duplicados, zonas sin
+  # nombre. Ver docs/architecture/ui-components.md
+  node scripts/check-ui.mjs \
+    || fail "El sistema de diseño rechaza un componente."
+
+  # Ningún texto visible incrustado en el marcado. Criterio: lo que se
+  # incrusta no falla, simplemente nunca se traduce, y quien lo sufre es alguien
+  # que no lee español. Ver docs/architecture/i18n.md
+  node scripts/check-i18n.mjs \
+    || fail "Hay texto de la interfaz sin externalizar."
+
+  # Las catorce paletas de Material salen del generador, no de una copia a mano.
+  # Si se separan, el primer fotograma se pinta con unos colores y el resto de la
+  # sesión con otros. Ver scripts/generar-paletas.mjs
+  node scripts/generar-paletas.mjs --check \
+    || fail "src/paletas.css no es el que genera el generador de color. Ejecuta: pnpm paletas"
+fi
+
+# --- Backend --------------------------------------------------------------
+if echo "$staged" | grep -q '^src-tauri/.*\.rs$'; then
+  ( cd src-tauri && cargo fmt --all -- --check ) \
+    || fail "Rust sin formatear. Ejecuta: cd src-tauri && cargo fmt --all"
+
+  # Ningún error viaja como cadena hacia el frontend.
+  # Ver docs/developer/coding-standards/error-handling.md
+  node scripts/check-error-contract.mjs \
+    || fail "Hay una firma que devuelve String como error."
+
+  # Los tipos del puente se generan, no se escriben. La comprobación de deriva
+  # existía solo en integración continua, y mientras esta no se ejecute la regla
+  # no la hace cumplir nadie. Ver docs/developer/testing/contract.md
+  node scripts/check-bindings.mjs \
+    || fail "Los tipos del puente IPC están desactualizados. Añade los archivos regenerados al commit."
+
+  # Toda petición saliente pasa por src/net.rs. Una regla que solo vive en la
+  # cabeza de quien programa no es una regla.
+  # Ver docs/audit/privacy.md
+  node scripts/check-network.mjs \
+    || fail "Hay una salida de red fuera de src/net.rs."
+
+  # Ningún registro lleva rutas, títulos ni texto del usuario sin redactar, y
+  # toda ruta que llega del webview se canonicaliza. Ver AGENTS.md, sección 3.
+  node scripts/check-registro.mjs \
+    || fail "Hay un registro que puede llevar datos del usuario sin redactar."
+  node scripts/check-rutas.mjs \
+    || fail "Hay un comando que usa una ruta del webview sin canonicalizarla."
+fi
+
+# --- El esquema del manifiesto de extensión -------------------------------
+# Es un contrato público y se genera desde la tabla CAMPOS del runtime, así que
+# ni se edita a mano ni se queda viejo. El guion comprueba además que la
+# expresión regular que se publica y la función que valida digan lo mismo.
+# Ver docs/architecture/api/plugins.md
+if echo "$staged" | grep -qE '^(src-tauri/src/extensions/.*\.rs|docs/architecture/api/nb-extension\..*\.json)$'; then
+  node scripts/check-esquema.mjs \
+    || fail "El esquema publicado del manifiesto no está al día."
+fi
+
+# --- Ninguna capacidad del anfitrión sin permiso detrás --------------------
+# Una función que el invitado puede llamar sin que nadie la haya concedido es
+# una salida sin consentimiento con otro nombre.
+# Ver src-tauri/wit/nb-extension.wit
+if echo "$staged" | grep -qE '^(src-tauri/wit/.*\.wit|docs/architecture/api/nb-extension\.schema\.json)$'; then
+  node scripts/check-capacidades.mjs \
+    || fail "Hay una capacidad del anfitrión sin permiso detrás."
+fi
+
+# --- La política del registro no promete lo que no comprueba --------------
+# Cada requisito lleva pegado su mecanismo, y el mecanismo cita el requisito. Un
+# mecanismo que se borra o se renombra deja de citarlo y esto falla, en vez de
+# dejar la política prometiendo una comprobación que ya no ocurre.
+# Ver docs/legal/governance/extension-policy.md
+if echo "$staged" | grep -qE '^(docs/legal/governance/extension-policy\.md|scripts/.*\.mjs|src-tauri/src/.*\.rs)$'; then
+  node scripts/check-politica.mjs \
+    || fail "La política del registro promete comprobaciones que no existen."
+fi
+
+# --- Ninguna plantilla de IA se queda sin medir en silencio ---------------
+# Cambiar el texto de una plantilla sube su versión, y con ello invalida tanto el
+# resultado publicado como la declaración de "sin medir". Sin esto, la regla 1 de
+# evaluation.md -toda modificación de plantilla ejecuta la suite- es una
+# intención. Ver docs/architecture/ai/evaluation.md sección 8.
+if echo "$staged" | grep -qE '^(src-tauri/prompts/.*\.md|docs/architecture/ai/(evaluation\.md|resultados/.*))$'; then
+  node scripts/check-evaluacion.mjs \
+    || fail "Una plantilla cambió y sus resultados publicados no."
+fi
+
+# --- El puente, entero y sin sobras --------------------------------------
+# Un comando que nadie llama es una capacidad que no se puede usar; una función
+# del puente que nadie usa es superficie que ningún camino ejerce. Las dos mitades
+# se comprueban juntas porque el defecto está justo entre ellas: tres funciones
+# figuraron como "Hecha" con el runtime resuelto y sin nada que lo llamara.
+if echo "$staged" | grep -qE '^(src-tauri/src/lib\.rs|src/lib/core/ipc\.ts|src/routes/.*|src/lib/ui/.*)$'; then
+  node scripts/check-puente.mjs \
+    || fail "El puente tiene comandos sin conectar o funciones sin usar."
+fi
+
+# Ningún comando del puente corre en el hilo que atiende la ventana. En Tauri un
+# comando sin `async` corre en el hilo principal, así que cada llamada al runtime
+# congela la ventana mientras dura: con 83 libros no se veía y con 152.080 son
+# segundos. Ver docs/architecture/ipc-contracts.md regla 5.
+if echo "$staged" | grep -qE '^src-tauri/src/.*\.rs$'; then
+  node scripts/check-comandos.mjs \
+    || fail "Hay un comando del puente corriendo en el hilo de la ventana."
+
+  # Ninguna respuesta trae un número de filas que decida la biblioteca. Con ocho
+  # libros de prueba no se nota; con 152.080 es la diferencia entre usable e
+  # inusable. Ver optimization-catalog.md, sección 1.3, regla 1.
+  node scripts/check-listas.mjs \
+    || fail "Hay un comando que devuelve una lista sin acotar."
+
+  # Ninguna transacción de escritura se abre en diferido. En WAL eso recibe
+  # SQLITE_BUSY de inmediato y sin respetar busy_timeout. Pasó dos veces: 12.156
+  # bloqueos y 1.207 documentos perdidos en la importación real.
+  # Ver docs/architecture/storage.md, sección 1.1.
+  node scripts/check-transacciones.mjs \
+    || fail "Hay una transacción de escritura abierta en diferido."
+fi
+
+# Ningún código atado a una plataforma sin declararlo. El runtime estuvo semanas
+# sin compilar en Windows porque la voz hablaba por un socket de dominio Unix sin
+# condición, y no podía verse: aquí solo se compila en Linux, y el CI que
+# construye para las tres nunca ha llegado a ejecutarse.
+if echo "$staged" | grep -qE '^src-tauri/src/.*\.rs$'; then
+  node scripts/check-plataforma.mjs \
+    || fail "Hay código de una sola plataforma sin su condición."
+fi
+
+# Lo que la interfaz llama de un plugin de Tauri tiene su permiso concedido. La
+# suite simula el puente y no puede verlo: hasta el 2026-11-12 ninguna exportación
+# funcionaba en el binario porque faltaba `dialog:allow-save`.
+if echo "$staged" | grep -qE '^(src/.*\.(ts|svelte)|src-tauri/capabilities/.*)$'; then
+  node scripts/check-permisos.mjs \
+    || fail "La interfaz usa un plugin de Tauri sin el permiso concedido."
+  # Ningún `as unknown as` sin escribir por qué: se salta los tipos generados del
+  # puente en silencio, y así estuvo roto el audio preparado (A3).
+  node scripts/check-forzados.mjs \
+    || fail "Hay un forzado de tipo sin justificar."
+fi
+
+# --- Higiene del repositorio ---------------------------------------------
+# Ningún binario nativo ni peso de modelo debe entrar en el repositorio.
+# `.wasm` se añadió con el banco de extensiones adversas: sus módulos
+# se construyen desde el repositorio, así que versionar el compilado sería a la
+# vez un binario opaco y una copia que puede quedarse vieja sin que se note.
+# Ver docs/audit/supply-chain.md
+if echo "$staged" | grep -qE '\.(so|dylib|dll|a|lib|gguf|onnx|wasm)$'; then
+  fail "No se versionan binarios nativos, módulos compilados ni pesos de modelos."
+fi
+
+# Ningún emoticono en la documentación (docs/README.md, principios).
+if echo "$staged" | grep -q '^docs/.*\.md$'; then
+  if echo "$staged" | grep '^docs/.*\.md$' | xargs grep -lP '[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}\x{FE0F}]' 2>/dev/null | grep -q .; then
+    fail "La documentación del proyecto no usa emoticonos."
+  fi
+fi
+
+exit 0

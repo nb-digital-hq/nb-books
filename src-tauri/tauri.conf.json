@@ -1,0 +1,82 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "NB Books",
+  "mainBinaryName": "nb-books",
+  "version": "1.0.0",
+  "identifier": "lat.nbdigitallabs.books",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "devUrl": "http://localhost:1420",
+    "frontendDist": "../build"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "NB Books",
+        "width": 1100,
+        "height": 720,
+        "minWidth": 640,
+        "minHeight": 480,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' asset: http://asset.localhost blob: data:; font-src 'self'; connect-src 'self' ipc: http://ipc.localhost asset: http://asset.localhost; media-src 'self' asset: http://asset.localhost blob:; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'",
+      "freezePrototype": true,
+      "assetProtocol": {
+        "enable": true,
+        "scope": [
+          "$CACHE/nb-books/**",
+          "$CACHE/NB Books/**",
+          "$LOCALDATA/NB Books/Cache/**",
+          "$DATA/nb-books/audio/**",
+          "$DATA/NB Books/audio/**"
+        ]
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "Education",
+    "shortDescription": "Plataforma de lectura y aprendizaje digital",
+    "longDescription": "NB Books unifica la gestión de una biblioteca digital, la lectura de múltiples formatos, la anotación y el estudio en un mismo entorno. Offline first, local first, sin telemetría.",
+    "copyright": "Copyright 2026 The NB Books Authors",
+    "publisher": "NB Digital",
+    "licenseFile": "../LICENSE",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": {
+      "vendor/pdfium/": "",
+      "../LICENSE": "LICENSE",
+      "../NOTICE": "NOTICE",
+      "../THIRD-PARTY-NOTICES.md": "THIRD-PARTY-NOTICES.md"
+    },
+    "linux": {
+      "deb": {
+        "recommends": ["speech-dispatcher"],
+        "depends": ["gstreamer1.0-plugins-base", "gstreamer1.0-plugins-good"]
+      },
+      "rpm": {
+        "recommends": ["speech-dispatcher"],
+        "depends": ["gstreamer1-plugins-base", "gstreamer1-plugins-good"]
+      },
+      "appimage": {
+        "bundleMediaFramework": true
+      }
+    },
+    "windows": {
+      "webviewInstallMode": {
+        "type": "offlineInstaller"
+      }
+    }
+  }
+}

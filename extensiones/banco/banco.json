@@ -1,0 +1,172 @@
+{
+  "descripcion": "El contrato del banco de extensiones adversas. Cada entrada declara qué intenta un módulo y cómo se prueba que lo intenta de verdad. La prueba banco_de_extensiones.rs exige que este archivo y los directorios se correspondan uno a uno: un módulo sin ficha, o una ficha sin módulo, hacen fallar la suite. El campo objetivo dice para qué se compila cada uno: sin él, wasm32-wasip1.",
+  "porQue": "Un banco que no puede fallar convierte cualquier medición en una confirmación. Ya pasó una vez: el simulador de la biblioteca servía una portada idéntica para las 152.080 obras, así que el coste de descodificar portadas distintas no podía aparecer.",
+  "modulos": [
+    {
+      "directorio": "lee-un-archivo",
+      "conducta": "Lee un archivo del sistema anfitrión",
+      "hostil": true,
+      "manifiesto": "valido",
+      "importa": ["path_open"],
+      "evidencia": "La importación de path_open desde wasi_snapshot_preview1 demuestra que el módulo llega a pedir la apertura. Sin ella no intentaría nada.",
+      "loDetiene": "F2.1.2: el almacén no preabre ningún directorio, así que no hay descriptor que abrir.",
+      "seccion": {
+        "nombre": "nb:api-version",
+        "valor": "1.0.0"
+      }
+    },
+    {
+      "directorio": "abre-una-conexion",
+      "conducta": "Abre una conexión de red",
+      "hostil": true,
+      "manifiesto": "valido",
+      "importa": ["sock_accept"],
+      "evidencia": "Declara la importación cruda. std::net no sirve aquí: bajo wasip1 devuelve 'no soportado' sin llamar al anfitrión, medido el 2026-09-07.",
+      "loDetiene": "F2.1.2: sin descriptores heredados no hay socket sobre el que aceptar, y la red de una extensión solo sale por net.rs con permiso, que es F2.1.5.",
+      "seccion": {
+        "nombre": "nb:api-version",
+        "valor": "1.0.0"
+      }
+    },
+    {
+      "directorio": "entra-en-bucle",
+      "conducta": "No devuelve nunca el control",
+      "hostil": true,
+      "manifiesto": "valido",
+      "importa": [],
+      "evidencia": "Ninguna posible por importaciones: quemar procesador no necesita al anfitrión. Se prueba ejecutándolo.",
+      "loDetiene": "F2.1.2: límite de tiempo por llamada, contado en tiempo de pared.",
+      "seccion": {
+        "nombre": "nb:api-version",
+        "valor": "1.0.0"
+      }
+    },
+    {
+      "directorio": "reserva-sin-freno",
+      "conducta": "Pide memoria hasta agotarla",
+      "hostil": true,
+      "manifiesto": "valido",
+      "importa": [],
+      "evidencia": "Ninguna posible por importaciones: memory.grow es una instrucción, no una llamada. Se prueba ejecutándolo.",
+      "loDetiene": "F2.1.2: límite de memoria por instancia.",
+      "seccion": {
+        "nombre": "nb:api-version",
+        "valor": "1.0.0"
+      }
+    },
+    {
+      "directorio": "version-futura",
+      "conducta": "Declara una versión de API que no existe",
+      "hostil": true,
+      "manifiesto": "valido",
+      "importa": [],
+      "seccion": {
+        "nombre": "nb:api-version",
+        "valor": "99.0.0"
+      },
+      "evidencia": "La sección personalizada nb:api-version lleva de verdad el valor que dice, y la prueba la lee del binario.",
+      "loDetiene": "F2.1.3: el anfitrión rechaza fuera de rango antes de instanciar, con un mensaje que sirva a su autor."
+    },
+    {
+      "directorio": "manifiesto-invalido",
+      "conducta": "Trae un manifiesto que no cumple su forma",
+      "hostil": true,
+      "manifiesto": "invalido",
+      "importa": [],
+      "evidencia": "El manifiesto tiene tres defectos a la vez: le falta id, version es un número en vez de una cadena, y type no es uno de los valores admitidos.",
+      "loDetiene": "F2.1.4: se rechaza señalando el campo concreto, sin llegar a mirar el módulo.",
+      "seccion": {
+        "nombre": "nb:api-version",
+        "valor": "1.0.0"
+      }
+    },
+    {
+      "directorio": "pide-lo-que-no-existe",
+      "conducta": "Pide al anfitrión una capacidad que no ofrece",
+      "hostil": true,
+      "manifiesto": "valido",
+      "importa": ["leer_documento"],
+      "evidencia": "Importa una función de un módulo que el anfitrión no provee, con el nombre de un mundo WIT como los que traerá F2.1.3.",
+      "loDetiene": "F2.1.2: el anfitrión audita las importaciones antes de instanciar y devuelve CapacidadDenegada con el nombre, para que su autor sepa cuál sobra.",
+      "anadidoEn": "F2.1.2, el 2026-09-07. Hasta que existió el anfitrión no se vio que la contención tiene dos mecanismos distintos y que el banco solo cubría uno: abre-una-conexion importa sock_accept, que el anfitrión sí implementa, así que se contiene por falta de recursos y no por falta de capacidad.",
+      "seccion": {
+        "nombre": "nb:api-version",
+        "valor": "1.0.0"
+      }
+    },
+    {
+      "directorio": "carga-remota-v1",
+      "conducta": "Ninguna. Es la versión benigna del par",
+      "hostil": false,
+      "manifiesto": "valido",
+      "importa": [],
+      "evidencia": "No hay nada que demostrar: existe para que la revisión de F2.3.2 la deje pasar. Una revisión que rechaza también lo bueno no demuestra nada.",
+      "loDetiene": "Nada. Debe pasar.",
+      "seccion": {
+        "nombre": "nb:api-version",
+        "valor": "1.0.0"
+      }
+    },
+    {
+      "directorio": "carga-remota-v2",
+      "conducta": "Introduce carga remota de código donde la versión anterior no la tenía",
+      "hostil": true,
+      "manifiesto": "valido",
+      "importa": ["sock_accept"],
+      "evidencia": "Trae la dirección de origen y una función que ejecuta lo descargado, que es el patrón que la revisión busca en el código fuente publicado.",
+      "loDetiene": "F2.3.2: la revisión corre en cada versión publicada, no solo en el primer envío.",
+      "seccion": {
+        "nombre": "nb:api-version",
+        "valor": "1.0.0"
+      }
+    },
+    {
+      "directorio": "usa-el-mundo",
+      "conducta": "Ninguna. Es la primera compilada contra el mundo WIT",
+      "hostil": false,
+      "manifiesto": "valido",
+      "importa": [],
+      "objetivo": "wasm32-wasip2",
+      "archivo": "usa_el_mundo.wasm",
+      "evidencia": "No hay nada hostil que demostrar: existe para lo contrario, para comprobar que el camino honesto funciona. Un aislamiento que solo se prueba con módulos que se portan mal no dice si uno que se porta bien puede hacer su trabajo.",
+      "loDetiene": "Nada. Con su permiso concedido sale por net.rs y aparece en el registro con su nombre; sin él recibe denegado.",
+      "anadidoEn": "F2.1.13, el 2026-09-07. Es el único del banco que se compila a wasm32-wasip2, que es lo que produce un componente; los demás son módulos sueltos de wasip1."
+    },
+    {
+      "directorio": "formato-de-texto",
+      "conducta": "Ninguna. Añade un formato de documento",
+      "hostil": false,
+      "manifiesto": "valido",
+      "importa": [],
+      "objetivo": "wasm32-wasip2",
+      "archivo": "formato_de_texto.wasm",
+      "evidencia": "No hay nada hostil que demostrar: es la extensión de ejemplo de F2.2.1, la que comprueba que añadir un formato no exige tocar el núcleo.",
+      "loDetiene": "Nada. Su mundo no importa nada del anfitrión, así que no puede salir a la red ni tocar el disco: recibe bytes y devuelve secciones.",
+      "anadidoEn": "F2.2.1, el 2026-09-07."
+    },
+    {
+      "directorio": "fuente-de-metadatos",
+      "conducta": "Ninguna. Añade una fuente de metadatos en línea",
+      "hostil": false,
+      "manifiesto": "valido",
+      "importa": [],
+      "objetivo": "wasm32-wasip2",
+      "archivo": "fuente_de_metadatos.wasm",
+      "evidencia": "No hay nada hostil que demostrar: es la extensión de ejemplo de F2.2.2. Sale por la puerta de red del anfitrión con su propio permiso, y lo que devuelve pasa por la procedencia de F1.1.2.",
+      "loDetiene": "Sin su permiso concedido, la puerta le devuelve denegado y no llega al transporte.",
+      "anadidoEn": "F2.2.2, el 2026-09-07."
+    },
+    {
+      "directorio": "vista-de-estudio",
+      "conducta": "Ninguna hostil. Aporta una vista a Estudio, y una segunda que entra en bucle a propósito",
+      "hostil": false,
+      "manifiesto": "valido",
+      "importa": [],
+      "objetivo": "wasm32-wasip2",
+      "archivo": "vista_de_estudio.wasm",
+      "evidencia": "Su vista `colgada` no devuelve el control nunca. Es lo que hace comprobable el criterio de F2.2.4: la aplicación no se congela porque la extensión no corre en el hilo de la interfaz.",
+      "loDetiene": "F2.1.2: el plazo por llamada. La interfaz recibe un código y sigue.",
+      "anadidoEn": "F2.2.4, el 2026-09-07."
+    }
+  ]
+}

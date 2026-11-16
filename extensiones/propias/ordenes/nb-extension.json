@@ -1,0 +1,20 @@
+{
+  "id": "lat.nbdigitallabs.books.ordenes.lectura",
+  "name": "Órdenes de Lectura",
+  "version": "1.0.0",
+  "type": "core",
+  "apiVersion": "1.0",
+  "license": "Apache-2.0",
+  "contributes": {
+    "commands": [
+      {
+        "id": "ordenes.estimar",
+        "title": "Calcular Ritmo de Lectura",
+        "category": "Lectura"
+      }
+    ],
+    "providers": {
+      "command": "ordenes.wasm"
+    }
+  }
+}

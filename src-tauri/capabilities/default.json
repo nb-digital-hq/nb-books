@@ -1,0 +1,12 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Permisos de la ventana principal. Principio de mínimo privilegio: cada permiso añadido aquí requiere justificación escrita en el PR. `core:window:allow-set-fullscreen` lo pide la lectura inmersiva de F1.6.4: el segundo nivel es la pantalla completa del sistema, y **la concede el sistema operativo**, no la aplicación; simularla ocultando la carcasa sería exactamente lo que ADR-012 llama disimular en lugar de declarar. `dialog:allow-open` abre el selector de archivos del sistema: la ruta que vuelve la eligió el usuario en su escritorio, así que es consentimiento por construcción y no una ruta que el webview se invente. `dialog:allow-save` abre el diálogo nativo de guardar para exportar anotaciones, citas, vocabulario, informes, el diagnóstico y la biblioteca entera: igual que al abrir, la ruta la elige el usuario, y el runtime la acota con `destino_admisible` antes de escribir. Faltó hasta el 2026-11-12 y ninguna exportación funcionaba en el binario; `scripts/check-permisos.mjs` cruza desde entonces lo que la interfaz llama con lo que aquí se concede. Ver docs/architecture/security/authorization.md",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-set-fullscreen",
+    "dialog:allow-open",
+    "dialog:allow-save"
+  ]
+}

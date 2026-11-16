@@ -1,0 +1,18 @@
+{
+  "fecha": "2026-08-26",
+  "arranque_runtime": {
+    "mediana_ms": 54,
+    "muestras": [51, 55, 49, 56, 54]
+  },
+  "bundle_frontend": {
+    "kb": 75
+  },
+  "binario_release": {
+    "mb": 6.3
+  },
+  "presupuestos": {
+    "arranque_runtime_ms": 200,
+    "bundle_frontend_kb": 250,
+    "binario_mb": 50
+  }
+}

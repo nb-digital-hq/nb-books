@@ -1,0 +1,24 @@
+{
+  "id": "lat.nbdigitallabs.books.sonido.concentracion",
+  "name": "Fondo Sonoro",
+  "version": "1.1.0",
+  "type": "ui",
+  "apiVersion": "1.0",
+  "license": "Apache-2.0",
+  "contributes": {
+    "soundscapes": [
+      { "id": "lluvia", "name": "Lluvia", "kind": "lluvia" },
+      { "id": "tormenta", "name": "Tormenta Lejana", "kind": "tormenta" },
+      { "id": "oleaje", "name": "Oleaje", "kind": "oleaje" },
+      { "id": "viento", "name": "Viento", "kind": "viento" },
+      { "id": "fuego", "name": "Chimenea", "kind": "fuego" },
+      { "id": "bosque", "name": "Bosque", "kind": "bosque" },
+      { "id": "cafeteria", "name": "Cafetería", "kind": "cafeteria" },
+      { "id": "ventilador", "name": "Ventilador", "kind": "ventilador" },
+      { "id": "tren", "name": "Tren Nocturno", "kind": "tren" },
+      { "id": "siseo", "name": "Ruido Blanco", "kind": "blanco" },
+      { "id": "rosa", "name": "Ruido Rosa", "kind": "rosa" },
+      { "id": "marron", "name": "Ruido Marrón", "kind": "marron" }
+    ]
+  }
+}

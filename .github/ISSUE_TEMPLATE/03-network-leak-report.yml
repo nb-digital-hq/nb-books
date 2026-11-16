@@ -1,0 +1,66 @@
+name: Network leak report
+description: The application contacted a network host without your explicit consent
+labels: ["privacy", "network-leak"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        NB Books promises that **nothing leaves the device without explicit consent**
+        (see [PRIVACY.md](../blob/main/PRIVACY.md)). Every outgoing connection must pass through a single
+        network gate that checks offline mode and a per-host, per-purpose consent.
+        A connection that bypasses it is treated as a critical defect.
+
+        If the leak can be exploited by a third party, report it privately through [SECURITY.md](../blob/main/SECURITY.md).
+
+  - type: input
+    id: host
+    attributes:
+      label: Destination host and port
+      placeholder: "example.org:443"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: What you were doing
+      description: The action in the application immediately before the connection.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: switch
+    attributes:
+      label: State of offline mode (Settings, Network and privacy)
+      options:
+        - On (no connection should happen at all)
+        - On, but this host or purpose was never authorised
+        - On and authorised, but the data sent exceeded what was described
+        - I do not know
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: >
+        Output of a tool such as `ss -tp`, OpenSnitch, Wireshark or a firewall log. Remove personal data first.
+      render: text
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: NB Books version
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: extensions
+    attributes:
+      label: Extensions
+      options:
+        - label: I reproduced it with all third-party extensions disabled

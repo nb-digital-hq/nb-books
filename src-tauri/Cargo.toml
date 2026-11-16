@@ -1,0 +1,286 @@
+[package]
+name = "nb-books"
+version = "1.0.0"
+description = "Plataforma de lectura, gestión documental y aprendizaje digital"
+authors = ["The NB Books Authors"]
+license = "Apache-2.0"
+repository = "https://github.com/nb-digital-hq/nb-books"
+edition = "2021"
+rust-version = "1.98"
+
+# Cuál es "la aplicación" cuando hay tres binarios.
+#
+# `tauri dev` ejecuta `cargo run`, y cargo no elige por su cuenta entre varios
+# binarios aunque dos de ellos exijan una opción que no está puesta: aborta
+# pidiendo `--bin`. Sin esta línea, el arranque de desarrollo dejó de funcionar
+# el mismo día en que las herramientas del registro entraron al manifiesto, y el
+# error no menciona la causa. Es la contraparte de `mainBinaryName` en
+# `tauri.conf.json`: allí decide qué se empaqueta, aquí qué se ejecuta.
+default-run = "nb-books"
+
+# Las herramientas del registro y de medida **no se construyen por omisión**, y no es
+# una preferencia: `tauri build` ejecuta `cargo build --bins`, así que sin esto
+# entra a empaquetar todo lo que haya. La primera vez que se cruzó la puerta de
+# empaquetado, el instalador salió con `revisar` dentro **en lugar
+# de la aplicación**: 1,7 MB de herramienta de línea de órdenes donde tenían que
+# ir 22 MB de NB Books.
+#
+# Se construyen con `--features herramientas`, y `cargo clippy --all-targets
+# --all-features` las sigue mirando, así que no se quedan sin lint ni sin
+# compilar en la verificación.
+[features]
+herramientas = []
+
+
+[[bin]]
+name = "revisar"
+path = "src/bin/revisar.rs"
+required-features = ["herramientas"]
+
+[[bin]]
+name = "firmar"
+path = "src/bin/firmar.rs"
+required-features = ["herramientas"]
+
+[[bin]]
+name = "comprobar_artefactos"
+path = "src/bin/comprobar_artefactos.rs"
+required-features = ["herramientas"]
+
+[[bin]]
+name = "medir_puente"
+path = "src/bin/medir_puente.rs"
+required-features = ["herramientas"]
+
+[lib]
+# El sufijo `_lib` evita un conflicto de nombres con el binario en Windows.
+name = "nb_books_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# `protocol-asset` sirve las páginas ya rendidas desde la caché de la
+# aplicación. Es lo que evita que una página de PDF cruce el puente JSON
+# codificada en base64, que es lo que prohíbe data-flows.md. Su alcance está
+# acotado en `tauri.conf.json` a los directorios de caché y a nada más.
+tauri = { version = "2", features = ["protocol-asset"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter", "fmt"] }
+tracing-appender = "0.2.5"
+# `trace` no añade ningún crate ni ninguna licencia: es una opción de la propia
+# rusqlite (`trace = []`) que expone el callback de SQLite por conexión, y sin
+# instalarlo no cuesta nada en ejecución. Se activó para poder fijar
+# con exactitud, y no por convención, que la comprobación del índice **no**
+# vuelve a lanzar el `integrity-check` de cuatro minutos sobre `documents_fts`.
+rusqlite = { version = "0.40.2", features = ["bundled", "trace"] }
+r2d2 = "0.8.10"
+r2d2_sqlite = "0.35.0"
+ts-rs = "12.0.1"
+# Identidad del archivo por contenido. Ya estaba en el árbol como
+# dependencia de compilación de `tauri-codegen`: pasarla a dependencia de
+# ejecución no añade ningún crate al Cargo.lock ni ninguna licencia nueva, y es
+# el mismo hash que necesitan los checksums publicados.
+sha2 = "0.10.9"
+# Descompresión de los contenedores EPUB y de cómic. Ya estaban en el
+# árbol: `flate2` como dependencia de compilación vía `png`, y `quick-xml` ya en
+# el binario vía `tauri-utils`. Pasarlas a dependencias de ejecución no añade
+# ningún crate al Cargo.lock ni ninguna licencia nueva.
+#
+# El lector de ZIP es propio (`src/zip.rs`) y no un crate: los límites contra
+# bombas de descompresión tienen que vivir dentro del lector,
+# no envueltos por fuera donde hay que acordarse de aplicarlos.
+flate2 = "1.1.9"
+quick-xml = "0.41.0"
+# Motor de PDF. **Enlazado en tiempo de ejecución, no de compilación**:
+# el clon limpio sigue compilando sin la biblioteca nativa, y su ausencia degrada
+# a "componente no instalado" en lugar de romper. Ver ADR-002 y la ficha de
+# el motor de PDF. `default-features = false` evita que intente enlazar estáticamente.
+# Sin `image_api`: convertir el mapa de bits a PNG se hace con `png`, que ya
+# está en el árbol, en lugar de arrastrar el crate `image` entero con sus
+# decodificadores de formatos que no usamos. Y **sin `pdfium_enable_v8`**, que es
+# el motor de JavaScript: el modelo de amenazas lo prohíbe expresamente.
+pdfium-render = { version = "0.9.3", default-features = false, features = [
+  # Versión fijada, no "latest": las vinculaciones y el binario tienen que
+  # hablar la misma API, y `scripts/fetch-pdfium.mjs` descarga exactamente esta.
+  "pdfium_7881",
+  "thread_safe",
+] }
+png = "0.17"
+# Verificación de la firma del autor de una extensión, en Ed25519.
+# **Ya estaba en el árbol**: lo arrastra `rustls`, que es quien hace el TLS de
+# `net.rs`. Declararlo como dependencia directa no añade ningún crate al
+# Cargo.lock ni ninguna licencia nueva —Apache-2.0 AND ISC, las dos ya
+# admitidas en `deny.toml`—, que es el mismo precedente de `sha2`, `flate2` y
+# `quick-xml`. Aprobado el 2026-09-07.
+#
+# No hay alternativa razonable: una firma la comprueba una implementación
+# auditada o no se comprueba. Escribir Ed25519 propio para no añadir una línea a
+# este archivo sería exactamente la clase de decisión que la política de
+# dependencias existe para impedir, y ninguna regla de las cien líneas se aplica
+# a la criptografía.
+ring = "0.17.14"
+# Cliente HTTP para la única capa de salida de red. **Bloqueante y no
+# asíncrono**: nuestro trabajo de fondo son hilos propios, como la indexación, y
+# no hay ningún ejecutor de futuros en el código del proyecto. Traer uno para
+# hacer peticiones GET de documentos pequeños sería justo el crate monolítico que
+# la política de dependencias desaconseja.
+#
+# Medido antes de elegir: `ureq` con TLS incluido añade 17 crates al árbol;
+# `reqwest` **sin** TLS ya añade 18. La comparación decide sola.
+#
+# `rustls` en lugar de `native-tls`, y la decisión no es de gusto: `native-tls`
+# arrastra `openssl-sys`, y entonces compilar exige las cabeceras de OpenSSL del
+# sistema. Eso rompe la propiedad que este proyecto se ganó a pulso con PDFium,
+# que un clon limpio compile sin bibliotecas nativas instaladas.
+#
+# El coste de esa elección es una línea de licencia: el paquete de raíces de
+# Mozilla se distribuye bajo CDLA-Permissive-2.0, que no estaba en la tabla de
+# la política. Es una licencia de **datos**, permisiva y sin reciprocidad, y se
+# incorporó con revisión registrada. Ver dependency-policy.md, sección 4.1.
+#
+# `platform-verifier` usa además el almacén de certificados del sistema
+# operativo, que es el que el usuario y su institución ya administran.
+ureq = { version = "3.4.0", default-features = false, features = [
+  "rustls",
+  "platform-verifier",
+] }
+# El diálogo nativo de archivos. Es la vía por la que el usuario elige qué
+# importa, y la única forma de que esa elección venga del sistema y no del
+# webview: lo que cruza el puente es una ruta que el propio sistema devolvió
+# tras un gesto suyo. Plugin oficial de Tauri, licencia MIT o Apache-2.0.
+tauri-plugin-dialog = "2.7.2"
+image = { version = "0.25.10", default-features = false, features = ["jpeg", "png"] }
+# El llavero del sistema. Es la librería que `authentication.md`
+# sección 2 lleva especificada desde antes de que existiera el módulo, así que
+# aquí no se eligió nada: se implementó lo decidido.
+#
+# La feature `v1` trae el almacén que corresponda a cada plataforma —Keychain,
+# Credential Locker, Secret Service— y evita cablear uno por sistema operativo.
+# Cuesta 47 crates de compilación, dominados por `zbus`. Se midieron las tres
+# variantes antes de elegir: la de `dbus-secret-service` sale a 67 y además
+# enlaza libdbus, que es una dependencia nativa que el clon limpio tendría que
+# tener instalada. Esta es Rust puro y no añade ninguna.
+#
+# La alternativa de hablar D-Bus a mano supone reimplementar autenticación SASL
+# y el protocolo binario para guardar una cadena: más superficie de fallo que la
+# que se ahorra.
+keyring = { version = "4.2.0", default-features = false, features = ["v1"] }
+wasmtime = { version = "48", default-features = false, features = ["cranelift", "runtime", "std"] }
+wasmtime-wasi = { version = "48", default-features = false, features = ["p1"] }
+# --- Inferencia local ----------------------------------------------
+#
+# Candle, el motor de Hugging Face, en **Rust puro**. El contrato decía
+# `llama.cpp` por FFI u ONNX Runtime, y se cambió el 2026-09-12 por lo
+# que este proyecto ya tiene medido: las dos cicatrices de la puerta de
+# empaquetado son el runtime que estuvo semanas sin compilar en Windows y el
+# motor de PDF que no viajaba en el instalador. Un motor de C++ por FFI, con
+# backends acelerados distintos por plataforma y por GPU, es esa clase de
+# defecto multiplicada por tres sistemas. Esto se compila en el mismo
+# `cargo build` que el resto.
+#
+# Sin opciones por defecto en las tres: las que traen son `cuda`, `metal`,
+# `mkl` y `accelerate`, y ninguna se quiere de fábrica. El acelerado es una
+# decisión de empaquetado, no una que se herede sin mirar.
+#
+# El coste está medido y declarado en
+# `docs/architecture/dependency-policy.md`.
+candle-core = { version = "0.11", default-features = false }
+# Cargar y ejecutar el modelo del catálogo. Aprobadas el
+# 2026-09-16 con su coste medido, que está en dependency-policy.md sección 3.4:
+# `candle-nn` trae las capas y `candle-transformers` la arquitectura
+# XLM-RoBERTa ya implementada y mantenida. Escribirla a mano eran unas trescientas
+# líneas que comprobar número a número; aquí se comprobó igual, contra
+# `sentence-transformers`, pero sobre código que no hay que mantener.
+candle-nn = { version = "0.11", default-features = false }
+candle-transformers = { version = "0.11", default-features = false }
+# El tokenizador del modelo. **No añade ningún crate**: `candle-core` ya lo trae,
+# con la opción `onig`, y se declara con la misma para usarlo directamente sin
+# pedir nada distinto de lo que la unificación de opciones ya decidió.
+tokenizers = { version = "0.22", default-features = false, features = ["onig"] }
+# El grupo de hilos propio de la inferencia. **Tampoco añade ningún
+# crate**: `candle-core` ya lo trae, en la misma versión, y es por donde reparte su
+# trabajo. Se declara para poder construir un grupo con tope en lugar de dejar que
+# la inferencia use el global, que ocupa todos los núcleos.
+rayon = "1.12"
+# Guardar el audio preparado de un libro. **Aprobadas el
+# 2026-09-18 con la aritmética delante**: el audio del modelo en crudo son 173 MB
+# por hora, así que un libro de diez horas son 1,7 GB y veinte libros se comen el
+# presupuesto de lo derivado entero. En Opus a 24 kbit/s la misma hora son unos
+# 11 MB —dieciséis veces menos—, y ahí caben cientos de libros.
+#
+# `opus` es la envoltura segura (MIT o Apache-2.0) y trae `opusic-sys`, que
+# **incluye las fuentes de libopus y las compila** (BSD-3-Clause): no hay que
+# instalar nada en la máquina de quien usa la aplicación, que es la regla de
+# plug-and-play. Lo que sí añade es C a la compilación, que es el riesgo anotado
+# como V21 en `deferred-verification.md` y que aquí no se puede comprobar en
+# Windows ni en macOS.
+#
+# `ogg` es el envoltorio, en Rust puro (BSD-3-Clause): sin él, lo que sale del
+# codificador son paquetes sueltos que ningún reproductor sabe abrir, y el audio
+# tiene que sonar en la ventana con un `<audio>` como cualquier otro.
+opus = "0.4"
+ogg = "0.9"
+
+# Memoria física de la máquina, para decidir si se ofrece inferencia local
+#. Las dos **ya viajaban en el árbol** —`libc` lo arrastra media
+# biblioteca, `windows-sys` lo arrastra Tauri—, así que declararlas no añade
+# ningún crate al `Cargo.lock` ni ninguna licencia nueva. Es el mismo criterio
+# con el que entraron `sha2`, `flate2` y `ring`.
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_System_SystemInformation", "Win32_Storage_FileSystem"] }
+
+[dev-dependencies]
+tauri = { version = "2", features = ["test"] }
+
+[profile.release]
+# Presupuesto de tamaño del instalador: ver
+# docs/architecture/performance-budgets.md
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
+# Deliberadamente NO se usa `panic = "abort"`. Reduciría el tamaño del binario,
+# pero impide aislar el fallo de un componente: un pánico en un consumidor de
+# eventos abortaría el proceso entero, que es exactamente lo que prohíbe la
+# regla 1 de la Constitución. Ver docs/architecture/event-bus.md
+
+[profile.dev]
+# Compilación de dependencias optimizada: acorta el ciclo de desarrollo sin
+# afectar al tiempo de compilación del propio proyecto.
+opt-level = 0
+
+# La información de depuración, en archivos aparte y no dentro de cada binario.
+#
+# Medido el 2026-09-10: `target/debug` ocupaba **77 GB**, y 65 de ellos eran
+# ciento cincuenta y tres binarios de prueba de unos 850 MB cada uno. Cada
+# archivo de prueba de integración enlaza wasmtime, pdfium y Tauri enteros, y con
+# la información de depuración empotrada cada binario se lleva su propia copia de
+# la de todas las dependencias. Setenta y cinco archivos de prueba multiplican eso
+# setenta y cinco veces.
+#
+# `unpacked` la deja en archivos `.dwo` que se comparten en lugar de duplicarse.
+# Los rastros de pila siguen teniendo archivo y línea, que es lo que hace falta
+# cuando una prueba falla.
+split-debuginfo = "unpacked"
+
+[profile.test]
+# Lo mismo para las pruebas, que es donde estaba el gasto.
+#
+# `line-tables-only` conserva archivo y línea en los pánicos -lo que se lee al
+# depurar una prueba que falla- y suelta el resto: nombres de variables locales y
+# tipos, que solo sirven dentro de un depurador paso a paso. Es la diferencia
+# entre poder leer un rastro de pila y poder inspeccionar memoria, y aquí solo se
+# necesita lo primero.
+debug = "line-tables-only"
+split-debuginfo = "unpacked"
+
+[profile.dev.package."*"]
+opt-level = 2

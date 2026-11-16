@@ -1,0 +1,11 @@
+{
+  "id": "lat.nbdigitallabs.books.banco.version-futura",
+  "name": "Declara una API que no existe",
+  "version": "1.0.0",
+  "type": "core",
+  "apiVersion": "99.0",
+  "license": "Apache-2.0",
+  "capabilities": [],
+  "permissions": {},
+  "contributes": {}
+}

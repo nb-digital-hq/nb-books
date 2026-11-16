@@ -95,7 +95,7 @@ sha2 = "0.10.9"
 # bombas de descompresión tienen que vivir dentro del lector,
 # no envueltos por fuera donde hay que acordarse de aplicarlos.
 flate2 = "1.1.9"
-quick-xml = "0.41.0"
+quick-xml = "0.42.0"
 # Motor de PDF. **Enlazado en tiempo de ejecución, no de compilación**:
 # el clon limpio sigue compilando sin la biblioteca nativa, y su ausencia degrada
 # a "componente no instalado" en lugar de romper. Ver ADR-002 y la ficha de

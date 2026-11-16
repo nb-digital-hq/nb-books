@@ -95,7 +95,7 @@ jobs:
 
       - name: Cadena de CUDA
         if: matrix.cuda
-        uses: Jimver/cuda-toolkit@v0.2.19
+        uses: Jimver/cuda-toolkit@v0.2.36
 
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4

@@ -3293,7 +3293,7 @@ dependencies = [
  "ogg",
  "opus",
  "pdfium-render",
- "png 0.17.16",
+ "png 0.18.1",
  "quick-xml",
  "r2d2",
  "r2d2_sqlite",

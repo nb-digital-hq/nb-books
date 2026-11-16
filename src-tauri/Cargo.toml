@@ -110,7 +110,7 @@ pdfium-render = { version = "0.9.3", default-features = false, features = [
   "pdfium_7881",
   "thread_safe",
 ] }
-png = "0.17"
+png = "0.18"
 # Verificación de la firma del autor de una extensión, en Ed25519.
 # **Ya estaba en el árbol**: lo arrastra `rustls`, que es quien hace el TLS de
 # `net.rs`. Declararlo como dependencia directa no añade ningún crate al

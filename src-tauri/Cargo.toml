@@ -171,7 +171,7 @@ image = { version = "0.25.10", default-features = false, features = ["jpeg", "pn
 # que se ahorra.
 keyring = { version = "4.2.0", default-features = false, features = ["v1"] }
 wasmtime = { version = "48", default-features = false, features = ["cranelift", "runtime", "std"] }
-wasmtime-wasi = { version = "48", default-features = false, features = ["p1"] }
+wasmtime-wasi = { version = "50", default-features = false, features = ["p1"] }
 # --- Inferencia local ----------------------------------------------
 #
 # Candle, el motor de Hugging Face, en **Rust puro**. El contrato decía

@@ -1,0 +1,5 @@
+# Configuración estándar de rustfmt. El proyecto no personaliza el estilo:
+# las discusiones sobre formato no aportan valor.
+# Ver docs/developer/coding-standards/formatting.md
+edition = "2021"
+max_width = 100

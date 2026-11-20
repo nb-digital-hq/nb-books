@@ -1,0 +1,685 @@
+/*
+ * Sistema de diseño base.
+ *
+ * Contrato: docs/architecture/ui-components.md
+ * Paradigma: docs/adr/012-ui-paradigm.md
+ *
+ * # Un tema es una sensación, no una paleta
+ *
+ * Nadie sabe qué va a leer cada persona: uno abre un manual técnico, otro una
+ * novela infantil, otro un manga. No existe la interfaz correcta para todos, así
+ * que no se intenta: la aplicación se adapta a lo que cada uno espera **sentir**
+ * al abrirla. Por eso un tema fija seis cosas y no una —paleta, tipografía de la
+ * interfaz, movimiento, textura, redondeo y el modo de lectura que sugiere—, y
+ * por eso los tokens de abajo no son solo colores.
+ *
+ * Los colores semánticos propios se mantienen aquí para retrocompatibilidad
+ * o elementos altamente específicos, pero Material 3 domina el lenguaje visual
+ * global del producto.
+ */
+
+@import 'm3-svelte/etc/styles.css';
+/*
+ * Las paletas de Material, generadas. Van antes que todo lo demás para que
+ * cualquier regla de aquí pueda pisarlas, y existen para que el primer fotograma
+ * ya salga con su tema: ver scripts/generar-paletas.mjs.
+ */
+@import './paletas.css';
+
+/* ------------------------------------------------------------------ *
+ * Tokens semánticos
+ *
+ * Se nombran por su función, nunca por su color: `--nb-text-muted`, no
+ * `--nb-gris`. Un token con nombre de color es un token que miente en cuanto
+ * se cambia el tema.
+ * ------------------------------------------------------------------ */
+
+:root,
+[data-theme='gabinete'] {
+  /*
+   * Gabinete: la calma de una biblioteca privada. Es la base de la hoja: lo que
+   * los demás temas no declaran, lo heredan de aquí.
+   *
+   * Carbón cálido en lugar de negro azulado, y latón como acento: la referencia
+   * es una lámpara de lectura y el canto dorado de un libro, no un editor de
+   * código.
+   */
+
+  /* Superficies, de atrás hacia adelante */
+  --nb-surface: #16130f;
+  --nb-surface-raised: #1a1613;
+  --nb-surface-sunken: #14110e;
+
+  /* Cristal y Elevación (AAA) */
+  --nb-surface-glass: color-mix(in srgb, var(--nb-surface-raised) 85%, transparent);
+  /*
+   * Los dos desenfoques, por altura y no por gusto.
+   *
+   * Un menú desplegable se apoya casi sobre lo que tapa y le basta con separarse;
+   * un flotante que cubre la mitad de la pantalla está más alto y tiene que
+   * separarse más. Son dos valores porque son dos alturas, y son **tokens**
+   * porque escritos en el componente serían dos números que nadie puede
+   * comparar: la escala de elevación no se ve si cada sitio elige el suyo.
+   *
+   * Solo se usan donde `CRISTAL_PERMITIDO` de `scripts/check-ui.mjs` lo admite:
+   * flotantes que aparecen y se van. Sobre cromo permanente, el motor rehace el
+   * filtro en cada fotograma de desplazamiento.
+   */
+  --nb-blur: blur(12px) saturate(180%);
+  --nb-blur-alto: blur(16px) saturate(180%);
+  /*
+   * El canto de luz que corona una superficie elevada. Es un color y no una
+   * sombra hecha, porque cada sitio lo mezcla con la opacidad que le toca; lo
+   * que no puede es escribirlo, o el tema claro heredaría el brillo del oscuro.
+   */
+  --nb-brillo: #ffffff;
+  --nb-shadow-color: #00000080;
+  --nb-shadow-sm: 0 1px 2px var(--nb-shadow-color);
+  --nb-shadow-md:
+    0 4px 12px var(--nb-shadow-color),
+    0 2px 4px color-mix(in srgb, var(--nb-shadow-color) 50%, transparent);
+  --nb-shadow-lg:
+    0 12px 32px var(--nb-shadow-color),
+    0 4px 8px color-mix(in srgb, var(--nb-shadow-color) 50%, transparent);
+  --nb-shadow-hover:
+    0 16px 40px var(--nb-shadow-color),
+    0 6px 12px color-mix(in srgb, var(--nb-shadow-color) 60%, transparent);
+
+  /* Texto, de más a menos énfasis */
+  --nb-text: #f0e9e0;
+  --nb-text-muted: #b8ada0;
+  --nb-text-subtle: #94897c;
+
+  /* Trazos: `border` separa, `border-strong` delimita un control */
+  --nb-border: #2c2521;
+  --nb-border-strong: #7d7266;
+
+  /* Intención */
+  --nb-accent: #d9a441;
+  --nb-accent-soft: #33291a;
+  --nb-on-accent: #211803;
+  --nb-danger: #e88a7a;
+  --nb-on-danger: #2a0c0a;
+  --nb-focus: #d9a441;
+  --nb-velo: #0c0a08cc;
+
+  /*
+   * Carácter del tema. Estos cuatro son los que hacen que un tema se sienta
+   * distinto y no solo se vea distinto.
+   */
+  --nb-font-ui: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --nb-font-display: Literata, Georgia, 'Times New Roman', serif;
+  --nb-radio-escala: 1;
+  --nb-motion-escala: 1;
+  --nb-textura: none;
+  --nb-textura-opacidad: 0;
+
+  /*
+   * Portadas generadas. Con 152.080 documentos, la mayoría no trae imagen, y
+   * una biblioteca de rectángulos vacíos es la pantalla que este proyecto no
+   * quiere. El **tono** lo aporta el componente derivándolo del título; la
+   * luminosidad y el croma son del tema, y por eso una rejilla llena de
+   * portadas no desentona con el resto de la interfaz.
+   */
+  --nb-portada-luz: 0.34;
+  /*
+   * El croma subió de 0,07 a 0,11 el 2026-09-12. Con 0,07 todos los tonos salían
+   * del mismo lodo: una rejilla de portadas generadas se veía como una fila de
+   * rectángulos marrones, que es medio camino hacia el hueco gris que esto
+   * existía para evitar. La luminosidad no se toca, porque es la que mantiene el
+   * contraste con la tinta y la que hace que no desentonen con el tema.
+   */
+  --nb-portada-croma: 0.11;
+  --nb-portada-fondo: oklch(
+    var(--nb-portada-luz) var(--nb-portada-croma) var(--nb-portada-tono, 60)
+  );
+  --nb-portada-tinta: oklch(0.94 0.03 var(--nb-portada-tono, 60));
+  --nb-portada-tinta-luz: 0.94;
+  --nb-portada-tinta-croma: 0.03;
+  --nb-portada-sombra: #0000005c;
+  --nb-portada-realce: #ffffff10;
+  --nb-portada-lomo: linear-gradient(90deg, #00000073, #ffffff0d);
+  --nb-portada-velo: #00000059;
+
+  /* Escala tipográfica. `--nb-font-scale` la controla el usuario. */
+  --nb-font-scale: 1;
+  --nb-font-mono: ui-monospace, 'Cascadia Mono', 'Fira Mono', Consolas, monospace;
+  /*
+   * La del libro, distinta de la de la interfaz a propósito: son los dos planos
+   * de personalización de ADR-012 y el usuario los cambia por separado.
+   */
+  --nb-font-lectura: Literata, Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+  --nb-text-xs: calc(0.75rem * var(--nb-font-scale));
+  --nb-text-sm: calc(0.875rem * var(--nb-font-scale));
+  --nb-text-md: calc(1rem * var(--nb-font-scale));
+  /*
+   * **Alineados con la escala tipográfica de Material el 2026-09-10.** `lg` era
+   * 1,25 rem y pasa a 1,375, que es su `title-large`; `2xl` es su
+   * `headline-large`. El motivo es el mismo que en el redondeo: la migración los
+   * escribió como literales -139 declaraciones- y con ellos se perdió el
+   * multiplicador `--nb-font-scale`, que es lo que hace que el ajuste de tamaño
+   * de letra sirva de algo. Adoptar los pasos que la interfaz ya usa evita
+   * elegir entre el diseño y la accesibilidad.
+   */
+  --nb-text-lg: calc(1.375rem * var(--nb-font-scale));
+  --nb-text-xl: calc(1.75rem * var(--nb-font-scale));
+  --nb-text-2xl: calc(2rem * var(--nb-font-scale));
+
+  /* Espaciado. Una sola escala; los valores intermedios no existen. */
+  --nb-space-1: 0.25rem;
+  --nb-space-2: 0.5rem;
+  --nb-space-3: 0.75rem;
+  --nb-space-4: 1rem;
+  --nb-space-5: 1.5rem;
+  --nb-space-6: 2rem;
+  /*
+   * Siete y ocho existen desde el 2026-09-10, con Material: la separación entre
+   * bloques grandes de Inicio pedía 3 y 4 rem, y sin paso en la escala se
+   * escribían en píxeles, que es como la escala deja de gobernar nada.
+   */
+  --nb-space-7: 3rem;
+  --nb-space-8: 4rem;
+
+  /*
+   * Redondeo. Escalado por el tema: la esquina viva de Tinta y la muy suave de
+   * Musgo son dos sensaciones distintas con la misma paleta.
+   *
+   * Estaban en uso y sin definir: `var(--nb-radius-sm)` sin valor
+   * no redondea nada, así que ningún control lo estaba.
+   */
+  /*
+   * **Alineados con la escala de formas de Material el 2026-09-10.** Antes eran
+   * 5, 9 y 14: valores propios de cuando el sistema de diseño era propio.
+   * Material tiene cinco pasos -4, 8, 12, 16 y 28- y la migración los escribió
+   * en píxeles por todas partes, con lo que el multiplicador por tema dejó de
+   * aplicarse y los siete temas perdieron su redondeo. Adoptar los cinco pasos
+   * conserva las dos cosas: el lenguaje de Material y el carácter del tema.
+   */
+  --nb-radius-xs: calc(4px * var(--nb-radio-escala, 1));
+  --nb-radius-sm: calc(8px * var(--nb-radio-escala, 1));
+  --nb-radius-md: calc(12px * var(--nb-radio-escala, 1));
+  --nb-radius-xl: calc(28px * var(--nb-radio-escala, 1));
+  --nb-radius-lg: calc(16px * var(--nb-radio-escala, 1));
+  /* Redondo del todo. No se escala: un círculo no es más ni menos redondo. */
+  --nb-radius-full: 999px;
+
+  /*
+   * **Elevación de Material 3.**
+   *
+   * Se define aquí porque catorce reglas la pedían -`var(--m3-elevation-1)`- y
+   * no la definía nadie: una variable sin valor y sin respaldo deja la
+   * declaración inválida, así que `box-shadow` volvía a su valor inicial y la
+   * sombra sencillamente no existía. En Material la elevación es media jerarquía
+   * de la pantalla, y sin ella todo queda plano al mismo nivel.
+   *
+   * Los valores son los niveles 1 a 3 de Material 3, con las dos sombras que
+   * define la especificación: una clave, estrecha y cercana, y otra ambiental,
+   * amplia. Se tiñen con `--m3c-shadow`, que sale de la semilla, en vez de
+   * negro puro: sobre un tema cálido una sombra neutra se ve gris.
+   */
+  --m3-elevation-1:
+    0 1px 2px 0 color-mix(in srgb, var(--m3c-shadow) 30%, transparent),
+    0 1px 3px 1px color-mix(in srgb, var(--m3c-shadow) 15%, transparent);
+  --m3-elevation-2:
+    0 1px 2px 0 color-mix(in srgb, var(--m3c-shadow) 30%, transparent),
+    0 2px 6px 2px color-mix(in srgb, var(--m3c-shadow) 15%, transparent);
+  --m3-elevation-3:
+    0 4px 8px 3px color-mix(in srgb, var(--m3c-shadow) 15%, transparent),
+    0 1px 3px 0 color-mix(in srgb, var(--m3c-shadow) 30%, transparent);
+
+  /*
+   * Movimiento. Se expresa en tokens para que "movimiento reducido" sea un
+   * cambio de valor y no una lista de excepciones repartida por los estilos, y
+   * se escala con el tema porque el ritmo también es carácter.
+   */
+  --nb-motion-fast: calc(120ms * var(--nb-motion-escala, 1));
+  --nb-motion-base: calc(180ms * var(--nb-motion-escala, 1));
+  /*
+   * Lo que tarda la barra lateral en cambiar de ancho. Algo más que la base:
+   * recorre 184 píxeles, y a 180 ms se lee como un salto y no como un
+   * desplazamiento.
+   */
+  --nb-motion-lateral: calc(240ms * var(--nb-motion-escala, 1));
+  /*
+   * **Las curvas no se pasan del final**. La de antes era
+   * `cubic-bezier(0.34, 1.56, 0.64, 1)`: sobrepasaba el destino y volvía, y
+   * sobre un ancho eso es un rebote a la vista. Material 3 reserva las curvas
+   * con sobrepaso para lo expresivo, y aquí nada lo es: lo que se lee pide calma.
+   * Las dos son la estándar de Material 3; se conserva el nombre antiguo para no
+   * tocar las decenas de reglas que ya lo usan en cambios de color.
+   */
+  --nb-easing-estandar: cubic-bezier(0.2, 0, 0, 1);
+  --nb-easing: var(--nb-easing-estandar);
+
+  /* Anchos de la carcasa. Su única fuente es src/lib/ui/anchos.ts. */
+  --nb-panel-width: 18rem;
+  --nb-lateral-ancho: 16rem;
+  --nb-lateral-ancho-plegada: 4.5rem;
+  --nb-banner-alto: 4.5rem;
+
+  /* Cuatro alturas de fila y ninguna más. Ver docs/design/ui-conventions.md. */
+  --nb-fila-compacta: 2rem;
+  --nb-fila-normal: 2.375rem;
+  --nb-fila-comoda: 3.25rem;
+  --nb-fila-tarjeta: 14.5rem;
+
+  color-scheme: dark light;
+}
+
+/* ------------------------------------------------------------------ *
+ * Los siete temas
+ *
+ * Cada bloque es un perfil completo. Los que no declaran tipografía, redondeo,
+ * movimiento o textura heredan los de Gabinete a propósito: un tema que solo
+ * cambia la paleta es un tema legítimo, pero tiene que decirlo con su silencio
+ * y no con valores repetidos.
+ *
+ * `data-theme` lleva el nombre del tema. `system` no aparece aquí: lo resuelve
+ * la interfaz a Grafito o a Papel según lo que pida el escritorio, y escribe el
+ * resultado, para que "alto contraste oscuro" no tenga que distinguir entre
+ * elegir oscuro y heredarlo.
+ * ------------------------------------------------------------------ */
+
+/* Papel: la luz de la mañana sobre una página. Para leer de día. */
+[data-theme='papel'] {
+  --nb-surface: #f2eee5;
+  --nb-surface-raised: #fbf9f3;
+  --nb-surface-sunken: #e7e1d4;
+  --nb-shadow-color: #0000001a;
+  --nb-brillo: #fffdf7;
+  --nb-text: #221e18;
+  --nb-text-muted: #57503f;
+  --nb-text-subtle: #6d6552;
+  --nb-border: #ddd6c6;
+  --nb-border-strong: #8b8271;
+  --nb-accent: #8c2a20;
+  --nb-accent-soft: #edd9d3;
+  --nb-on-accent: #fdf9f2;
+  --nb-danger: #8c2a20;
+  --nb-on-danger: #fdf9f2;
+  --nb-focus: #8c2a20;
+  --nb-velo: #2a2418b3;
+  --nb-portada-luz: 0.72;
+  --nb-portada-croma: 0.12;
+  --nb-portada-tinta: oklch(0.28 0.06 var(--nb-portada-tono, 60));
+  --nb-portada-tinta-luz: 0.28;
+  --nb-portada-tinta-croma: 0.06;
+  --nb-portada-sombra: #4a3f2e33;
+  --nb-portada-realce: #00000014;
+  --nb-portada-lomo: linear-gradient(90deg, #0000002e, #ffffff33);
+}
+
+/* Tinta: precisión y nada más. Sin adornos, esquinas vivas, alto contraste. */
+[data-theme='tinta'] {
+  --nb-surface: #0d1117;
+  --nb-brillo: #eef4ff;
+  --nb-surface-raised: #141a21;
+  --nb-surface-sunken: #0a0e13;
+  --nb-text: #e6edf3;
+  --nb-text-muted: #a9b6c2;
+  --nb-text-subtle: #8b99a6;
+  --nb-border: #232b35;
+  --nb-border-strong: #5f6d7a;
+  --nb-accent: #4ec9b0;
+  --nb-accent-soft: #14312c;
+  --nb-on-accent: #04241f;
+  --nb-danger: #f08c7d;
+  --nb-on-danger: #250d09;
+  --nb-focus: #4ec9b0;
+  --nb-velo: #05080ccc;
+  --nb-font-ui: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
+  --nb-font-display: 'IBM Plex Mono', ui-monospace, monospace;
+  --nb-radio-escala: 0.25;
+  --nb-motion-escala: 0.6;
+}
+
+/* Pergamino: lo copiado a mano. Ocres, letra antigua y grano de vitela. */
+[data-theme='pergamino'] {
+  --nb-surface: #e8dcc0;
+  --nb-surface-raised: #f0e6d0;
+  --nb-surface-sunken: #dbcdaa;
+  --nb-shadow-color: #3b2c1526;
+  --nb-brillo: #fff8e6;
+  --nb-text: #2e2415;
+  --nb-text-muted: #5a4a2c;
+  --nb-text-subtle: #6b5a38;
+  --nb-border: #cbb994;
+  --nb-border-strong: #8a7550;
+  --nb-accent: #7a4715;
+  --nb-accent-soft: #dcc79c;
+  --nb-on-accent: #f7f0dd;
+  --nb-danger: #8a2f1c;
+  --nb-on-danger: #f7f0dd;
+  --nb-focus: #7a4715;
+  --nb-velo: #2b2213b3;
+  --nb-portada-luz: 0.7;
+  --nb-portada-croma: 0.1;
+  --nb-portada-tinta: oklch(0.26 0.07 var(--nb-portada-tono, 60));
+  --nb-portada-tinta-luz: 0.26;
+  --nb-portada-tinta-croma: 0.07;
+  --nb-portada-sombra: #5a482a3d;
+  --nb-portada-realce: #00000014;
+  --nb-portada-lomo: linear-gradient(90deg, #0000002e, #ffffff33);
+  --nb-font-ui: 'EB Garamond', Garamond, 'Palatino Linotype', serif;
+  --nb-font-display: 'EB Garamond', Garamond, serif;
+  --nb-radio-escala: 0.2;
+  --nb-motion-escala: 1.3;
+  /* La vitela no es una imagen: son dos manchas muy tenues que no pesan nada. */
+  --nb-textura:
+    radial-gradient(circle at 18% 28%, #78582880 0%, #78582800 55%),
+    radial-gradient(circle at 78% 72%, #6b4e2066 0%, #6b4e2000 50%);
+  --nb-textura-opacidad: 0.5;
+}
+
+/* Vigilia: la noche y el silencio. Azul profundo, poco brillo, todo suave. */
+[data-theme='vigilia'] {
+  --nb-surface: #0f1420;
+  --nb-brillo: #e8eeff;
+  --nb-surface-raised: #161d2c;
+  --nb-surface-sunken: #0b0f18;
+  --nb-text: #dce3f0;
+  --nb-text-muted: #a3aec4;
+  --nb-text-subtle: #8390a9;
+  --nb-border: #232c40;
+  --nb-border-strong: #5b6980;
+  --nb-accent: #8fa9dd;
+  --nb-accent-soft: #1e2942;
+  --nb-on-accent: #0a1120;
+  --nb-danger: #e8909a;
+  --nb-on-danger: #200a0f;
+  --nb-focus: #8fa9dd;
+  --nb-velo: #060a12cc;
+  --nb-radio-escala: 1.6;
+  --nb-motion-escala: 1.4;
+}
+
+/*
+ * Grafito: el lápiz sobre la página. Grises de verdad y un solo color, el del
+ * acento. Es el tema de partida y el que resuelve `system` cuando el escritorio
+ * pide oscuro. Sustituye a Brasa desde el 2026-09-11: las dos semillas eran el
+ * mismo naranja, y dos temas con el mismo color son uno con dos nombres.
+ */
+[data-theme='grafito'] {
+  --nb-surface: #131313;
+  --nb-brillo: #ffffff;
+  --nb-surface-raised: #1c1c1c;
+  --nb-surface-sunken: #0e0e0e;
+  --nb-text: #ececec;
+  --nb-text-muted: #b3b3b3;
+  --nb-text-subtle: #949494;
+  --nb-border: #2b2b2b;
+  --nb-border-strong: #7a7a7a;
+  --nb-accent: #d97757;
+  --nb-accent-soft: #3b241c;
+  --nb-on-accent: #1f0b05;
+  --nb-danger: #f08a7a;
+  --nb-on-danger: #1d0805;
+  --nb-focus: #d97757;
+  --nb-velo: #080808cc;
+  --nb-radio-escala: 1;
+  --nb-motion-escala: 1;
+}
+
+/* Musgo: lo vegetal y lento. Verdes apagados y mucho aire. */
+[data-theme='musgo'] {
+  --nb-surface: #111713;
+  --nb-brillo: #eefaf1;
+  --nb-surface-raised: #182019;
+  --nb-surface-sunken: #0d120f;
+  --nb-text: #e0e9e2;
+  --nb-text-muted: #a5b5aa;
+  --nb-text-subtle: #8a9a8f;
+  --nb-border: #212b24;
+  --nb-border-strong: #5c6d61;
+  --nb-accent: #93c3a5;
+  --nb-accent-soft: #1c2a21;
+  --nb-on-accent: #0a140d;
+  --nb-danger: #e2938a;
+  --nb-on-danger: #1a0b09;
+  --nb-focus: #93c3a5;
+  --nb-velo: #070b08cc;
+  --nb-radio-escala: 1.8;
+  --nb-motion-escala: 1.5;
+}
+
+/*
+ * Alto contraste. No es "un tema pero más": es una paleta propia que lleva todo
+ * a los extremos y hace visible cada trazo. Se aplica **encima** del tema
+ * elegido, así que hay una variante clara y una oscura, y gana a cualquiera de
+ * los siete: un tema con carácter no puede costarle el contraste a quien lo
+ * necesita.
+ *
+ * El selector no lleva `:root` a propósito, por el mismo motivo que los temas:
+ * cualquier elemento que lleve el atributo se viste con esta paleta. Sin eso,
+ * las miniaturas de los ajustes no podían enseñar cómo queda el alto contraste,
+ * que es justo lo que hay que ver antes de encenderlo.
+ */
+[data-contrast='high'] {
+  --nb-surface: #ffffff;
+  --nb-brillo: #ffffff;
+  --nb-surface-raised: #ffffff;
+  --nb-surface-sunken: #f0f0f0;
+  --nb-text: #000000;
+  --nb-text-muted: #1a1a1a;
+  --nb-text-subtle: #2b2b2b;
+  --nb-border: #000000;
+  --nb-border-strong: #000000;
+  --nb-accent: #00402f;
+  --nb-accent-soft: #d9d9d9;
+  --nb-velo: #000000cc;
+  --nb-on-accent: #ffffff;
+  --nb-danger: #7a0f0a;
+  --nb-on-danger: #ffffff;
+  --nb-focus: #00402f;
+  --nb-textura: none;
+  --nb-textura-opacidad: 0;
+}
+
+[data-contrast='high'][data-resolved-scheme='dark'] {
+  --nb-surface: #000000;
+  --nb-brillo: #ffffff;
+  --nb-surface-raised: #0a0a0a;
+  --nb-surface-sunken: #000000;
+  --nb-text: #ffffff;
+  --nb-text-muted: #eaeaea;
+  --nb-text-subtle: #d4d4d4;
+  --nb-border: #ffffff;
+  --nb-border-strong: #ffffff;
+  --nb-accent: #7fe3c0;
+  --nb-accent-soft: #333333;
+  --nb-velo: #000000e6;
+  --nb-on-accent: #000000;
+  --nb-danger: #ff9a93;
+  --nb-on-danger: #000000;
+  --nb-focus: #7fe3c0;
+  --nb-textura: none;
+  --nb-textura-opacidad: 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Restablecimiento
+ * ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--nb-surface);
+  color: var(--nb-text);
+  font-family: var(--nb-font-ui);
+  font-size: var(--nb-text-md);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+
+  /*
+   * Mandato de "sensación nativa" de ADR-001: la interfaz no debe comportarse
+   * como una página web. La selección de texto se habilita explícitamente donde
+   * el contenido lo requiere, no por defecto.
+   */
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
+}
+
+/* El contenido que el usuario lee o copia sí se selecciona. */
+.nb-selectable {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/*
+ * Indicador de foco. Es la única regla de `outline` del proyecto: si un
+ * componente lo apagara, quien navega por teclado dejaría de saber dónde está.
+ * `scripts/check-ui.mjs` rechaza cualquier `outline: none` en un componente.
+ */
+:focus-visible {
+  outline: 2px solid var(--nb-focus);
+  outline-offset: 2px;
+  border-radius: var(--nb-radius-sm);
+}
+
+/*
+ * Movimiento reducido, por preferencia del sistema o por elección explícita.
+ * Anula los tokens en lugar de recorrer las reglas una a una: cualquier
+ * transición futura que use los tokens queda cubierta sin tocarla.
+ *
+ * La preferencia de la aplicación solo puede **añadir** reducción, nunca
+ * quitar la del sistema: no existe un `data-motion='full'` que anule
+ * `prefers-reduced-motion`. Es deliberado. Quien ha pedido menos movimiento en
+ * su sistema operativo no debería tener que volver a pedirlo aquí, y un ajuste
+ * capaz de desactivar esa petición sería un ajuste capaz de hacer daño.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --nb-motion-fast: 0.01ms;
+    --nb-motion-base: 0.01ms;
+    --nb-motion-lateral: 0.01ms;
+  }
+}
+
+:root[data-motion='reduced'] {
+  --nb-motion-fast: 0.01ms;
+  --nb-motion-base: 0.01ms;
+  --nb-motion-lateral: 0.01ms;
+}
+
+/* Red de seguridad para lo que no pase por los tokens. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Mientras cambia la apariencia no se anima nada.
+ *
+ * Cambiar de tema no es un movimiento: es un cambio de estado, y no transporta
+ * ninguna dirección ni continuidad que valga la pena contar. Animarlo, además,
+ * deja estados intermedios donde el texto y su fondo son casi el mismo color.
+ * Medido en Chromium: el fondo del destino activo se quedaba en el color del
+ * tema anterior **seiscientos milisegundos** con el texto ya en el nuevo, muy
+ * por encima de los 120 ms declarados, y en ese tramo el nombre del destino no
+ * se leía.
+ */
+:root[data-tema-cambiando] *,
+:root[data-tema-cambiando] *::before,
+:root[data-tema-cambiando] *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+:root[data-motion='reduced'] *,
+:root[data-motion='reduced'] *::before,
+:root[data-motion='reduced'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/*
+ * Enlace de salto al contenido. Visible solo al recibir el foco, que es
+ * exactamente cuando sirve.
+ */
+.nb-skip-link {
+  position: absolute;
+  top: var(--nb-space-2);
+  left: var(--nb-space-2);
+  z-index: 100;
+  padding: var(--nb-space-2) var(--nb-space-4);
+  background: var(--nb-surface-raised);
+  color: var(--nb-text);
+  border: 1px solid var(--nb-border-strong);
+  border-radius: var(--nb-radius-md);
+  transform: translateY(-200%);
+}
+
+.nb-skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/*
+ * Barra de desplazamiento personalizada global (Scrollbar AAA)
+ * Toma el color de acento para la barra.
+ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--nb-accent) 50%, transparent);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--nb-accent);
+}
+
+/*
+ * La portada generada, con el tono que sale de su título.
+ *
+ * Va aquí y no en `Cover.svelte` por dos motivos. El color se compone con
+ * `oklch()`, y los colores escritos viven en esta hoja. Y se declara **sobre el
+ * elemento** y no en un token de la raíz: `--nb-portada-tono` lo pone cada
+ * portada, y un token resuelto en la raíz daría a todas el mismo tono. Así
+ * estuvo hasta el 2026-09-11: las portadas sin imagen salían todas
+ * del mismo gris, y una fila de obras sin portada era una fila de huecos.
+ *
+ * `:root` delante solo sube la especificidad por encima del estilo acotado del
+ * componente, que si no ganaría por ir después.
+ */
+:root .nb-portada[data-generada='true'] {
+  /*
+   * Dos paradas y no un color plano: la de arriba va un poco más clara y catorce
+   * grados corrida en el tono, que es lo que le da cuerpo. Plano se veía impreso
+   * a una tinta; así se parece a una cubierta.
+   */
+  background: linear-gradient(
+    155deg,
+    oklch(
+        calc(var(--nb-portada-luz) + 0.05) var(--nb-portada-croma)
+          calc(var(--nb-portada-tono, 60) + 14)
+      )
+      0%,
+    oklch(var(--nb-portada-luz) var(--nb-portada-croma) var(--nb-portada-tono, 60)) 100%
+  );
+  --nb-portada-texto: oklch(
+    var(--nb-portada-tinta-luz) var(--nb-portada-tinta-croma) var(--nb-portada-tono, 60)
+  );
+}

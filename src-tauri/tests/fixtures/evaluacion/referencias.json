@@ -1,0 +1,59 @@
+{
+  "tecnico-es.txt": [
+    "el vidrio deja pasar la luz visible y retiene la radiación infrarroja",
+    "sin ventilación la temperatura interior puede superar en quince grados a la exterior",
+    "el aire caliente sale por la abertura superior y el fresco entra por la inferior",
+    "las ventanas cenitales ventilan mejor que las laterales sin viento",
+    "una malla del cincuenta por ciento baja la temperatura entre cuatro y seis grados",
+    "la malla es más eficaz por fuera del vidrio",
+    "un depósito de agua oscuro almacena calor de día y lo devuelve de noche",
+    "el sensor debe estar a la altura de las hojas y protegido del sol"
+  ],
+  "narrativo-en.txt": [
+    "Marta Quiroga arrived at the lighthouse on Isla Brava in 1931",
+    "the previous keeper Tobías kept the ledger for twenty-two years",
+    "Tobías noted a light on the northern cliffs on eleven nights in March",
+    "the light was a lantern carried by a boy meeting a smuggler's boat",
+    "the smugglers paid the village to keep the lighthouse dark",
+    "Marta kept the lamp lit every night in March and the light stopped"
+  ],
+  "academico-pt.txt": [
+    "a avaliação usa reconto oral, perguntas de escolha múltipla e resumo escrito",
+    "o reconto oral exige entrevistas individuais de cinco a dez minutos",
+    "trinta por cento das perguntas de manuais podiam ser respondidas sem ler o texto",
+    "uma boa pergunta exige distratores plausíveis e uma única resposta defensável",
+    "o resumo escrito depende da competência de escrita",
+    "combinar reconto e resumo com grelha partilhada aumentou a concordância de 0,61 para 0,84"
+  ],
+  "ocr-es.txt": [
+    "la acequia mayor nace en el azud de Molinar a tres leguas río arriba",
+    "el agua se repartía por tandas proporcionales a la tierra",
+    "el acequiero era elegido cada año y anotaba las horas",
+    "en 1788 Molinar cerró el azud nueve días",
+    "el tribunal de las aguas condenó a Molinar a pagar cuarenta fanegas de trigo",
+    "la limpieza de la acequia se hacía en febrero con dos jornadas por regante"
+  ],
+  "formulas-es.txt": [
+    "la evapotranspiración de referencia se escribe ET0 y se mide en milímetros por día",
+    "un milímetro de agua equivale a un litro por metro cuadrado",
+    "la cantidad que pide un cultivo es ETc = ET0 por el coeficiente Kc",
+    "el Kc del tomate en floración es 1,15 y el del maíz, 1,20",
+    "la lámina bruta se obtiene dividiendo la neta por la eficiencia del sistema",
+    "la eficiencia es 0,90 por goteo, 0,75 por aspersión y 0,55 por surcos",
+    "dos goteros de cuatro litros por hora en cada metro cuadrado aportan ocho milímetros por hora",
+    "no se debe agotar más de la mitad de la reserva útil entre riego y riego",
+    "regar más de lo que el suelo retiene arrastra los nutrientes por debajo de las raíces"
+  ],
+  "narrativo-largo-en.txt": [
+    "Anna Wrede took the keeper's post at the Vellmar bridge in 1889",
+    "the ledger she inherited ran back to 1851",
+    "between 1873 and 1881 the tolls rose by a third while the number of carts recorded did not",
+    "the toll schedule had not changed since 1858, so the carts had not been counted",
+    "the keeper Brandt recorded about two carts out of every three",
+    "an inspection was ordered only above eighty crossings a week",
+    "Brandt kept the number below eighty so the bridge would not be closed and he would not lose the house",
+    "Anna sent the arithmetic to the county and to the newspaper at Hallendorf in March 1890",
+    "the second pier was shored in June 1890 and rebuilt the following winter",
+    "Anna kept the post until 1911"
+  ]
+}

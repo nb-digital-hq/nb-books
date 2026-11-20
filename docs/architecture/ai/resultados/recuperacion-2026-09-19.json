@@ -1,0 +1,51 @@
+{
+  "fecha": "2026-09-19",
+  "suite": "tests/metricas_de_recuperacion.rs",
+  "iteracion": "F4.4.2",
+  "equipo": "portátil de desarrollo, procesador, sin GPU",
+  "plantillas": {},
+  "nota": "La recuperación por significado no usa ninguna plantilla: lo que mide es el orden que produce el modelo de embeddings, no un texto de instrucciones. El campo va vacío a propósito, para que el guardián de plantillas no tome estos resultados por los de una.",
+  "aciertoEnK": 0.9473684210526315,
+  "k": 5,
+  "latenciaConsultaMs": {
+    "mediana": 29,
+    "peor": 36
+  },
+  "modelo": "granite-embedding-107m-multilingual",
+  "porTexto": [
+    {
+      "aciertoEnK": 1.0,
+      "preguntas": 5,
+      "primeras": 4,
+      "rangoReciprocoMedio": 0.85,
+      "texto": "tecnico-es.txt"
+    },
+    {
+      "aciertoEnK": 1.0,
+      "preguntas": 5,
+      "primeras": 3,
+      "rangoReciprocoMedio": 0.7066666666666668,
+      "texto": "formulas-es.txt"
+    },
+    {
+      "aciertoEnK": 0.8,
+      "preguntas": 5,
+      "primeras": 3,
+      "rangoReciprocoMedio": 0.72,
+      "texto": "narrativo-largo-en.txt"
+    },
+    {
+      "aciertoEnK": 1.0,
+      "preguntas": 4,
+      "primeras": 4,
+      "rangoReciprocoMedio": 1.0,
+      "texto": "academico-pt.txt"
+    }
+  ],
+  "preguntas": 19,
+  "rangoReciprocoMedio": 0.8096491228070175,
+  "umbrales": {
+    "aciertoEnK": 0.8,
+    "rangoReciprocoMedio": 0.6
+  }
+}

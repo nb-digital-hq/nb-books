@@ -1,0 +1,52 @@
+# Actualizaciones de dependencias.
+#
+# Dependabot no abre pull requests de versión (límite 0): las alertas de
+# seguridad siguen activas y las actualizaciones se hacen a mano, verificadas
+# en local con la suite completa. Ver docs/audit/supply-chain.md
+version: 2
+
+updates:
+  - package-ecosystem: cargo
+    directory: /src-tauri
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 0
+    commit-message:
+      prefix: "chore(deps)"
+    labels: ["dependencias", "rust"]
+    groups:
+      # Un PR por familia en lugar de veinte sueltos: la revisión de una
+      # actualización de dependencias solo es útil si alguien la lee entera.
+      tauri:
+        patterns: ["tauri*"]
+      tracing:
+        patterns: ["tracing*"]
+      menores-y-parches:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 0
+    commit-message:
+      prefix: "chore(deps)"
+    labels: ["dependencias", "frontend"]
+    groups:
+      sveltekit:
+        patterns: ["@sveltejs/*", "svelte", "svelte-check"]
+      herramientas:
+        patterns: ["@biomejs/*", "prettier*", "vitest", "typescript"]
+      menores-y-parches:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    open-pull-requests-limit: 0
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "ci"
+    labels: ["dependencias", "ci"]

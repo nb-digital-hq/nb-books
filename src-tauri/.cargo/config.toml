@@ -1,0 +1,10 @@
+# Una sola base para los tipos que se exportan a TypeScript.
+#
+# `ts-rs` resuelve `export_to` desde la carpeta del crate que exporta, y calcula
+# los `import` entre tipos a partir de esas carpetas. Con dos crates en el
+# espacio de trabajo -la aplicación y el motor de lectura- cada uno tendría su
+# propia base, y un tipo de la aplicación que usa un `Locator` del motor lo
+# importaría por una ruta que da la vuelta al repositorio. Fijada aquí, las dos
+# exportan al mismo sitio y se importan entre sí como vecinos.
+[env]
+TS_RS_EXPORT_DIR = { value = "bindings", relative = true }

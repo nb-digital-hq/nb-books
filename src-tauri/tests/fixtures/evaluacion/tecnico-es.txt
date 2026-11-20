@@ -1,0 +1,11 @@
+Capítulo 3. El control de la temperatura en un invernadero
+
+Un invernadero pequeño gana calor durante el día porque el vidrio deja pasar la luz visible y retiene buena parte de la radiación infrarroja que emiten el suelo y las plantas. Sin ventilación, en una mañana soleada de primavera la temperatura interior puede superar en quince grados a la exterior en menos de dos horas.
+
+La ventilación natural se basa en dos aberturas situadas a distinta altura. El aire caliente, menos denso, sale por la abertura superior, y el aire fresco entra por la inferior. Cuanto mayor es la diferencia de altura entre las dos aberturas, más intenso es el flujo. Por eso las ventanas cenitales ventilan mejor que las laterales cuando no hay viento.
+
+Cuando la ventilación no basta se recurre a la sombra. Una malla de sombreo del cincuenta por ciento reduce a la mitad la radiación que llega a las plantas y baja la temperatura interior entre cuatro y seis grados. Colocada por fuera del vidrio es más eficaz que por dentro, porque el calor se queda fuera de la estructura.
+
+En invierno el problema es el contrario. Durante la noche el vidrio pierde calor con rapidez, y la temperatura interior puede caer casi hasta igualar la exterior. Un depósito de agua oscuro, expuesto al sol durante el día, almacena calor y lo devuelve lentamente por la noche. Doscientos litros de agua pueden evitar una helada ligera en un invernadero de diez metros cuadrados.
+
+El sensor de temperatura debe colocarse a la altura de las hojas y protegido del sol directo. Un sensor al sol puede marcar diez grados más que el aire que lo rodea, y un sistema automático que confíe en él abrirá las ventanas cuando no hace falta.

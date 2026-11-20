@@ -1,0 +1,15 @@
+[package]
+name = "usa-el-mundo"
+version = "1.0.0"
+edition = "2021"
+publish = false
+
+[lib]
+# Un componente se produce enlazando una biblioteca dinámica contra el mundo.
+crate-type = ["cdylib"]
+
+[dependencies]
+# El generador del lado del invitado. Vive solo aquí: este espacio de trabajo no
+# entra en `cargo metadata` de la aplicación, así que no toca ni el binario, ni
+# el instalador, ni los avisos de terceros. Aprobado el 2026-09-07.
+wit-bindgen = "0.61"

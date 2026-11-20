@@ -1,0 +1,48 @@
+{
+  "id": "lat.nbdigitallabs.books.personalizacion.papel",
+  "name": "Papel y Tinta",
+  "version": "1.0.0",
+  "type": "theme",
+  "apiVersion": "1.0",
+  "license": "Apache-2.0",
+  "contributes": {
+    "theme": {
+      "--nb-surface": "#f7f4ee",
+      "--nb-surface-raised": "#fffdf8",
+      "--nb-surface-sunken": "#ebe6dc",
+      "--nb-text": "#2b2721",
+      "--nb-text-muted": "#5c5449",
+      "--nb-border": "#d8d2c6",
+      "--nb-accent": "#6b4f2a",
+      "--nb-on-accent": "#fffdf8",
+      "--nb-focus": "#6b4f2a"
+    },
+    "readingModes": [
+      {
+        "id": "pergamino",
+        "name": "Pergamino",
+        "background": "#f2e8d5",
+        "text": "#33291b",
+        "brightness": 96,
+        "warmth": 45
+      },
+      {
+        "id": "tinta-nocturna",
+        "name": "Tinta Nocturna",
+        "background": "#12161b",
+        "text": "#d6dde4",
+        "brightness": 88,
+        "warmth": 15
+      },
+      {
+        "id": "linotipia",
+        "name": "Linotipia",
+        "background": "#ffffff",
+        "text": "#111111",
+        "brightness": 100,
+        "warmth": 0,
+        "monochrome": true
+      }
+    ]
+  }
+}

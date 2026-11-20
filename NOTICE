@@ -1,0 +1,22 @@
+NB Books
+Copyright 2026 The NB Books Authors
+
+This product includes software developed by The NB Books Authors and by
+third parties. The complete list of third-party components, their copyright
+holders and their licenses is generated at build time (THIRD-PARTY-NOTICES.md)
+and distributed with the application; see docs/legal/third-party-notices.md.
+
+This product can download, on explicit user request, machine-learning models
+that are not part of this distribution and keep their own licenses:
+  - Granite Embedding 107M Multilingual (IBM), Apache License 2.0
+  - Qwen2.5 1.5B Instruct, Qwen3 1.7B and Qwen3 4B (Alibaba Cloud), Apache License 2.0
+  - Kokoro 82M neural voice (hexgrad), Apache License 2.0;
+    see src-tauri/src/voice/kokoro/PROCEDENCIA.md
+The review of each model license is in docs/legal/model-reviews.md.
+
+Licensed under the Apache License, Version 2.0. You may obtain a copy of the
+License in the LICENSE file distributed with this work.
+
+"NB", "NB Digital" and "NB Books" are trademarks of the project. The Apache License does not grant
+permission to use the project's names, logos or trademarks. See
+TRADEMARKS.md for the trademark policy.

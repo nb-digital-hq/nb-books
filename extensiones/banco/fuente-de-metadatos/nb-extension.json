@@ -1,0 +1,19 @@
+{
+  "id": "lat.nbdigitallabs.books.banco.fuente-de-metadatos",
+  "name": "Fuente de prueba",
+  "version": "1.0.0",
+  "type": "core",
+  "apiVersion": "1.0",
+  "license": "Apache-2.0",
+  "capabilities": ["network:fetch"],
+  "permissions": {
+    "network:fetch": {
+      "urls": ["https://datos.ejemplo.org/api/*"]
+    }
+  },
+  "contributes": {
+    "providers": {
+      "metadata": "fuente_de_metadatos.wasm"
+    }
+  }
+}

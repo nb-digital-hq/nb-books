@@ -1,0 +1,366 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <style>
+    /*
+     * Temas por semilla, como en Material, con los nombres de la aplicación. El de
+     * partida es Grafito: semilla #D97757 y los grises sin matiz, porque Material
+     * tiñe de la semilla hasta los fondos y aquí el color va solo en el acento.
+     * Los valores salen de src/paletas.css, que los deriva el generador de la
+     * aplicación, así que el lienzo y la aplicación pintan lo mismo. Medido con
+     * Grafito: 14,3:1 de texto sobre fondo.
+     */
+    .nb {
+      --lavanda: #c6c0ff; --lavanda-c: #39346b; --lavanda-on: #e4dfff;
+      --cielo: #98ccf9; --cielo-c: #003f61; --cielo-on: #cce5ff;
+      --menta: #8ed5b1; --menta-c: #00452d; --menta-on: #a9f2cc; --menta-oscuro: #003824;
+      --melocoton: #ffb783; --melocoton-c: #5f2e01; --melocoton-on: #ffdcc5;
+      --rosa: #fcb0d5; --rosa-c: #5f2847; --rosa-on: #ffd8e8;
+      --limon: #d9c76f; --limon-c: #453b00; --limon-on: #f6e388;
+      --elev-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+      --elev-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.3);
+      --elev-5: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 12px 24px -8px rgba(0, 0, 0, 0.45);
+    }
+
+    /* El tema es una palanca: cambia la semilla de toda la pantalla. */
+    .nb, .nb[data-tema='grafito'] {
+      --p: #ffb59e; --on-p: #55200d; --pc: #723521; --on-pc: #ffdbd0;
+      --sf: #131313; --sf-lowest: #0e0e0e; --sf-low: #1b1b1b; --sf-c: #1f1f1f; --sf-high: #2a2a2a; --sf-highest: #353535;
+      --on-sf: #e2e2e2; --on-sf-v: #c6c6c6; --outline: #919191; --outline-v: #474747;
+    }
+    .nb[data-tema='gabinete'] {
+      --p: #efbf6d; --on-p: #422c00; --pc: #5f4100; --on-pc: #ffdeaa;
+      --sf: #17130b; --sf-lowest: #120e07; --sf-low: #201b13; --sf-c: #241f17; --sf-high: #2f2921; --sf-highest: #3a342b;
+      --on-sf: #ece1d4; --on-sf-v: #d2c5b4; --outline: #9a8f80; --outline-v: #4e4539;
+    }
+    .nb[data-tema='tinta'] {
+      --p: #84d6c2; --on-p: #00382e; --pc: #005144; --on-pc: #a0f2dd;
+      --sf: #0e1513; --sf-lowest: #090f0e; --sf-low: #171d1b; --sf-c: #1b211f; --sf-high: #252b29; --sf-highest: #303634;
+      --on-sf: #dee4e0; --on-sf-v: #bfc9c4; --outline: #89938f; --outline-v: #3f4946;
+    }
+    .nb[data-tema='vigilia'] {
+      --p: #abc7ff; --on-p: #0d2f5f; --pc: #294677; --on-pc: #d7e2ff;
+      --sf: #111318; --sf-lowest: #0c0e13; --sf-low: #1a1c20; --sf-c: #1e2025; --sf-high: #282a2f; --sf-highest: #33353a;
+      --on-sf: #e2e2e9; --on-sf-v: #c4c6d0; --outline: #8e9099; --outline-v: #44474e;
+    }
+    .nb[data-tema='musgo'] {
+      --p: #91d5ad; --on-p: #003822; --pc: #035233; --on-pc: #acf2c8;
+      --sf: #0f1511; --sf-lowest: #0a0f0c; --sf-low: #171d19; --sf-c: #1b211d; --sf-high: #262b27; --sf-highest: #303632;
+      --on-sf: #dfe4dd; --on-sf-v: #c0c9c0; --outline: #8a938b; --outline-v: #404943;
+    }
+
+    body { margin: 0; background: #171211; -webkit-font-smoothing: antialiased; }
+    a { color: #ffb59e; text-decoration: none; }
+    a:hover { color: #ffdbd0; }
+
+    .nb { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+    .serif { font-family: Literata, Georgia, 'Times New Roman', serif; }
+    .ico { width: 24px; height: 24px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* --- Barra lateral ------------------------------------------------- */
+    .destino {
+      display: flex; align-items: center; gap: 12px;
+      height: 52px; padding: 0 16px; border-radius: 26px;
+      color: var(--on-sf-v); font-size: 14px; font-weight: 500;
+    }
+    .destino[data-activo='true'] { background: var(--pc); color: var(--on-pc); font-weight: 600; }
+    .destino-extra { margin-left: auto; font-size: 12px; font-weight: 500; color: var(--on-sf-v); }
+    /* --- Filas ----------------------------------------------------------- */
+    .fila-cabecera { display: flex; align-items: center; gap: 12px; height: 40px; }
+    .fila-titulo { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: var(--on-sf); }
+    .fila-sub { font-size: 14px; color: var(--on-sf-v); }
+    .boton-texto {
+      display: flex; align-items: center; gap: 4px; height: 40px; padding: 0 12px;
+      border-radius: 20px; color: var(--p); font-size: 14px; font-weight: 600;
+    }
+    .boton-flecha {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 20px;
+      background: var(--sf-high); color: var(--on-sf);
+    }
+    .boton-flecha .ico { width: 20px; height: 20px; }
+    .pista { position: relative; margin-right: -56px; }
+    .pista-carril { display: flex; gap: 16px; overflow: hidden; padding: 4px 56px 24px 0; }
+    /* Cortar la última tarjeta es lo que dice que hay más. La niebla no es un borde. */
+    .pista-niebla {
+      position: absolute; top: 0; right: 0; bottom: 0; width: 140px; pointer-events: none;
+      background: linear-gradient(90deg, transparent, var(--sf-low) 92%);
+    }
+
+    /* --- Portada generada ------------------------------------------------ */
+    .portada {
+      position: relative; flex: 0 0 auto; overflow: hidden;
+      aspect-ratio: 2 / 3; border-radius: 12px;
+      background: radial-gradient(140% 90% at 25% 10%, var(--alto) 0%, var(--fondo) 62%);
+      box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.55);
+      display: flex; flex-direction: column; justify-content: space-between;
+      box-sizing: border-box; padding: 16px;
+    }
+    .portada::before {
+      content: ''; position: absolute; width: 78%; aspect-ratio: 1; right: -28%; top: -14%;
+      border-radius: 50%; border: 1.5px solid var(--orn); opacity: 0.45;
+    }
+    .portada::after {
+      content: ''; position: absolute; width: 46%; aspect-ratio: 1; right: -2%; top: 6%;
+      border-radius: 50%; background: var(--orn); opacity: 0.12;
+    }
+    .portada-titulo {
+      position: relative; font-family: Literata, Georgia, serif; font-weight: 600;
+      line-height: 1.15; letter-spacing: -0.01em; color: var(--tit); text-wrap: balance;
+    }
+    .portada-pie { position: relative; display: flex; flex-direction: column; gap: 8px; }
+    .portada-filete { width: 28px; height: 2px; border-radius: 1px; background: var(--orn); }
+    .portada-autor { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--aut); }
+
+    .marca-silueta {
+      width: 74px; height: 74px; background: var(--on-p);
+      -webkit-mask-image: url(./logo.png); mask-image: url(./logo.png);
+      -webkit-mask-size: contain; mask-size: contain;
+      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+      -webkit-mask-position: center; mask-position: center;
+    }
+
+    .progreso { height: 4px; border-radius: 2px; background: var(--sf-highest); overflow: hidden; }
+    .progreso > span { display: block; height: 100%; border-radius: 2px; background: var(--p); }
+  
+    /* --- Componentes de las demás pantallas: la misma familia que Inicio --- */
+    .raiz { position: relative; display: grid; grid-template-columns: 256px minmax(0, 1fr); overflow: hidden; background: var(--sf); color: var(--on-sf); }
+    .columna { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+    .lienzo { position: relative; flex: 1 1 auto; min-height: 0; margin: 0 16px 16px 0; border-radius: 28px; background: var(--sf-low); overflow: hidden; }
+    .una-linea { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dos-lineas { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .tres-lineas { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+    .boton-icono { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 20px; color: var(--on-sf-v); flex: 0 0 auto; }
+    .boton-relleno, .boton-tonal, .boton-neutro {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      height: 40px; padding: 0 20px; border-radius: 20px; font-size: 14px; font-weight: 600; white-space: nowrap; box-sizing: border-box;
+    }
+    .boton-relleno { background: var(--p); color: var(--on-p); }
+    .boton-tonal { background: var(--pc); color: var(--on-pc); }
+    .boton-neutro { background: var(--sf-high); color: var(--on-sf); }
+    .boton-enlace { display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 8px; border-radius: 16px; color: var(--p); font-size: 13px; font-weight: 600; }
+
+    .chip { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; background: var(--sf-c); color: var(--on-sf-v); font-size: 13px; font-weight: 500; white-space: nowrap; }
+    .chip[data-sel='true'] { background: var(--pc); color: var(--on-pc); font-weight: 600; }
+    .selector { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 10px 0 14px; border-radius: 12px; background: var(--sf-c); color: var(--on-sf); font-size: 13px; font-weight: 500; white-space: nowrap; box-sizing: border-box; }
+    .selector-prefijo { color: var(--on-sf-v); font-weight: 400; }
+    .segmentado { display: inline-flex; gap: 2px; padding: 4px; border-radius: 14px; background: var(--sf-c); }
+    .segmento { display: flex; align-items: center; justify-content: center; width: 40px; height: 32px; border-radius: 10px; color: var(--on-sf-v); }
+    .segmento[data-sel='true'] { background: var(--sf-highest); color: var(--on-sf); }
+
+    .panel { display: flex; flex-direction: column; min-height: 0; border-radius: 24px; background: var(--sf-c); overflow: hidden; box-sizing: border-box; }
+    .panel-cabecera { display: flex; align-items: center; gap: 8px; height: 60px; padding: 0 12px 0 20px; flex: 0 0 auto; }
+    .panel-titulo { margin: 0; font-size: 16px; font-weight: 600; color: var(--on-sf); }
+    .etiqueta-sec { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-sf-v); }
+
+    .campo { display: flex; align-items: center; gap: 12px; height: 52px; padding: 0 16px; border-radius: 14px; background: var(--sf-high); color: var(--on-sf-v); font-size: 15px; box-sizing: border-box; }
+    .interruptor { position: relative; width: 52px; height: 32px; border-radius: 16px; background: var(--sf-highest); flex: 0 0 auto; }
+    .interruptor::after { content: ''; position: absolute; left: 8px; top: 8px; width: 16px; height: 16px; border-radius: 8px; background: var(--outline); }
+    .interruptor[data-on='true'] { background: var(--p); }
+    .interruptor[data-on='true']::after { left: 24px; top: 4px; width: 24px; height: 24px; border-radius: 12px; background: var(--on-p); }
+
+    .menu { position: absolute; z-index: 5; display: flex; flex-direction: column; border-radius: 20px; background: var(--sf-high); box-shadow: var(--elev-5); overflow: hidden; box-sizing: border-box; }
+    .menu-item { display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 16px; font-size: 14px; color: var(--on-sf); box-sizing: border-box; }
+
+    .estado { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 13px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+    .estado[data-e='listo'] { background: var(--menta-c); color: var(--menta-on); }
+    .estado[data-e='degradado'] { background: var(--melocoton-c); color: var(--melocoton-on); }
+    .estado[data-e='fallo'] { background: var(--rosa-c); color: var(--rosa-on); }
+    .estado[data-e='trabajando'] { background: var(--cielo-c); color: var(--cielo-on); }
+    .punto { width: 6px; height: 6px; border-radius: 3px; background: currentColor; flex: 0 0 auto; }
+  </style>
+</helmet>
+
+<div class="nb raiz" data-tema="{{tema}}" style="width: 1440px; height: 900px;">
+  <nav style="display: flex; flex-direction: column; gap: 2px; height: 100%; padding: 0 12px 16px; box-sizing: border-box;">
+    <div style="display: flex; justify-content: center; padding: 28px 0 28px;">
+      <div style="display: flex; align-items: center; justify-content: center; width: 120px; height: 120px; border-radius: 60px; background: var(--p); box-shadow: var(--elev-3);">
+        <div class="marca-silueta"></div>
+      </div>
+    </div>
+    <div class="destino" data-activo="false">
+      <svg class="ico" viewBox="0 0 24 24" style="width: 24px; height: 24px; "><path d="M3.5 11.2 12 4l8.5 7.2"/><path d="M5.75 9.9V19a1.5 1.5 0 0 0 1.5 1.5h9.5a1.5 1.5 0 0 0 1.5-1.5V9.9"/><path d="M9.75 20.5v-5.75h4.5v5.75"/></svg>
+      <span>Inicio</span>
+    </div>
+    <div class="destino" data-activo="false">
+      <svg class="ico" viewBox="0 0 24 24" style="width: 24px; height: 24px; "><path d="M3.5 4.5h4.25v15H3.5zM9.75 4.5H14v15H9.75z"/><path d="m16.15 5.6 3.7 1.05-3.4 12.85-3.7-1.05z"/></svg>
+      <span>Biblioteca</span><span class="destino-extra">151 mil</span>
+    </div>
+    <div class="destino" data-activo="true">
+      <svg class="ico" viewBox="0 0 24 24" style="width: 24px; height: 24px; "><path d="M5.5 3.5h8l5 5v12h-13z"/><path d="M13.5 3.5v5h5"/><path d="M8.5 13.5h7M8.5 17h4.5"/></svg>
+      <span>Estudio</span>
+    </div>
+    <div class="destino" data-activo="false">
+      <svg class="ico" viewBox="0 0 24 24" style="width: 24px; height: 24px; "><circle cx="12" cy="12" r="8.5"/><path d="m15.4 8.6-2.1 4.7-4.7 2.1 2.1-4.7z"/></svg>
+      <span>Descubrir</span><span class="destino-extra" style="display: flex; align-items: center; gap: 6px;"><span style="width: 6px; height: 6px; border-radius: 3px; background: var(--menta);"></span>En línea</span>
+    </div>
+
+    <div style="flex: 1 1 auto;"></div>
+
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px;">
+    <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 20px; background: var(--sf-c);">
+      <div class="portada" style="width: 34px; padding: 0px; --fondo: #4b2339; --alto: #653950; --orn: #fcb0d5; --tit: #ffe8f0; --aut: #ebb0cc; border-radius: 6px; box-shadow: none; color: transparent;"><div class="portada-titulo" style="font-size: 1px;">Cien Años de Soledad</div></div>
+      <div style="display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 1 1 auto;">
+        <span style="font-size: 12px; color: var(--on-sf-v);">Leyendo</span>
+        <span class="serif una-linea" style="font-size: 14px; font-weight: 600;">Cien Años de Soledad</span>
+        <div class="progreso"><span style="width: 38%;"></span></div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 20px; background: var(--sf-c);">
+      <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--on-sf);">
+        <svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px; color: var(--p);"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 8.5 8.5"/><path d="M12 7.5V12l3 2"/></svg>
+        <span>Índice de Búsqueda</span>
+        <span style="margin-left: auto; font-weight: 600; color: var(--p);">14 %</span>
+      </div>
+      <div class="progreso" style="height: 6px; border-radius: 3px;"><span style="width: 14%; border-radius: 3px;"></span></div>
+      <span style="font-size: 12px; color: var(--on-sf-v);">20.687 de 151.411 obras</span>
+    </div>
+    </div>
+
+    <div class="destino" data-activo="false">
+      <svg class="ico" viewBox="0 0 24 24" style="width: 24px; height: 24px; "><circle cx="12" cy="12" r="3.25"/><path d="M12 2.5v2.25M12 19.25v2.25M21.5 12h-2.25M4.75 12H2.5M18.72 5.28l-1.6 1.6M6.88 17.12l-1.6 1.6M18.72 18.72l-1.6-1.6M6.88 6.88l-1.6-1.6"/></svg>
+      <span>Ajustes</span>
+    </div>
+  </nav>
+  <div class="columna">
+    <header style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px 0 4px; box-sizing: border-box;">
+      <div class="boton-icono" style="width: 48px; height: 48px; border-radius: 24px;"><svg class="ico" viewBox="0 0 24 24" style="width: 24px; height: 24px; "><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg></div>
+      <div style="display: flex; align-items: center; gap: 16px; flex: 0 1 640px; min-width: 0; height: 56px; padding: 0 8px 0 20px; border-radius: 28px; background: var(--sf-high); color: var(--on-sf-v); box-sizing: border-box;">
+        <svg class="ico" viewBox="0 0 24 24" style="width: 24px; height: 24px; "><circle cx="10.75" cy="10.75" r="6.75"/><path d="m15.55 15.55 4.95 4.95"/></svg>
+        <span style="flex: 1 1 auto; min-width: 0; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Busca entre 151.411 obras, autores o una frase</span>
+        <div class="boton-icono"><svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px; "><path d="M3.5 4.5h17l-6.75 8v6.25l-3.5-2.25V12.5z"/></svg></div>
+      </div>
+      <div style="flex: 1 1 auto;"></div>
+      <div style="display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 14px 0 16px; border-radius: 24px; background: var(--sf-high); color: var(--on-sf); font-size: 14px; font-weight: 600; white-space: nowrap;  flex: 0 0 auto;">
+        <svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px; "><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.25l2 2.5H19A1.5 1.5 0 0 1 20.5 9v9a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18z"/></svg>
+        <span>Colecciones</span>
+        <svg class="ico" viewBox="0 0 24 24" style="width: 18px; height: 18px; "><path d="m5.5 8.75 6.5 6.5 6.5-6.5"/></svg>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 14px 0 16px; border-radius: 24px; background: var(--pc); color: var(--on-pc); font-size: 14px; font-weight: 600; white-space: nowrap; box-shadow: var(--elev-1); flex: 0 0 auto;">
+        <svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px; "><path d="M12 3.5v10.5M8 10.25l4 4 4-4"/><path d="M3.5 16.5v2.5a1.5 1.5 0 0 0 1.5 1.5h14a1.5 1.5 0 0 0 1.5-1.5v-2.5"/></svg>
+        <span>Importar</span>
+        <svg class="ico" viewBox="0 0 24 24" style="width: 18px; height: 18px; "><path d="m5.5 8.75 6.5 6.5 6.5-6.5"/></svg>
+      </div>
+    </header>
+    <main class="lienzo">
+      <div style="display: flex; flex-direction: column; height: 100%;">
+        <div style="display: flex; align-items: flex-end; gap: 4px; padding: 8px 24px 0;">
+          <div style="position: relative; display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 18px; color: var(--p); font-size: 14px; font-weight: 600;"><svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px; "><path d="M4.5 4.5h15v9.75l-5.25 5.25H4.5z"/><path d="M19.5 14.25h-5.25v5.25"/><path d="M8.5 9.5h7"/></svg><span>Notas</span><span style="display: flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 10px; background: var(--pc); color: var(--on-pc); font-size: 12px; font-weight: 600;">128</span><span style="position: absolute; left: 14px; right: 14px; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; background: var(--p);"></span></div><div style="position: relative; display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 18px; color: var(--on-sf-v); font-size: 14px; font-weight: 500;"><svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px; "><path d="M3.5 5.5h17v10h-9.5l-4.5 4v-4h-3z"/><path d="M8 10.5h8"/></svg><span>Anotaciones</span><span style="display: flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 10px; background: var(--sf-c); color: var(--on-sf-v); font-size: 12px; font-weight: 600;">2.311</span></div><div style="position: relative; display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 18px; color: var(--on-sf-v); font-size: 14px; font-weight: 500;"><svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px; "><rect x="3.5" y="4.5" width="13.5" height="11" rx="2"/><path d="M20.5 8v9.5a2 2 0 0 1-2 2H7"/><path d="M7.5 12.75 10 7.75l2.5 5M8.4 11.2h3.2"/></svg><span>Vocabulario</span><span style="display: flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 10px; background: var(--sf-c); color: var(--on-sf-v); font-size: 12px; font-weight: 600;">406</span></div><div style="position: relative; display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 18px; color: var(--on-sf-v); font-size: 14px; font-weight: 500;"><svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px; "><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="13" width="7.5" height="7.5" rx="1.5"/></svg><span>Tableros</span><span style="display: flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 10px; background: var(--sf-c); color: var(--on-sf-v); font-size: 12px; font-weight: 600;">7</span></div>
+        </div>
+
+        <div style="display: flex; gap: 16px; flex: 1 1 auto; min-height: 0; padding: 16px;">
+          <div style="display: flex; flex-direction: column; gap: 12px; width: 300px; flex: 0 0 300px; min-height: 0;">
+            <div style="display: flex; align-items: center; gap: 8px; padding: 0 4px 0 16px;">
+              <span style="font-size: 13px; color: var(--on-sf-v);">128 notas</span>
+              <div style="flex: 1 1 auto;"></div>
+              <span class="boton-tonal" style="height: 40px; padding: 0 16px;"><svg class="ico" viewBox="0 0 24 24" style="width: 18px; height: 18px; "><path d="M12 3.5v17M3.5 12h17"/></svg>Nota Nueva</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 2px; min-height: 0; overflow: hidden;">
+            <div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 16px; background: var(--sf-high);">
+              <span class="serif una-linea" style="font-size: 15px; font-weight: 600;">La parodia como método en el Quijote</span>
+              <span class="dos-lineas" style="font-size: 13px; line-height: 1.45; color: var(--on-sf-v);">Cervantes no se burla de los libros de caballerías desde fuera: los imita con tanta exactitud que la distancia aparece sola.</span>
+              <span style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--on-sf-v);">Hace 2 días<span style="display: flex; align-items: center; gap: 4px;"><svg class="ico" viewBox="0 0 24 24" style="width: 13px; height: 13px; "><path d="M10 14.25a4.5 4.5 0 0 0 6.4 0l2.9-2.9a4.5 4.5 0 0 0-6.4-6.4L11.4 6.45"/><path d="M14 9.75a4.5 4.5 0 0 0-6.4 0l-2.9 2.9a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></svg>3</span></span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 16px; ">
+              <span class="serif una-linea" style="font-size: 15px; font-weight: 600;">Lectores dentro de la novela</span>
+              <span class="dos-lineas" style="font-size: 13px; line-height: 1.45; color: var(--on-sf-v);">El cura, el barbero y el ventero leen, y cada uno lee distinto: la novela está llena de lectores.</span>
+              <span style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--on-sf-v);">Hace 4 días<span style="display: flex; align-items: center; gap: 4px;"><svg class="ico" viewBox="0 0 24 24" style="width: 13px; height: 13px; "><path d="M10 14.25a4.5 4.5 0 0 0 6.4 0l2.9-2.9a4.5 4.5 0 0 0-6.4-6.4L11.4 6.45"/><path d="M14 9.75a4.5 4.5 0 0 0-6.4 0l-2.9 2.9a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></svg>2</span></span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 16px; ">
+              <span class="serif una-linea" style="font-size: 15px; font-weight: 600;">El narrador poco fiable</span>
+              <span class="dos-lineas" style="font-size: 13px; line-height: 1.45; color: var(--on-sf-v);">Cide Hamete Benengeli traduce, resume y a veces miente. ¿Quién cuenta de verdad la historia?</span>
+              <span style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--on-sf-v);">La semana pasada<span style="display: flex; align-items: center; gap: 4px;"><svg class="ico" viewBox="0 0 24 24" style="width: 13px; height: 13px; "><path d="M10 14.25a4.5 4.5 0 0 0 6.4 0l2.9-2.9a4.5 4.5 0 0 0-6.4-6.4L11.4 6.45"/><path d="M14 9.75a4.5 4.5 0 0 0-6.4 0l-2.9 2.9a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></svg>1</span></span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 16px; ">
+              <span class="serif una-linea" style="font-size: 15px; font-weight: 600;">Metaficción antes de la palabra</span>
+              <span class="dos-lineas" style="font-size: 13px; line-height: 1.45; color: var(--on-sf-v);">La segunda parte sabe que existe la primera y la comenta. Eso ocurre en 1615.</span>
+              <span style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--on-sf-v);">La semana pasada<span style="display: flex; align-items: center; gap: 4px;"><svg class="ico" viewBox="0 0 24 24" style="width: 13px; height: 13px; "><path d="M10 14.25a4.5 4.5 0 0 0 6.4 0l2.9-2.9a4.5 4.5 0 0 0-6.4-6.4L11.4 6.45"/><path d="M14 9.75a4.5 4.5 0 0 0-6.4 0l-2.9 2.9a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></svg>2</span></span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 16px; ">
+              <span class="serif una-linea" style="font-size: 15px; font-weight: 600;">Cervantes y los libros de caballerías</span>
+              <span class="dos-lineas" style="font-size: 13px; line-height: 1.45; color: var(--on-sf-v);">Amadís, Tirante el Blanco y el escrutinio de la biblioteca: qué se salva y por qué.</span>
+              <span style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--on-sf-v);">Hace 2 semanas<span style="display: flex; align-items: center; gap: 4px;"><svg class="ico" viewBox="0 0 24 24" style="width: 13px; height: 13px; "><path d="M10 14.25a4.5 4.5 0 0 0 6.4 0l2.9-2.9a4.5 4.5 0 0 0-6.4-6.4L11.4 6.45"/><path d="M14 9.75a4.5 4.5 0 0 0-6.4 0l-2.9 2.9a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></svg>4</span></span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 16px; ">
+              <span class="serif una-linea" style="font-size: 15px; font-weight: 600;">Preguntas para la tesis</span>
+              <span class="dos-lineas" style="font-size: 13px; line-height: 1.45; color: var(--on-sf-v);">Tres preguntas abiertas antes de la reunión del jueves con la directora.</span>
+              <span style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--on-sf-v);">Hace 3 semanas<span style="display: flex; align-items: center; gap: 4px;"><svg class="ico" viewBox="0 0 24 24" style="width: 13px; height: 13px; "><path d="M10 14.25a4.5 4.5 0 0 0 6.4 0l2.9-2.9a4.5 4.5 0 0 0-6.4-6.4L11.4 6.45"/><path d="M14 9.75a4.5 4.5 0 0 0-6.4 0l-2.9 2.9a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></svg>5</span></span>
+            </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 22px; flex: 1 1 auto; min-width: 0; padding: 24px 36px; border-radius: 24px; background: var(--sf); overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--on-sf-v);">
+              <span style="white-space: nowrap;">Editada hace 2 días</span>
+              <span class="boton-enlace" style="white-space: nowrap;">Versiones</span>
+              <div style="flex: 1 1 auto;"></div>
+              <span class="boton-enlace" style="color: var(--on-sf-v);">Borrar</span>
+              <span class="boton-relleno">Guardar</span>
+            </div>
+            <h1 class="serif" style="margin: 0; font-size: 34px; font-weight: 600; line-height: 1.15; letter-spacing: -0.015em;">La parodia como método en el Quijote</h1>
+            <div style="display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.8; color: var(--on-sf);">
+              <p style="margin: 0;">Cervantes no se burla de los libros de caballerías desde fuera: los imita con tanta exactitud que la distancia aparece sola. El hidalgo es contemporáneo del lector, y por eso <span style="display: inline-flex; align-items: center; gap: 4px; padding: 0 6px; border-radius: 6px; background: color-mix(in srgb, var(--p) 16%, transparent); color: var(--p); font-weight: 500; white-space: nowrap;"><svg class="ico" viewBox="0 0 24 24" style="width: 14px; height: 14px; "><path d="M10 14.25a4.5 4.5 0 0 0 6.4 0l2.9-2.9a4.5 4.5 0 0 0-6.4-6.4L11.4 6.45"/><path d="M14 9.75a4.5 4.5 0 0 0-6.4 0l-2.9 2.9a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></svg>Lectores dentro de la novela</span> funciona como espejo.</p>
+              <p style="margin: 0;">La hipótesis para el capítulo dos es que la parodia es un método de lectura y no solo un género. Ver <span style="display: inline-flex; align-items: center; gap: 4px; padding: 0 6px; border-radius: 6px; background: color-mix(in srgb, var(--p) 16%, transparent); color: var(--p); font-weight: 500; white-space: nowrap;"><svg class="ico" viewBox="0 0 24 24" style="width: 14px; height: 14px; "><path d="M10 14.25a4.5 4.5 0 0 0 6.4 0l2.9-2.9a4.5 4.5 0 0 0-6.4-6.4L11.4 6.45"/><path d="M14 9.75a4.5 4.5 0 0 0-6.4 0l-2.9 2.9a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></svg>El narrador poco fiable</span> y <span style="display: inline-flex; align-items: center; gap: 4px; padding: 0 6px; border-radius: 6px; background: color-mix(in srgb, var(--p) 16%, transparent); color: var(--p); font-weight: 500; white-space: nowrap;"><svg class="ico" viewBox="0 0 24 24" style="width: 14px; height: 14px; "><path d="M10 14.25a4.5 4.5 0 0 0 6.4 0l2.9-2.9a4.5 4.5 0 0 0-6.4-6.4L11.4 6.45"/><path d="M14 9.75a4.5 4.5 0 0 0-6.4 0l-2.9 2.9a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></svg>Metaficción antes de la palabra</span>.</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <span class="etiqueta-sec">Pasajes que Cita</span>
+                <div style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 8px 14px 16px; border-radius: 16px; background: var(--sf-c);">
+                  <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 auto;">
+                    <span class="serif" style="font-size: 16px; font-style: italic; line-height: 1.5;">«no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero»</span>
+                    <span style="font-size: 12px; color: var(--on-sf-v);">Don Quijote de la Mancha · Capítulo I · Pág. 2</span>
+                  </div>
+                  <span class="boton-icono"><svg class="ico" viewBox="0 0 24 24" style="width: 18px; height: 18px; "><path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/></svg></span>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 8px 14px 16px; border-radius: 16px; background: var(--sf-c);">
+                  <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 auto;">
+                    <span class="serif" style="font-size: 16px; font-style: italic; line-height: 1.5;">«se daba a leer libros de caballerías, con tanta afición y gusto»</span>
+                    <span style="font-size: 12px; color: var(--on-sf-v);">Don Quijote de la Mancha · Capítulo I · Pág. 4</span>
+                  </div>
+                  <span class="boton-icono"><svg class="ico" viewBox="0 0 24 24" style="width: 18px; height: 18px; "><path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/></svg></span>
+                </div>
+            </div>
+            <span style="font-size: 12px; color: var(--on-sf-v);">Escribe [[Título]] para enlazar con otra nota.</span>
+          </div>
+
+          <aside class="panel" style="width: 300px; flex: 0 0 300px;">
+            <div class="panel-cabecera">
+              <svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px; color: var(--p);"><path d="M20.5 12H8.5"/><path d="m14 6.5-5.5 5.5 5.5 5.5"/><path d="M3.5 4.5v15"/></svg>
+              <h2 class="panel-titulo">Apuntan Aquí</h2>
+              <span style="font-size: 13px; color: var(--on-sf-v);">2</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 16px 16px;">
+            <div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 16px; background: var(--sf-high);">
+              <span class="serif una-linea" style="font-size: 14px; font-weight: 600;">Preguntas para la tesis</span>
+              <span style="font-size: 13px; line-height: 1.6; color: var(--on-sf-v);">…antes del jueves, revisar si <span style="display: inline-flex; align-items: center; gap: 4px; padding: 0 6px; border-radius: 6px; background: color-mix(in srgb, var(--p) 16%, transparent); color: var(--p); font-weight: 500; white-space: nowrap;"><svg class="ico" viewBox="0 0 24 24" style="width: 14px; height: 14px; "><path d="M10 14.25a4.5 4.5 0 0 0 6.4 0l2.9-2.9a4.5 4.5 0 0 0-6.4-6.4L11.4 6.45"/><path d="M14 9.75a4.5 4.5 0 0 0-6.4 0l-2.9 2.9a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></svg>La parodia como método en el Quijote</span> aguanta el capítulo dos entero…</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 16px; background: var(--sf-high);">
+              <span class="serif una-linea" style="font-size: 14px; font-weight: 600;">Cervantes y los libros de caballerías</span>
+              <span style="font-size: 13px; line-height: 1.6; color: var(--on-sf-v);">…el escrutinio de la biblioteca es la prueba de que <span style="display: inline-flex; align-items: center; gap: 4px; padding: 0 6px; border-radius: 6px; background: color-mix(in srgb, var(--p) 16%, transparent); color: var(--p); font-weight: 500; white-space: nowrap;"><svg class="ico" viewBox="0 0 24 24" style="width: 14px; height: 14px; "><path d="M10 14.25a4.5 4.5 0 0 0 6.4 0l2.9-2.9a4.5 4.5 0 0 0-6.4-6.4L11.4 6.45"/><path d="M14 9.75a4.5 4.5 0 0 0-6.4 0l-2.9 2.9a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></svg>La parodia como método en el Quijote</span> no es una exageración…</span>
+            </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"tema":{"editor":"enum","options":["grafito","gabinete","tinta","vigilia","musgo"],"default":"grafito","section":"Tema"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { tema: this.props.tema ?? 'grafito' };
+  }
+}
+</script>
+</body>
+</html>

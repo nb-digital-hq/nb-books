@@ -1,0 +1,8 @@
+# Fija la cadena de herramientas de Rust para que la compilación sea reproducible
+# en cualquier máquina y en CI. Ver docs/developer/deployment/packaging.md
+[toolchain]
+channel = "1.98.0"
+components = ["rustfmt", "clippy"]
+profile = "minimal"
+# Las extensiones del banco y las propias se compilan a WebAssembly en las pruebas.
+targets = ["wasm32-wasip1", "wasm32-wasip2"]

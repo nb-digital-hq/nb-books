@@ -1,0 +1,29 @@
+{
+  "id": "lat.nbdigitallabs.books.banco.usa-el-mundo",
+  "name": "Usa el mundo",
+  "version": "1.0.0",
+  "type": "core",
+  "apiVersion": "1.0",
+  "license": "Apache-2.0",
+  "capabilities": ["network:fetch"],
+  "permissions": {
+    "network:fetch": {
+      "urls": ["https://datos.ejemplo.org/api/*"]
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "id": "usa-el-mundo.consultar",
+        "title": "Consultar la Fuente de Prueba",
+        "category": "Metadatos"
+      }
+    ],
+    "contextMenus": {
+      "library/document": ["usa-el-mundo.consultar"]
+    },
+    "providers": {
+      "command": "usa_el_mundo.wasm"
+    }
+  }
+}

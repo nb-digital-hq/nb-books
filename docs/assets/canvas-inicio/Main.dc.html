@@ -1,0 +1,492 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&display=swap">
+  <style>
+    /*
+     * Temas por semilla, como en Material, con los nombres de la aplicación. El de
+     * partida es Grafito: semilla #D97757 y los grises sin matiz, porque Material
+     * tiñe de la semilla hasta los fondos y aquí el color va solo en el acento.
+     * Los valores salen de src/paletas.css, que los deriva el generador de la
+     * aplicación, así que el lienzo y la aplicación pintan lo mismo. Medido con
+     * Grafito: 14,3:1 de texto sobre fondo.
+     */
+    .nb {
+      --lavanda: #c6c0ff; --lavanda-c: #39346b; --lavanda-on: #e4dfff;
+      --cielo: #98ccf9; --cielo-c: #003f61; --cielo-on: #cce5ff;
+      --menta: #8ed5b1; --menta-c: #00452d; --menta-on: #a9f2cc; --menta-oscuro: #003824;
+      --melocoton: #ffb783; --melocoton-c: #5f2e01; --melocoton-on: #ffdcc5;
+      --rosa: #fcb0d5; --rosa-c: #5f2847; --rosa-on: #ffd8e8;
+      --limon: #d9c76f; --limon-c: #453b00; --limon-on: #f6e388;
+      --elev-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+      --elev-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.3);
+      --elev-5: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 12px 24px -8px rgba(0, 0, 0, 0.45);
+    }
+
+    /* El tema es una palanca: cambia la semilla de toda la pantalla. */
+    .nb, .nb[data-tema='grafito'] {
+      --p: #ffb59e; --on-p: #55200d; --pc: #723521; --on-pc: #ffdbd0;
+      --sf: #131313; --sf-lowest: #0e0e0e; --sf-low: #1b1b1b; --sf-c: #1f1f1f; --sf-high: #2a2a2a; --sf-highest: #353535;
+      --on-sf: #e2e2e2; --on-sf-v: #c6c6c6; --outline: #919191; --outline-v: #474747;
+    }
+    .nb[data-tema='gabinete'] {
+      --p: #efbf6d; --on-p: #422c00; --pc: #5f4100; --on-pc: #ffdeaa;
+      --sf: #17130b; --sf-lowest: #120e07; --sf-low: #201b13; --sf-c: #241f17; --sf-high: #2f2921; --sf-highest: #3a342b;
+      --on-sf: #ece1d4; --on-sf-v: #d2c5b4; --outline: #9a8f80; --outline-v: #4e4539;
+    }
+    .nb[data-tema='tinta'] {
+      --p: #84d6c2; --on-p: #00382e; --pc: #005144; --on-pc: #a0f2dd;
+      --sf: #0e1513; --sf-lowest: #090f0e; --sf-low: #171d1b; --sf-c: #1b211f; --sf-high: #252b29; --sf-highest: #303634;
+      --on-sf: #dee4e0; --on-sf-v: #bfc9c4; --outline: #89938f; --outline-v: #3f4946;
+    }
+    .nb[data-tema='vigilia'] {
+      --p: #abc7ff; --on-p: #0d2f5f; --pc: #294677; --on-pc: #d7e2ff;
+      --sf: #111318; --sf-lowest: #0c0e13; --sf-low: #1a1c20; --sf-c: #1e2025; --sf-high: #282a2f; --sf-highest: #33353a;
+      --on-sf: #e2e2e9; --on-sf-v: #c4c6d0; --outline: #8e9099; --outline-v: #44474e;
+    }
+    .nb[data-tema='musgo'] {
+      --p: #91d5ad; --on-p: #003822; --pc: #035233; --on-pc: #acf2c8;
+      --sf: #0f1511; --sf-lowest: #0a0f0c; --sf-low: #171d19; --sf-c: #1b211d; --sf-high: #262b27; --sf-highest: #303632;
+      --on-sf: #dfe4dd; --on-sf-v: #c0c9c0; --outline: #8a938b; --outline-v: #404943;
+    }
+
+    body { margin: 0; background: #171211; -webkit-font-smoothing: antialiased; }
+    a { color: #ffb59e; text-decoration: none; }
+    a:hover { color: #ffdbd0; }
+
+    .nb { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+    .serif { font-family: Literata, Georgia, 'Times New Roman', serif; }
+    .ico { width: 24px; height: 24px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* --- Barra lateral ------------------------------------------------- */
+    .destino {
+      display: flex; align-items: center; gap: 12px;
+      height: 52px; padding: 0 16px; border-radius: 26px;
+      color: var(--on-sf-v); font-size: 14px; font-weight: 500;
+    }
+    .destino[data-activo='true'] { background: var(--pc); color: var(--on-pc); font-weight: 600; }
+    .destino-extra { margin-left: auto; font-size: 12px; font-weight: 500; color: var(--on-sf-v); }
+    /* --- Filas ----------------------------------------------------------- */
+    .fila-cabecera { display: flex; align-items: center; gap: 12px; height: 40px; }
+    .fila-titulo { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: var(--on-sf); }
+    .fila-sub { font-size: 14px; color: var(--on-sf-v); }
+    .boton-texto {
+      display: flex; align-items: center; gap: 4px; height: 40px; padding: 0 12px;
+      border-radius: 20px; color: var(--p); font-size: 14px; font-weight: 600;
+    }
+    .boton-flecha {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 20px;
+      background: var(--sf-high); color: var(--on-sf);
+    }
+    .boton-flecha .ico { width: 20px; height: 20px; }
+    .pista { position: relative; margin-right: -56px; }
+    .pista-carril { display: flex; gap: 16px; overflow: hidden; padding: 4px 56px 24px 0; }
+    /* Cortar la última tarjeta es lo que dice que hay más. La niebla no es un borde. */
+    .pista-niebla {
+      position: absolute; top: 0; right: 0; bottom: 0; width: 140px; pointer-events: none;
+      background: linear-gradient(90deg, transparent, var(--sf-low) 92%);
+    }
+
+    /* --- Portada generada ------------------------------------------------ */
+    .portada {
+      position: relative; flex: 0 0 auto; overflow: hidden;
+      aspect-ratio: 2 / 3; border-radius: 12px;
+      background: radial-gradient(140% 90% at 25% 10%, var(--alto) 0%, var(--fondo) 62%);
+      box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.55);
+      display: flex; flex-direction: column; justify-content: space-between;
+      box-sizing: border-box; padding: 16px;
+    }
+    .portada::before {
+      content: ''; position: absolute; width: 78%; aspect-ratio: 1; right: -28%; top: -14%;
+      border-radius: 50%; border: 1.5px solid var(--orn); opacity: 0.45;
+    }
+    .portada::after {
+      content: ''; position: absolute; width: 46%; aspect-ratio: 1; right: -2%; top: 6%;
+      border-radius: 50%; background: var(--orn); opacity: 0.12;
+    }
+    .portada-titulo {
+      position: relative; font-family: Literata, Georgia, serif; font-weight: 600;
+      line-height: 1.15; letter-spacing: -0.01em; color: var(--tit); text-wrap: balance;
+    }
+    .portada-pie { position: relative; display: flex; flex-direction: column; gap: 8px; }
+    .portada-filete { width: 28px; height: 2px; border-radius: 1px; background: var(--orn); }
+    .portada-autor { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--aut); }
+
+    .marca-silueta {
+      width: 74px; height: 74px; background: var(--on-p);
+      -webkit-mask-image: url(./logo.png); mask-image: url(./logo.png);
+      -webkit-mask-size: contain; mask-size: contain;
+      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+      -webkit-mask-position: center; mask-position: center;
+    }
+
+    .progreso { height: 4px; border-radius: 2px; background: var(--sf-highest); overflow: hidden; }
+    .progreso > span { display: block; height: 100%; border-radius: 2px; background: var(--p); }
+  </style>
+</helmet>
+
+<div class="nb" data-tema="{{tema}}" style="display: grid; grid-template-columns: 256px minmax(0, 1fr); width: 1440px; min-height: 2380px; background: var(--sf); color: var(--on-sf);">
+
+  <!--
+    Barra lateral, con el orden de la aplicación: la marca preside, los destinos
+    debajo, y al final las tarjetas dinámicas y Ajustes al pie. Sin borde: se
+    separa del lienzo por el tono, no por una línea.
+  -->
+  <nav style="position: sticky; top: 0; height: 900px; display: flex; flex-direction: column; gap: 2px; padding: 0 12px 16px; box-sizing: border-box;">
+    <div style="display: flex; justify-content: center; padding: 28px 0 28px;">
+      <div style="display: flex; align-items: center; justify-content: center; width: 120px; height: 120px; border-radius: 60px; background: var(--p); box-shadow: var(--elev-3);">
+        <div class="marca-silueta"></div>
+      </div>
+    </div>
+
+    <div class="destino" data-activo="true">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M3.5 11.2 12 4l8.5 7.2"/><path d="M5.75 9.9V19a1.5 1.5 0 0 0 1.5 1.5h9.5a1.5 1.5 0 0 0 1.5-1.5V9.9"/><path d="M9.75 20.5v-5.75h4.5v5.75"/></svg>
+      <span>Inicio</span>
+    </div>
+    <div class="destino">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M3.5 4.5h4.25v15H3.5zM9.75 4.5H14v15H9.75z"/><path d="m16.15 5.6 3.7 1.05-3.4 12.85-3.7-1.05z"/></svg>
+      <span>Biblioteca</span>
+      <span class="destino-extra">151 mil</span>
+    </div>
+    <div class="destino">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M5.5 3.5h8l5 5v12h-13z"/><path d="M13.5 3.5v5h5"/><path d="M8.5 13.5h7M8.5 17h4.5"/></svg>
+      <span>Estudio</span>
+    </div>
+    <div class="destino">
+      <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m15.4 8.6-2.1 4.7-4.7 2.1 2.1-4.7z"/></svg>
+      <span>Descubrir</span>
+      <span class="destino-extra" style="display: flex; align-items: center; gap: 6px;"><span style="width: 6px; height: 6px; border-radius: 3px; background: var(--menta);"></span>En línea</span>
+    </div>
+
+    <div style="flex: 1 1 auto;"></div>
+
+    <!--
+      Tarjetas dinámicas: hoy, el índice de búsqueda. Lo que se añada después
+      entra aquí con la misma forma, y se va cuando no tiene nada que decir.
+    -->
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; padding: 16px; border-radius: 20px; background: var(--sf-c);">
+      <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--on-sf);">
+        <svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px; color: var(--p);"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 8.5 8.5"/><path d="M12 7.5V12l3 2"/></svg>
+        <span>Índice de Búsqueda</span>
+        <span style="margin-left: auto; font-weight: 600; color: var(--p);">14 %</span>
+      </div>
+      <div class="progreso" style="height: 6px; border-radius: 3px;"><span style="width: 14%; border-radius: 3px;"></span></div>
+      <span style="font-size: 12px; color: var(--on-sf-v);">20.687 de 151.411 obras</span>
+    </div>
+
+    <div class="destino">
+      <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.25"/><path d="M12 2.5v2.25M12 19.25v2.25M21.5 12h-2.25M4.75 12H2.5M18.72 5.28l-1.6 1.6M6.88 17.12l-1.6 1.6M18.72 18.72l-1.6-1.6M6.88 6.88l-1.6-1.6"/></svg>
+      <span>Ajustes</span>
+    </div>
+  </nav>
+
+  <div style="display: flex; flex-direction: column; min-width: 0;">
+
+    <!--
+      Barra superior. Plegar la barra lateral y buscar, como en la aplicación, y
+      dos botones que abren un menú: Colecciones e Importar, de la misma clase que
+      Estanterías en la Biblioteca. El estado del runtime ya no vive aquí: pasa a
+      Ajustes, a un apartado Acerca de.
+    -->
+    <header style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px 0 4px; box-sizing: border-box;">
+      <div style="display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 24px; color: var(--on-sf-v); flex: 0 0 auto;">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg>
+      </div>
+      <div style="display: flex; align-items: center; gap: 16px; flex: 0 1 640px; min-width: 0; height: 56px; padding: 0 8px 0 20px; border-radius: 28px; background: var(--sf-high); color: var(--on-sf-v); box-sizing: border-box;">
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="10.75" cy="10.75" r="6.75"/><path d="m15.55 15.55 4.95 4.95"/></svg>
+        <span style="flex: 1 1 auto; min-width: 0; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Busca entre 151.411 obras, autores o una frase</span>
+        <div style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 20px; flex: 0 0 auto;">
+          <svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px;"><path d="M3.5 4.5h17l-6.75 8v6.25l-3.5-2.25V12.5z"/></svg>
+        </div>
+      </div>
+      <div style="flex: 1 1 auto;"></div>
+      <div style="display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 14px 0 16px; border-radius: 24px; background: var(--sf-high); color: var(--on-sf); font-size: 14px; font-weight: 600; white-space: nowrap; flex: 0 0 auto;">
+        <svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px;"><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.25l2 2.5H19A1.5 1.5 0 0 1 20.5 9v9a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18z"/></svg>
+        <span>Colecciones</span>
+        <svg class="ico" viewBox="0 0 24 24" style="width: 18px; height: 18px; color: var(--on-sf-v);"><path d="m5.5 8.75 6.5 6.5 6.5-6.5"/></svg>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 14px 0 16px; border-radius: 24px; background: var(--pc); color: var(--on-pc); font-size: 14px; font-weight: 600; white-space: nowrap; box-shadow: var(--elev-1); flex: 0 0 auto;">
+        <svg class="ico" viewBox="0 0 24 24" style="width: 20px; height: 20px;"><path d="M12 3.5v10.5M8 10.25l4 4 4-4"/><path d="M3.5 16.5v2.5a1.5 1.5 0 0 0 1.5 1.5h14a1.5 1.5 0 0 0 1.5-1.5v-2.5"/></svg>
+        <span>Importar</span>
+        <svg class="ico" viewBox="0 0 24 24" style="width: 18px; height: 18px;"><path d="m5.5 8.75 6.5 6.5 6.5-6.5"/></svg>
+      </div>
+    </header>
+
+    <!-- El lienzo: una sola superficie redondeada, un tono por encima del fondo. -->
+    <main style="position: relative; margin: 0 16px 16px 0; border-radius: 28px; background: var(--sf-low); overflow: hidden;">
+
+      <!-- Marquesina -->
+      <section style="position: relative; min-height: 540px; overflow: hidden;">
+        <div style="position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, var(--sf-low) 100%), radial-gradient(900px 560px at 80% 28%, color-mix(in srgb, var(--p) 22%, transparent), transparent 70%), radial-gradient(760px 420px at 10% 95%, color-mix(in srgb, var(--p) 9%, transparent), transparent 70%);"></div>
+
+        <div style="position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 32px; align-items: center; min-height: 540px; padding: 36px 56px 44px; box-sizing: border-box;">
+          <div style="display: flex; flex-direction: column; min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px 0 10px; border-radius: 8px; background: color-mix(in srgb, var(--p) 16%, transparent); color: var(--p); font-size: 13px; font-weight: 600;">
+                <svg class="ico" viewBox="0 0 24 24" style="width: 18px; height: 18px;"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 8.5 8.5"/><path d="M12 7.5V12l3 2"/></svg>
+                Retomar la lectura
+              </span>
+              <span style="font-size: 13px; color: var(--on-sf-v);">hace 2 horas</span>
+            </div>
+
+            <h1 class="serif" style="margin: 18px 0 12px; font-size: 56px; font-weight: 600; line-height: 1.02; letter-spacing: -0.025em; text-wrap: balance;">Cien Años de Soledad</h1>
+
+            <div style="display: flex; flex-wrap: wrap; align-items: center; column-gap: 10px; row-gap: 8px; font-size: 16px; font-weight: 500; color: var(--on-sf-v); white-space: nowrap;">
+              <span>Gabriel García Márquez</span>
+              <span style="width: 4px; height: 4px; border-radius: 2px; background: var(--outline);"></span>
+              <span>1967</span>
+              <span style="width: 4px; height: 4px; border-radius: 2px; background: var(--outline);"></span>
+              <span>Capítulo XI de XX</span>
+              <span style="display: flex; align-items: center; height: 26px; margin-left: 4px; padding: 0 10px; border-radius: 6px; white-space: nowrap; background: var(--melocoton-c); color: var(--melocoton-on); font-size: 12px; font-weight: 600;">Realismo Mágico</span>
+            </div>
+
+            <div style="position: relative; margin: 22px 0 22px; max-width: 580px; padding-left: 34px;">
+              <span class="serif" style="position: absolute; left: -2px; top: -18px; font-size: 64px; line-height: 1; color: var(--p);">“</span>
+              <p class="serif" style="margin: 0; font-size: 20px; font-style: italic; line-height: 1.5; color: var(--on-sf); text-wrap: pretty;">Muchos años después, frente al pelotón de fusilamiento, el coronel Aureliano Buendía había de recordar aquella tarde remota…</p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px; max-width: 520px;">
+              <div style="height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--on-sf) 12%, transparent); overflow: hidden;"><span style="display: block; width: 38%; height: 100%; border-radius: 3px; background: var(--p);"></span></div>
+              <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--on-sf-v);">
+                <span><strong style="font-weight: 600; color: var(--on-sf);">38 %</strong> leído</span>
+                <span>quedan unas 4 h</span>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 12px; margin-top: 24px;">
+              <div style="display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 28px 0 22px; border-radius: 28px; background: var(--p); color: var(--on-p); font-size: 15px; font-weight: 600; box-shadow: var(--elev-1);">
+                <svg class="ico" viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: currentColor;"><path d="M7.5 4.75 19.5 12l-12 7.25z"/></svg>
+                <span>Continuar leyendo</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 24px 0 20px; border-radius: 28px; background: color-mix(in srgb, var(--on-sf) 10%, transparent); color: var(--on-sf); font-size: 15px; font-weight: 600;">
+                <svg class="ico" viewBox="0 0 24 24" style="width: 22px; height: 22px;"><circle cx="12" cy="12" r="8.5"/><path d="M12 11.25v5.25M12 8h.01"/></svg>
+                <span>Detalles</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 28px; background: color-mix(in srgb, var(--on-sf) 10%, transparent); color: var(--on-sf);">
+                <svg class="ico" viewBox="0 0 24 24"><path d="M12 3.5v17M3.5 12h17"/></svg>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 28px;">
+              <span style="width: 28px; height: 6px; border-radius: 3px; background: var(--p);"></span>
+              <span style="width: 6px; height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--on-sf) 30%, transparent);"></span>
+              <span style="width: 6px; height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--on-sf) 30%, transparent);"></span>
+            </div>
+          </div>
+
+          <!-- Pila de portadas: profundidad sin movimiento. -->
+          <div style="position: relative; height: 400px;">
+            <div class="portada" style="position: absolute; width: 180px; left: 196px; top: 62px; transform: rotate(8deg); opacity: 0.55; --fondo: #07334e; --alto: #254a66; --orn: #98ccf9; --tit: #e1efff; --aut: #a1c5e6;">
+            </div>
+            <div class="portada" style="position: absolute; width: 180px; left: 4px; top: 54px; transform: rotate(-7deg); opacity: 0.6; --fondo: #4b2339; --alto: #653950; --orn: #fcb0d5; --tit: #ffe8f0; --aut: #ebb0cc;">
+            </div>
+            <div class="portada" style="position: absolute; width: 232px; left: 74px; top: 12px; padding: 22px; box-shadow: var(--elev-5); --fondo: #2f2c52; --alto: #46426a; --orn: #c6c0ff; --tit: #f0ebff; --aut: #c1bcec;">
+              <div class="portada-titulo" style="font-size: 28px;">Cien Años de Soledad</div>
+              <div class="portada-pie"><span class="portada-filete" style="width: 36px;"></span><span class="portada-autor">Gabriel García Márquez</span></div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <div style="display: flex; flex-direction: column; gap: 44px; padding: 12px 56px 48px;">
+
+        <!-- Seguir leyendo -->
+        <section style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="fila-cabecera">
+            <h2 class="fila-titulo">Seguir Leyendo</h2>
+            <span class="fila-sub">5 empezados</span>
+            <div style="flex: 1 1 auto;"></div>
+            <div class="boton-texto"><span>Ver todo</span><svg class="ico" viewBox="0 0 24 24" style="width: 18px; height: 18px;"><path d="m8.75 5.5 6.5 6.5-6.5 6.5"/></svg></div>
+            <div class="boton-flecha" style="opacity: 0.38;"><svg class="ico" viewBox="0 0 24 24"><path d="m15.25 5.5-6.5 6.5 6.5 6.5"/></svg></div>
+            <div class="boton-flecha"><svg class="ico" viewBox="0 0 24 24"><path d="m8.75 5.5 6.5 6.5-6.5 6.5"/></svg></div>
+          </div>
+          <div class="pista">
+            <div class="pista-carril">
+              <sc-for list="{{enCurso}}" as="obra" hint-placeholder-count="5">
+                <div style="display: flex; gap: 16px; flex: 0 0 320px; height: 152px; padding: 12px; box-sizing: border-box; border-radius: 20px; background: var(--sf-c);">
+                  <div class="portada" style="width: 86px; padding: 10px; --fondo: {{obra.c.fondo}}; --alto: {{obra.c.alto}}; --orn: {{obra.c.orn}}; --tit: {{obra.c.tit}}; --aut: {{obra.c.aut}};">
+                    <div class="portada-titulo" style="font-size: 11px;">{{obra.titulo}}</div>
+                    <span class="portada-filete" style="position: relative; width: 16px;"></span>
+                  </div>
+                  <div style="display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; padding: 4px 4px 4px 0;">
+                    <span class="serif" style="font-size: 18px; font-weight: 600; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{obra.titulo}}</span>
+                    <span style="margin-top: 4px; font-size: 13px; color: var(--on-sf-v);">{{obra.autor}}</span>
+                    <div style="flex: 1 1 auto;"></div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; color: var(--on-sf-v);">
+                      <span>{{obra.donde}}</span>
+                      <span style="font-weight: 600; color: var(--on-sf);">{{obra.progreso}}</span>
+                    </div>
+                    <div class="progreso"><span style="width: {{obra.progreso}};"></span></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div class="pista-niebla"></div>
+          </div>
+        </section>
+
+        <!-- Lo más leído: numerales grandes, la firma de las listas cortas. -->
+        <section style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="fila-cabecera">
+            <h2 class="fila-titulo">Lo Más Leído Este Mes</h2>
+            <span class="fila-sub">de tus sesiones de lectura</span>
+          </div>
+          <div class="pista">
+            <div class="pista-carril">
+              <sc-for list="{{masLeidos}}" as="obra" hint-placeholder-count="5">
+                <div style="position: relative; flex: 0 0 272px; height: 240px;">
+                  <span class="serif" style="position: absolute; left: 0; bottom: -26px; font-size: 230px; font-weight: 700; line-height: 1; letter-spacing: -0.06em; color: var(--sf-low); -webkit-text-stroke: 3px color-mix(in srgb, var(--outline) 60%, var(--sf-low));">{{obra.puesto}}</span>
+                  <div class="portada" style="position: absolute; right: 0; top: 0; width: 160px; --fondo: {{obra.c.fondo}}; --alto: {{obra.c.alto}}; --orn: {{obra.c.orn}}; --tit: {{obra.c.tit}}; --aut: {{obra.c.aut}};">
+                    <div class="portada-titulo" style="font-size: 17px;">{{obra.titulo}}</div>
+                    <div class="portada-pie"><span class="portada-filete"></span><span class="portada-autor" style="font-size: 12px;">{{obra.autor}}</span></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div class="pista-niebla"></div>
+          </div>
+        </section>
+
+        <!-- Novedades -->
+        <section style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="fila-cabecera">
+            <h2 class="fila-titulo">Novedades de la Biblioteca</h2>
+            <span class="fila-sub">32 obras esta semana</span>
+            <div style="flex: 1 1 auto;"></div>
+            <div class="boton-texto"><span>Ver todo</span><svg class="ico" viewBox="0 0 24 24" style="width: 18px; height: 18px;"><path d="m8.75 5.5 6.5 6.5-6.5 6.5"/></svg></div>
+            <div class="boton-flecha" style="opacity: 0.38;"><svg class="ico" viewBox="0 0 24 24"><path d="m15.25 5.5-6.5 6.5 6.5 6.5"/></svg></div>
+            <div class="boton-flecha"><svg class="ico" viewBox="0 0 24 24"><path d="m8.75 5.5 6.5 6.5-6.5 6.5"/></svg></div>
+          </div>
+          <div class="pista">
+            <div class="pista-carril">
+              <sc-for list="{{novedades}}" as="obra" hint-placeholder-count="6">
+                <div class="portada" style="width: 180px; --fondo: {{obra.c.fondo}}; --alto: {{obra.c.alto}}; --orn: {{obra.c.orn}}; --tit: {{obra.c.tit}}; --aut: {{obra.c.aut}};">
+                  <div style="position: relative; display: flex; flex-direction: column; gap: 12px;">
+                    <sc-if value="{{obra.nuevo}}" hint-placeholder-val="{{ true }}">
+                      <span style="align-self: flex-start; display: flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--menta); color: var(--menta-oscuro); font-size: 12px; font-weight: 700;">Nuevo</span>
+                    </sc-if>
+                    <div class="portada-titulo" style="font-size: 19px;">{{obra.titulo}}</div>
+                  </div>
+                  <div class="portada-pie"><span class="portada-filete"></span><span class="portada-autor">{{obra.autor}}</span></div>
+                </div>
+              </sc-for>
+            </div>
+            <div class="pista-niebla"></div>
+          </div>
+        </section>
+
+        <!-- La recomendación dice su motivo en el título de la fila. -->
+        <section style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="fila-cabecera">
+            <h2 class="fila-titulo">Porque Lees a Gabriel García Márquez</h2>
+            <div style="flex: 1 1 auto;"></div>
+            <div class="boton-flecha" style="opacity: 0.38;"><svg class="ico" viewBox="0 0 24 24"><path d="m15.25 5.5-6.5 6.5 6.5 6.5"/></svg></div>
+            <div class="boton-flecha"><svg class="ico" viewBox="0 0 24 24"><path d="m8.75 5.5 6.5 6.5-6.5 6.5"/></svg></div>
+          </div>
+          <div class="pista">
+            <div class="pista-carril">
+              <sc-for list="{{porAutor}}" as="obra" hint-placeholder-count="6">
+                <div class="portada" style="width: 180px; --fondo: {{obra.c.fondo}}; --alto: {{obra.c.alto}}; --orn: {{obra.c.orn}}; --tit: {{obra.c.tit}}; --aut: {{obra.c.aut}};">
+                  <div class="portada-titulo" style="font-size: 19px;">{{obra.titulo}}</div>
+                  <div class="portada-pie"><span class="portada-filete"></span><span class="portada-autor">{{obra.autor}}</span></div>
+                </div>
+              </sc-for>
+            </div>
+            <div class="pista-niebla"></div>
+          </div>
+        </section>
+
+        <!-- Materias: los pasteles en su contenedor, cada uno >= 8,6:1. -->
+        <section style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="fila-cabecera">
+            <h2 class="fila-titulo">Explorar por Materia</h2>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px;">
+            <sc-for list="{{materias}}" as="m" hint-placeholder-count="6">
+              <div style="position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; height: 116px; padding: 16px; box-sizing: border-box; border-radius: 20px; overflow: hidden; background: {{m.fondo}}; color: {{m.texto}};">
+                <svg viewBox="0 0 24 24" style="position: absolute; right: -8px; top: -8px; width: 72px; height: 72px; fill: none; stroke: {{m.color}}; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0.4;"><path d="M20 12.5 12.5 20a1.5 1.5 0 0 1-2.1 0l-6.9-6.9V4.5a1 1 0 0 1 1-1h8.6l6.9 6.9a1.5 1.5 0 0 1 0 2.1Z"/><circle cx="8.25" cy="8.25" r="1.25"/></svg>
+                <span class="serif" style="position: relative; font-size: 18px; font-weight: 600; line-height: 1.2;">{{m.nombre}}</span>
+                <span style="position: relative; font-size: 13px; opacity: 0.85;">{{m.cuantas}} obras</span>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"tema":{"editor":"enum","options":["grafito","gabinete","tinta","vigilia","musgo"],"default":"grafito","section":"Tema"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const tonos = {
+      lavanda: { fondo: '#2f2c52', alto: '#46426a', orn: '#c6c0ff', tit: '#f0ebff', aut: '#c1bcec' },
+      cielo: { fondo: '#07334e', alto: '#254a66', orn: '#98ccf9', tit: '#e1efff', aut: '#a1c5e6' },
+      menta: { fondo: '#013825', alto: '#1f4f3a', orn: '#8ed5b1', tit: '#c5fadc', aut: '#99ccb0' },
+      melocoton: { fondo: '#4c2707', alto: '#673d1b', orn: '#ffb783', tit: '#ffeadd', aut: '#f1b489' },
+      rosa: { fondo: '#4b2339', alto: '#653950', orn: '#fcb0d5', tit: '#ffe8f0', aut: '#ebb0cc' },
+      limon: { fondo: '#393000', alto: '#514711', orn: '#d9c76f', tit: '#feeea8', aut: '#d0c17f' }
+    };
+    const con = (lista) => lista.map((o) => ({ ...o, c: tonos[o.tono] }));
+
+    return {
+      tema: this.props.tema ?? 'grafito',
+
+      enCurso: con([
+        { titulo: 'Rayuela', autor: 'Julio Cortázar', donde: 'Capítulo 73', progreso: '62%', tono: 'cielo' },
+        { titulo: 'Pedro Páramo', autor: 'Juan Rulfo', donde: 'Fragmento 58', progreso: '87%', tono: 'rosa' },
+        { titulo: 'La Ciudad y los Perros', autor: 'Mario Vargas Llosa', donde: 'Parte I, cap. 4', progreso: '18%', tono: 'melocoton' },
+        { titulo: 'Ficciones', autor: 'Jorge Luis Borges', donde: 'El jardín de senderos', progreso: '45%', tono: 'menta' },
+        { titulo: 'Los Detectives Salvajes', autor: 'Roberto Bolaño', donde: 'Parte II', progreso: '73%', tono: 'limon' }
+      ]),
+
+      masLeidos: con([
+        { puesto: '1', titulo: 'Rayuela', autor: 'Julio Cortázar', tono: 'cielo' },
+        { puesto: '2', titulo: 'Cien Años de Soledad', autor: 'García Márquez', tono: 'lavanda' },
+        { puesto: '3', titulo: 'Pedro Páramo', autor: 'Juan Rulfo', tono: 'rosa' },
+        { puesto: '4', titulo: 'El Aleph', autor: 'Jorge Luis Borges', tono: 'menta' },
+        { puesto: '5', titulo: 'Aura', autor: 'Carlos Fuentes', tono: 'melocoton' }
+      ]),
+
+      novedades: con([
+        { titulo: 'La Casa de los Espíritus', autor: 'Isabel Allende', tono: 'rosa', nuevo: true },
+        { titulo: 'Santa Evita', autor: 'Tomás Eloy Martínez', tono: 'melocoton', nuevo: true },
+        { titulo: 'El Túnel', autor: 'Ernesto Sabato', tono: 'cielo', nuevo: false },
+        { titulo: 'Boquitas Pintadas', autor: 'Manuel Puig', tono: 'lavanda', nuevo: false },
+        { titulo: 'Los Ríos Profundos', autor: 'José María Arguedas', tono: 'menta', nuevo: false },
+        { titulo: 'Terra Nostra', autor: 'Carlos Fuentes', tono: 'limon', nuevo: false }
+      ]),
+
+      porAutor: con([
+        { titulo: 'El Otoño del Patriarca', autor: 'García Márquez', tono: 'melocoton' },
+        { titulo: 'Crónica de una Muerte Anunciada', autor: 'García Márquez', tono: 'rosa' },
+        { titulo: 'El Amor en los Tiempos del Cólera', autor: 'García Márquez', tono: 'cielo' },
+        { titulo: 'Del Amor y Otros Demonios', autor: 'García Márquez', tono: 'lavanda' },
+        { titulo: 'Doce Cuentos Peregrinos', autor: 'García Márquez', tono: 'menta' },
+        { titulo: 'La Hojarasca', autor: 'García Márquez', tono: 'limon' }
+      ]),
+
+      materias: [
+        { nombre: 'Realismo Mágico', cuantas: '1.284', fondo: '#5f2e01', texto: '#ffdcc5', color: '#ffb783' },
+        { nombre: 'Ensayo', cuantas: '3.902', fondo: '#003f61', texto: '#cce5ff', color: '#98ccf9' },
+        { nombre: 'Poesía', cuantas: '2.117', fondo: '#5f2847', texto: '#ffd8e8', color: '#fcb0d5' },
+        { nombre: 'Historia', cuantas: '4.560', fondo: '#453b00', texto: '#f6e388', color: '#d9c76f' },
+        { nombre: 'Filosofía', cuantas: '1.938', fondo: '#39346b', texto: '#e4dfff', color: '#c6c0ff' },
+        { nombre: 'Ciencia Ficción', cuantas: '876', fondo: '#00452d', texto: '#a9f2cc', color: '#8ed5b1' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

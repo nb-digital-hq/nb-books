@@ -1,0 +1,33 @@
+# Las extensiones de primera parte del proyecto.
+#
+# Espacio de trabajo propio, igual que el del banco y por el mismo motivo: se
+# compilan para `wasm32-wasip2`, no para el anfitrión, así que meterlas en el
+# espacio de trabajo del runtime rompería `cargo build` de la aplicación.
+#
+# **Van aparte del banco a propósito.** El banco son módulos adversos que
+# existen para que el cajón de arena tenga contra qué probarse; esto son
+# extensiones que se publican. Mezclarlos habría hecho que un `cargo build` del
+# banco construyera lo que se distribuye, y al revés.
+#
+# Ninguna recibe trato especial por ser nuestra: entran por el mismo camino que
+# las de terceros —manifiesto, permisos, revisión y firma—, porque un privilegio
+# de primera parte es exactamente el atajo que deja la API sin probar.
+
+[workspace]
+resolver = "2"
+members = [
+  "citas",
+  "formato-texto",
+  "metadatos-academicos",
+  "normalizador",
+  "ordenes",
+  "vista-resumen",
+]
+
+[profile.release]
+# Lo que se distribuye va optimizado por tamaño: el peso de una extensión lo
+# paga quien la instala, en cada actualización.
+opt-level = "z"
+lto = true
+strip = true
+panic = "abort"

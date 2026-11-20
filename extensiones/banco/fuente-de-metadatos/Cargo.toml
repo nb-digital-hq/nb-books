@@ -1,0 +1,11 @@
+[package]
+name = "fuente-de-metadatos"
+version = "1.0.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wit-bindgen = "0.61"

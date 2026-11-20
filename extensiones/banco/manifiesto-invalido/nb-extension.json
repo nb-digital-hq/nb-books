@@ -1,0 +1,10 @@
+{
+  "name": "Le falta el identificador",
+  "version": 1,
+  "type": "nucleo",
+  "apiVersion": "1.0",
+  "license": "Apache-2.0",
+  "capabilities": [],
+  "permissions": {},
+  "contributes": {}
+}

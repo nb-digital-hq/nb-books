@@ -1,0 +1,139 @@
+{
+  "fecha": "2026-09-22",
+  "suite": "tests/evaluacion_generativa.rs",
+  "alcance": "Solo tarjetas (NB_FUNCIONES=flashcards), con NB_MODELO=qwen3-4b-q4km. Medición complementaria para decidir el cierre de la Fase 4, no sustituye a la ejecución completa con el modelo recomendado.",
+  "equipo": "portátil de desarrollo: 8 núcleos, 19 GB, procesador con AVX2, sin GPU; edición rápida (x86-64-v3)",
+  "modelo": "qwen3-4b-q4km",
+  "plantillas": {
+    "estudio.tarjetas": 1
+  },
+  "resultado": "NO SUPERA: 5 de 6 textos. Falla formulas-es.txt (3 de 4 citadas, 1 de 4 sostenida) y supera narrativo-largo-en.txt, al revés que Qwen2.5 1.5B.",
+  "proveedor": {
+    "fallos": [],
+    "id": "qwen3-4b-q4km",
+    "intentos": 6,
+    "latenciaMs": {
+      "mediana": 181657,
+      "peor": 550173
+    },
+    "memoriaMaximaBytes": 5339312128,
+    "nombre": "Qwen3 4B",
+    "tasaDeFallo": 0.0
+  },
+  "generaciones": [
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.5,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen3-4b-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "{\"tarjetas\": [{\"pregunta\": \"¿Por qué un invernadero pequeño gana calor durante el día?\", \"respuesta\": \"Porque el vidrio deja pasar la luz visible y retiene buena parte de la radiación infrarroja que emiten el suelo y las plantas\", \"citas\": [\"F2\"]}, {\"pregunta\": \"¿Cómo funciona la ventilación natural en un invernadero?\", \"respuesta\": \"Se basa en dos aberturas situadas a distinta altura, donde el aire caliente sale por la superior y el fresco entra por la inferior\", \"citas\": [\"F3\"]}, {\"pregunta\": \"¿Cómo ayuda la sombra en la regulación de temperatura en un invernadero?\", \"respuesta\": \"Una malla de sombreo del cincuenta por ciento reduce la radiación que llega a las plantas y baja la temperatura interior\", \"citas\": [\"F4\"]}]}",
+      "segundos": 181,
+      "texto": "tecnico-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.5,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen3-4b-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "{\"tarjetas\": [{\"pregunta\": \"Who arrived at the lighthouse on Isla Brava in the autumn of 1931?\", \"respuesta\": \"Marta Quiroga\", \"citas\": [\"F2\"]}, {\"pregunta\": \"What did Tobías record in the ledger for twenty-two years?\", \"respuesta\": \"The hour the lamp was lit, the hour it was extinguished, the weather, and the ships that passed\", \"citas\": [\"F3\"]}, {\"pregunta\": \"What did Marta discover about Tobías's notes in the ledger?\", \"respuesta\": \"That a light moved along the northern cliffs on eleven nights, always in the month of March, and always when the sea was calm\", \"citas\": [\"F4\"]}]}",
+      "segundos": 146,
+      "texto": "narrativo-en.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.5,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen3-4b-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "{\"tarjetas\": [{\"pregunta\": \"Quais são os três instrumentos comuns utilizados para avaliar a compreensão leitora?\", \"respuesta\": \"O reconto oral, as perguntas de escolha múltipla e o resumo escrito\", \"citas\": [\"F2\"]}, {\"pregunta\": \"Qual é a principal desvantagem do reconto oral como instrumento de avaliação?\", \"respuesta\": \"O custo elevado, que exige uma entrevista individual de cinco a dez minutos por estudante\", \"citas\": [\"F3\"]}, {\"pregunta\": \"Qual é a principal crítica às perguntas de escolha múltipla segundo Silva e Moreira (2019)?\", \"respuesta\": \"Cerca de trinta por cento das perguntas podem ser respondidas sem ler o texto\", \"citas\": [\"F4\"]}]}",
+      "segundos": 181,
+      "texto": "academico-pt.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.6,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen3-4b-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "{\"tarjetas\": [{\"pregunta\": \"¿Para qué se construyeron las acequias del valle?\", \"respuesta\": \"Para llevar el agua del río a los campos de regadío\", \"citas\": [\"F2\"]}, {\"pregunta\": \"¿Cómo se repartía el agua entre los propietarios?\", \"respuesta\": \"Por tandas proporcional a la tierra que poseían\", \"citas\": [\"F3\"]}, {\"pregunta\": \"¿Qué sucedió en el año de 1788 con el azud de Molinar?\", \"respuesta\": \"Los vecinos lo cerraron durante nueve días\", \"citas\": [\"F4\"]}]}",
+      "segundos": 140,
+      "texto": "ocr-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 0.75,
+        "cobertura": 0.375,
+        "descartados": 0,
+        "elementos": 4,
+        "motivos": ["SIN_CITAS", "NO_SOSTENIDAS"],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 0.25,
+        "supera": false
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen3-4b-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "{\"tarjetas\": [\n  {\n    \"pregunta\": \"¿Cómo se calcula la cantidad de agua necesaria para una plantación?\",\n    \"respuesta\": \"Se calcula mediante la evapotranspiración de referencia (ET0) y se ajusta según el cultivo con el coeficiente Kc.\",\n    \"citas\": [\"F2\", \"F3\"]\n  },\n  {\n    \"pregunta\": \"¿Qué factor influye en la cantidad de agua que necesita un cultivo durante su fase de floración?\",\n    \"respuesta\": \"El coeficiente Kc, que aumenta significativamente durante la floración.\",\n    \"citas\": [\"F3\"]\n  },\n  {\n    \"pregunta\": \"¿Cuál es la cantidad de agua necesaria por día para un tomate en floración con una ET0 de cinco milímetros?\",\n    \"respuesta\": \"5,75 milímetros al día, equivalente a 5.750 litros por mil metros cuadrados.\",\n    \"citas\": [\"F5\"]\n  },\n  {\n    \"pregunta\": \"¿Por qué es importante considerar la eficiencia del sistema de riego al calcular la lámina bruta?\",\n    \"respuesta\": \"Porque la lámina bruta se obtiene dividiendo la neta por la eficiencia del sistema, lo que afecta la cantidad total de agua necesaria.\",\n    \"citas\": [\"F6\"]\n  }\n]}",
+      "segundos": 357,
+      "texto": "formulas-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 0.9,
+        "cobertura": 0.3181818181818182,
+        "descartados": 0,
+        "elementos": 10,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 0.9,
+        "supera": true
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen3-4b-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "{\"tarjetas\": [\n    {\"pregunta\": \"Who built the Vellmar Bridge and when?\", \"respuesta\": \"The bridge was built in 1847.\", \"citas\": [\"F3\"]},\n    {\"pregunta\": \"What was the keeper's job at the Vellmar Bridge?\", \"respuesta\": \"The keeper's job was to raise the toll gate, to sweep the deck after storms, and to write in the ledger.\", \"citas\": [\"F3\"]},\n    {\"pregunta\": \"When did Anna Wrede take the post at the Vellmar Bridge?\", \"respuesta\": \"Anna Wrede took the post in 1889.\", \"citas\": [\"F4\"]},\n    {\"pregunta\": \"Why did the county clerk decide to appoint Anna Wrede as the keeper?\", \"respuesta\": \"The county clerk decided that a woman who could balance a brickworks could certainly balance a bridge.\", \"citas\": [\"F4\"]},\n    {\"pregunta\": \"What was the significance of the ledger Anna inherited?\", \"respuesta\": \"The ledger ran back to 1851 and every keeper had written in it.\", \"citas\": [\"F5\"]},\n    {\"pregunta\": \"What did Anna find in her first month at the Vellmar Bridge?\", \"respuesta\": \"She found the discrepancy on the ninth evening.\", \"citas\": [\"F8\"]},\n    {\"pregunta\": \"What was the discrepancy Anna discovered?\", \"respuesta\": \"More money, the same number of carts. Either the toll had been raised, or the carts had not been counted.\", \"citas\": [\"F10\"]},\n    {\"pregunta\": \"What was the toll schedule for the Vellmar Bridge?\", \"respuesta\": \"The schedule had not changed since 1858.\", \"citas\": [\"F12\"]},\n    {\"pregunta\": \"What did Anna do after discovering the discrepancy?\", \"respuesta\": \"She worked out, week by week, how many carts the money implied.\", \"citas\": [\"F13\"]},\n    {\"pregunta\": \"What was the reason behind the discrepancy in the number of carts?\", \"respuesta\": \"Brandt had kept the number below eighty for seven years to avoid inspections.\", \"citas\": [\"F18\"]}\n]}",
+      "segundos": 550,
+      "texto": "narrativo-largo-en.txt"
+    }
+  ]
+}

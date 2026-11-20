@@ -1,0 +1,16 @@
+node_modules
+build
+build-e2e
+.svelte-kit
+.svelte-kit-e2e
+test-results
+playwright-report
+src-tauri/target
+src-tauri/gen
+pnpm-lock.yaml
+LICENSE
+NOTICE
+
+# Generado por scripts/generar-paletas.mjs: su formato lo decide el generador,
+# y compararlo con el de Prettier haría fallar `pnpm check:paletas` en cada pasada.
+src/paletas.css

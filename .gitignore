@@ -1,0 +1,97 @@
+# ---------------------------------------------------------------------------
+# NB Books
+# Regla: en el repositorio solo entra código fuente y documentación.
+# Nada generado, nada descargado, nada secreto, ningún binario precompilado.
+# Ver docs/audit/supply-chain.md
+# ---------------------------------------------------------------------------
+
+# Node / pnpm
+node_modules/
+.pnpm-store/
+*.tsbuildinfo
+
+# SvelteKit / Vite
+.svelte-kit/
+/build/
+/package/
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Rust / Cargo / Tauri
+target/
+
+# Los módulos del banco de extensiones adversas. Se construyen desde
+# el propio repositorio con `cargo build --target wasm32-wasip1`; el binario
+# nunca entra, por el innegociable de binarios de AGENTS.md.
+*.wasm
+**/*.rs.bk
+src-tauri/gen/
+
+# Bibliotecas nativas: se obtienen con hash fijado (scripts/fetch-pdfium.mjs),
+# nunca se versionan (docs/developer/deployment/packaging.md)
+src-tauri/vendor/
+*.so
+*.so.*
+*.dylib
+*.dll
+*.a
+*.lib
+
+# Artefactos de distribución
+dist/
+*.AppImage
+*.deb
+*.rpm
+*.dmg
+*.msi
+*.exe
+
+# Modelos de IA: se descargan bajo demanda (docs/architecture/ai/local-models.md)
+*.gguf
+*.onnx
+models/
+
+# Ajustes personales de la herramienta agéntica. El archivo compartido
+# (.claude/settings.json) sí se versiona; este es de cada máquina.
+.claude/settings.local.json
+.gemini/settings.local.json
+
+# Secretos y entorno
+.env
+.env.*
+!.env.example
+*.pem
+# Clave pública de verificación: se publica a propósito.
+!docs/architecture/api/clave-de-publicacion.pem
+*.p12
+*.pfx
+*.jks
+secrets/
+
+# Bases de datos y datos locales de desarrollo
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.db
+
+# Resultados de pruebas y cobertura
+coverage/
+.svelte-kit-e2e/
+build-e2e/
+test-results/
+playwright-report/
+.nyc_output/
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.directory
+
+# Configuración local de herramientas de agentes: nunca entra al repositorio.
+.claude/
+.gemini/
+.cursor/
+.codex/

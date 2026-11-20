@@ -1,0 +1,25 @@
+{
+  "id": "lat.nbdigitallabs.books.banco.vista-de-estudio",
+  "name": "Vista de prueba",
+  "version": "1.0.0",
+  "type": "ui",
+  "apiVersion": "1.0",
+  "license": "Apache-2.0",
+  "capabilities": [],
+  "permissions": {},
+  "contributes": {
+    "views": [
+      {
+        "id": "vista-de-estudio.resumen",
+        "title": "Resumen de Prueba"
+      },
+      {
+        "id": "vista-de-estudio.colgada",
+        "title": "La Que Se Cuelga"
+      }
+    ],
+    "providers": {
+      "view": "vista_de_estudio.wasm"
+    }
+  }
+}

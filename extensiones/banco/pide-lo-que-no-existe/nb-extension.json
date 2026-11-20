@@ -1,0 +1,11 @@
+{
+  "id": "lat.nbdigitallabs.books.banco.pide-lo-que-no-existe",
+  "name": "Pide una capacidad que no existe",
+  "version": "1.0.0",
+  "type": "core",
+  "apiVersion": "1.0",
+  "license": "Apache-2.0",
+  "capabilities": [],
+  "permissions": {},
+  "contributes": {}
+}

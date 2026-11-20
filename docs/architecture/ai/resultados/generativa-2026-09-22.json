@@ -1,0 +1,485 @@
+{
+  "fecha": "2026-09-22",
+  "suite": "tests/evaluacion_generativa.rs",
+  "iteracion": "F4.4.2 y criterio 1 de la Fase 4",
+  "equipo": "portátil de desarrollo: 8 núcleos, 19 GB, procesador con AVX2, sin GPU; edición rápida (x86-64-v3)",
+  "modelo": "qwen25-15b-instruct-q4km",
+  "plantillas": {
+    "estudio.tarjetas": 1,
+    "estudio.resumen": 3,
+    "estudio.conceptos": 2,
+    "estudio.preguntas": 2
+  },
+  "criterio": "Las tarjetas superan la rúbrica en todo el corpus (F4.3.4). Los resúmenes, los conceptos y las preguntas se miden y se publican.",
+  "resultado": "NO SUPERA: las tarjetas superan la rúbrica en 5 de 6 textos; en narrativo-largo-en.txt quedan citadas 7 de 9 (0,78 frente a 0,80).",
+  "proveedor": {
+    "fallos": [],
+    "id": "qwen25-15b-instruct-q4km",
+    "intentos": 24,
+    "latenciaMs": {
+      "mediana": 79776,
+      "peor": 375193
+    },
+    "memoriaMaximaBytes": 2232172544,
+    "nombre": "Qwen2.5 1.5B Instruct",
+    "tasaDeFallo": 0.0
+  },
+  "generaciones": [
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.5,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "{\n  \"tarjetas\": [\n    {\n      \"pregunta\": \"¿Qué hace el vidrio en un invernadero?\",\n      \"respuesta\": \"El vidrio deja pasar la luz visible y retiene buena parte de la radiación infrarroja.\",\n      \"citas\": [\"F2\"]\n    },\n    {\n      \"pregunta\": \"¿Cómo funciona la ventilación natural?\",\n      \"respuesta\": \"La ventilación natural se basa en dos aberturas situadas a distinta altura. El aire caliente sale por la superior y el fresco por la inferior.\",\n      \"citas\": [\"F3\"]\n    },\n    {\n      \"pregunta\": \"¿Cómo funciona la sombra en un invernadero?\",\n      \"respuesta\": \"Una malla de sombreo del cincuenta por ciento reduce a la mitad la radiación que llega a las plantas y baja la temperatura interior entre cuatro y seis grados.\",\n      \"citas\": [\"F4\"]\n    }\n  ]\n}",
+      "segundos": 76,
+      "texto": "tecnico-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.16666666666666666,
+        "descartados": 0,
+        "elementos": 1,
+        "motivos": ["POCOS_ELEMENTOS"],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": false
+      },
+      "funcion": "summary",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.resumen@3",
+      "salida": "{\"puntos\":[{\"texto\":\"Un invernadero pequeño gana calor durante el día porque el vidrio deja pasar la luz visible y retiene buena parte de la radiación infrarroja que emiten el suelo y las plantas.\",\"citas\":[\"F1\"]}]}\"",
+      "segundos": 51,
+      "texto": "tecnico-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.5,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "concepts",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.conceptos@2",
+      "salida": "{\"conceptos\": [{\"nombre\": \"invernadero\", \"tipo\": \"obra\", \"descripcion\": \"Un invernadero pequeño gana calor durante el día\", \"citas\": [\"F1\"]}, {\"nombre\": \"ventilación\", \"tipo\": \"concepto\", \"descripcion\": \"La ventilación natural se basa en dos aberturas situadas a distinta altura\", \"citas\": [\"F3\"]}, {\"nombre\": \"sensor de temperatura\", \"tipo\": \"concepto\", \"descripcion\": \"El sensor de temperatura debe colocarse a la altura de las hojas y protegido del sol directo\", \"citas\": [\"F6\"]}]",
+      "segundos": 64,
+      "texto": "tecnico-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 0.0,
+        "cobertura": 0.0,
+        "descartados": 3,
+        "elementos": 0,
+        "motivos": ["POCOS_ELEMENTOS", "SIN_CITAS", "NO_SOSTENIDAS", "TRIVIALES"],
+        "no_triviales": 0.0,
+        "repetidas": 0,
+        "sostenidas": 0.0,
+        "supera": false
+      },
+      "funcion": "questions",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.preguntas@2",
+      "salida": "```json\n{\n  \"preguntas\": [\n    {\n      \"enunciado\": \"¿Qué hace que un invernadero pequeño gane calor durante el día?\",\n      \"opciones\": [\n        \"El vidrio deja pasar la luz visible y retiene buena parte de la radiación infrarroja.\",\n        \"El vidrio deja pasar la luz visible y retiene buena parte de la radiación visible.\",\n        \"El vidrio deja pasar la luz infrarroja y retiene buena parte de la radiación infrarroja.\",\n        \"El vidrio deja pasar la luz infrarroja y retiene buena parte de la radiación visible.\"\n      ],\n      \"respuesta\": \"El vidrio deja pasar la luz infrarroja y retiene buena parte de la radiación infrarroja.\",\n      \"explicacion\": \"El texto dice: 'Un invernadero pequeño gana calor durante el día porque el vidrio deja pasar la luz infrarroja y retiene buena parte de la radiación infrarroja que emiten el suelo y las plantas.'\",\n      \"citas\": [\"F2\"]\n    },\n    {\n      \"enunciado\": \"¿Cómo se basa la ventilación natural?\",\n      \"opciones\": [\n        \"La ventilación natural se basa en dos aberturas situadas a la misma altura.\",\n        \"La ventilación natural se basa en dos aberturas situadas a distinta altura.\",\n        \"La ventilación natural se basa en dos aberturas situadas a la misma altura y la inferior.\",\n        \"La ventilación natural se basa en dos aberturas situadas a la misma altura y la superior.\"\n      ],\n      \"respuesta\": \"La ventilación natural se basa en dos aberturas situadas a la misma altura y la inferior.\",\n      \"explicacion\": \"El texto dice: 'La ventilación natural se basa en dos aberturas situadas a distinta altura. El aire caliente, menos denso, sale por la abertura superior, y el aire fresco entra por la inferior. Cuanto mayor es la diferencia de altura entre las dos aberturas, más intenso es el flujo.'\",\n      \"citas\": [\"F3\"]\n    },\n    {\n      \"enunciado\": \"¿Qué hace que la sombra sea eficaz en reducir la temperatura interior del invernadero?\",\n      \"opciones\": [\n        \"La sombra reduce la radiación que llega a las plantas y baja la temperatura interior entre cuatro y seis grados.\",\n        \"La sombra reduce la radiación que llega a las plantas y baja la temperatura interior entre cuatro y seis grados.\",\n        \"La sombra reduce la radiación que llega a las plantas y baja la temperatura interior entre cuatro y seis grados.\",\n        \"La sombra reduce la radiación que llega a las plantas y baja la temperatura interior entre cuatro y seis grados.\"\n      ],\n      \"respuesta\": \"La sombra reduce la radiación que llega a las plantas y baja la temperatura interior entre cuatro y seis grados.\",\n      \"explicacion\": \"El texto dice: 'Una malla de sombreo del cincuenta por ciento reduce a la mitad la radiación que llega a las plantas y baja la temperatura interior entre cuatro y seis grados.'\",\n      \"citas\": [\"F4\"]\n    }\n  ]\n}\n```",
+      "segundos": 201,
+      "texto": "tecnico-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.3333333333333333,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "{\n  \"tarjetas\": [\n    {\n      \"pregunta\": \"Who arrived at the lighthouse?\",\n      \"respuesta\": \"Marta Quiroga\",\n      \"citas\": [\"F1\"]\n    },\n    {\n      \"pregunta\": \"What was the previous keeper's name?\",\n      \"respuesta\": \"Tobías\",\n      \"citas\": [\"F2\"]\n    },\n    {\n      \"pregunta\": \"What did Tobías write in the ledger?\",\n      \"respuesta\": \"A small, careful hand for twenty-two years\",\n      \"citas\": [\"F3\"]\n    }\n  ]\n}",
+      "segundos": 54,
+      "texto": "narrativo-en.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.5,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "summary",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.resumen@3",
+      "salida": "{\n  \"puntos\": [\n    {\n      \"texto\": \"Marta Quiroga arrived at the lighthouse on Isla Brava in the autumn of 1931, carrying a trunk of books and a letter of appointment from the maritime authority.\",\n      \"citas\": [\"F1\"]\n    },\n    {\n      \"texto\": \"On her first night she found the keeper's ledger on the table beneath the lamp room. Every entry recorded the hour the lamp was lit, the hour it was extinguished, the weather, and the ships that passed.\",\n      \"citas\": [\"F2\"]\n    },\n    {\n      \"texto\": \"Marta read the ledger backwards, from the last entry to the first, during the storms of that winter. She discovered that Tobías had noted a light moving along the northern cliffs on eleven nights, always in the month of March, and always when the sea was calm. He had never explained it.\",\n      \"citas\": [\"F3\"]\n    }\n  ]\n}",
+      "segundos": 73,
+      "texto": "narrativo-en.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 0.3333333333333333,
+        "cobertura": 0.16666666666666666,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": ["SIN_CITAS", "NO_SOSTENIDAS"],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 0.3333333333333333,
+        "supera": false
+      },
+      "funcion": "concepts",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.conceptos@2",
+      "salida": "{\"conceptos\": [{\"nombre\": \"Marta Quiroga\", \"tipo\": \"persona\", \"descripcion\": \"La protagonista que llega al lighthouse en 1931\", \"citas\": [\"F1\"]}, {\"nombre\": \"Tobías\", \"tipo\": \"persona\", \"descripcion\": \"El anterior lighthouse keeper que escribió en el libro\", \"citas\": [\"F2\"]}, {\"nombre\": \"Lighthouse\", \"tipo\": \"obra\", \"descripcion\": \"El lugar donde se encuentra la protagonista\", \"citas\": [\"F1\"]}]",
+      "segundos": 55,
+      "texto": "narrativo-en.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 0.0,
+        "cobertura": 0.0,
+        "descartados": 1,
+        "elementos": 0,
+        "motivos": ["POCOS_ELEMENTOS", "SIN_CITAS", "NO_SOSTENIDAS", "TRIVIALES"],
+        "no_triviales": 0.0,
+        "repetidas": 0,
+        "sostenidas": 0.0,
+        "supera": false
+      },
+      "funcion": "questions",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.preguntas@2",
+      "salida": "```json\n{\n  \"preguntas\": [\n    {\n      \"enunciado\": \"Marta Quiroga llegó a la isla Brava en el otoño de 1931, llevando un traste de libros y una carta de nombramiento del autoridad marítima. El anterior guardián, un anciano llamado Tobías, había dejado tres semanas antes, y la lámpara había sido cuidadosamente tendida por un pescador de la aldea que no podía leer.\",\n      \"opciones\": [\n        \"Marta Quiroga llegó a la isla Brava en el otoño de 1931, llevando un traste de libros y una carta de nombramiento del autoridad marítima. El anterior guardián, un anciano llamado Tobías, había dejado tres semanas antes, y la lámpara había sido cuidadosamente tendida por un pescador de la aldea que no podía leer.\",\n        \"Marta Quiroga llegó a la isla Brava en el otoño de 1931, llevando un traste de libros y una carta de nombramiento del autoridad marítima. El anterior guardián, un anciano llamado Tobías, había dejado tres semanas antes, y la lámpara había sido cuidadosamente tendida por un pescador de la aldea que no podía leer.\",\n        \"Marta Quiroga llegó a la isla Brava en el otoño de 1931, llevando un traste de libros y una carta de nombramiento del autoridad marítima. El anterior guardián, un anciano llamado Tobías, había dejado tres semanas antes, y la lámpara había sido cuidadosamente tendida por un pescador de la aldea que no podía leer.\",\n        \"Marta Quiroga llegó a la isla Brava en el otoño de 1931, llevando un traste de libros y una carta de nombramiento del autoridad marítima. El anterior guardián, un anciano llamado Tobías, había dejado tres semanas antes, y la lámpara había sido cuidadosamente tendida por un pescador de la aldea que no podía leer.\",\n        \"Marta Quiroga llegó a la isla Brava en el otoño de 1931, llevando un traste de libros y una carta de nombramiento del autoridad marítima. El anterior guardián, un anciano llamado Tobías, había dejado tres semanas antes, y la lámpara había sido cuidadosamente tendida por un pescador de la aldea que no podía leer.\"\n      ],\n      \"respuesta\": \"Marta Quiroga llegó a la isla Brava en el otoño de 1931, llevando un traste de libros y una carta de nombramiento del autoridad marítima. El anterior guardián, un anciano llamado Tobías, había dejado tres semanas antes, y la lámpara había sido cuidadosamente tendida por un pescador de la aldea que no podía leer.\",\n      \"explicacion\": \"El texto menciona que Marta Quiroga llegó a la isla Brava en el otoño de 1931, llevando un traste de libros y una carta de nombramiento del autoridad marítima. El texto también menciona que Tobías había dejado tres semanas antes, y la lámpara había sido cuidadosamente tendida por un pescador de la aldea que no podía leer.\",\n      \"citas\": [\"F1\"]\n    },\n    {\n      \"enunciado\": \"Marta Quiroga encontró el libro del guardián bajo la habitación de la lámpara durante su primer noche. Cada entrada en el libro registraba la hora en que la lámpara estaba encendida, la hora en que se apagaba, el clima y los barcos que pasaron. Tobías había escrito en una pequeña y cuidadosa mano durante veintidós años. El pescador había añadido",
+      "segundos": 235,
+      "texto": "narrativo-en.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.5,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "{\n  \"tarjetas\": [\n    {\n      \"pregunta\": \"¿Qué instrumentos se usan para evaluar la comprensión lectora?\",\n      \"respuesta\": \"El reconto oral, las preguntas de escolha múltipla y el resumo escrito.\",\n      \"citas\": [\"F2\"]\n    },\n    {\n      \"pregunta\": \"¿Qué desventaja tiene el reconto oral?\",\n      \"respuesta\": \"El costo: exige una entrevista individual de cinco a dez minutos por estudante, lo que el torna inviável en turmas grandes.\",\n      \"citas\": [\"F3\"]\n    },\n    {\n      \"pregunta\": \"¿Qué se recomienda para la evaluación de la comprensión lectora?\",\n      \"respuesta\": \"Combinar pelo menos dos instrumentos y usar grelhas de avaliação explícitas, partilhadas con los estudantes antes de la tarefa.\",\n      \"citas\": [\"F6\"]\n    }\n  ]\n}",
+      "segundos": 78,
+      "texto": "academico-pt.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.5,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "summary",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.resumen@3",
+      "salida": "```json\n{\n  \"puntos\": [\n    {\n      \"texto\": \"A avaliação da compreensão leitora utiliza instrumentos como o reconto oral, as perguntas de escolha múltipla e o resumo escrito.\",\n      \"citas\": [\"F1\"]\n    },\n    {\n      \"texto\": \"O reconto oral permite observar a ordem das ideias e a capacidade de distinguir o principal do acessório.\",\n      \"citas\": [\"F2\"]\n    },\n    {\n      \"texto\": \"As perguntas de escolha múltipla são rápidas de corrigir e avaliam muitos estudantes ao mesmo tempo.\",\n      \"citas\": [\"F4\"]\n    }\n  ]\n}\n```",
+      "segundos": 70,
+      "texto": "academico-pt.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.5,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "concepts",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.conceptos@2",
+      "salida": "{\"conceptos\": [{\"nombre\": \"capítulo 4\", \"tipo\": \"concepto\", \"descripcion\": \"Capítulo del libro donde se discute métodos de avaliação da leitura em sala de aula.\", \"citas\": [\"F1\"]}, {\"nombre\": \"instrumentos\", \"tipo\": \"concepto\", \"descripcion\": \"Instrumentos que apoyan la avaliação de la comprensión lectora, como o reconto oral, as perguntas de escolha múltipla e o resumo escrito.\", \"citas\": [\"F2\"]}, {\"nombre\": \"grelhas de avaliação\", \"tipo\": \"concepto\", \"descripcion\": \"Grelhas explícitas partilhadas con los estudantes antes de la tarefa que avalian la capacidad de síntese.\", \"citas\": [\"F6\"]}]}",
+      "segundos": 74,
+      "texto": "academico-pt.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.16666666666666666,
+        "descartados": 1,
+        "elementos": 2,
+        "motivos": ["POCOS_ELEMENTOS", "NO_SOSTENIDAS", "REPETIDAS"],
+        "no_triviales": 1.0,
+        "repetidas": 1,
+        "sostenidas": 0.0,
+        "supera": false
+      },
+      "funcion": "questions",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.preguntas@2",
+      "salida": "```json\n{\n  \"preguntas\": [\n    {\n      \"enunciado\": \"¿Qué instrumentos se usan para evaluar la comprensión lectora?\",\n      \"opciones\": [\n        \"El reconto oral, las perguntas de escolha múltipla y el resumo escrito\",\n        \"El reconto oral, las perguntas de escolha múltipla y el resumo escrito\",\n        \"El reconto oral, las perguntas de escolha múltipla y el resumo escrito\",\n        \"El reconto oral, las perguntas de escolha múltipla y el resumo escrito\"\n      ],\n      \"respuesta\": \"El reconto oral, las perguntas de escolha múltipla y el resumo escrito\",\n      \"explicacion\": \"El texto F2 menciona que los instrumentos de evaluación de la comprensión lectora incluyen el reconto oral, las perguntas de escolha múltipla y el resumo escrito.\",\n      \"citas\": [\"F2\"]\n    },\n    {\n      \"enunciado\": \"¿Qué instrumento se usa para evaluar la comprensión lectora en turmas grandes?\",\n      \"opciones\": [\n        \"El reconto oral\",\n        \"Las perguntas de escolha múltipla\",\n        \"El resumo escrito\",\n        \"El reconto oral y las perguntas de escolha múltipla\"\n      ],\n      \"respuesta\": \"El reconto oral y las perguntas de escolha múltipla\",\n      \"explicacion\": \"El texto F3 menciona que el reconto oral pede ao estudante que conte com as próprias palavras, o que permite observar a ordem em que as ideias são recordadas e a capacidade de distinguir o principal do acessório. Sin embargo, el texto F3 también menciona que el reconto oral exige una entrevista individual de cinco a dez minutos por estudante, lo que el texto F3 describe como inviável em turmas grandes.\",\n      \"citas\": [\"F3\"]\n    },\n    {\n      \"enunciado\": \"¿Qué instrumento se usa para evaluar la comprensión lectora en turmas grandes?\",\n      \"opciones\": [\n        \"El reconto oral\",\n        \"Las perguntas de escolha múltipla\",\n        \"El resumo escrito\",\n        \"El reconto oral y las perguntas de escolha múltipla\"\n      ],\n      \"respuesta\": \"El reconto oral y las perguntas de escolha múltipla\",\n      \"explicacion\": \"El texto F3 menciona que el reconto oral pede ao estudante que conte com as próprias palavras, o que permite observar a ordem em que as ideias são recordadas e a capacidade de distinguir o principal do acessório. Sin embargo, el texto F3 también menciona que el reconto oral exige una entrevista individual de cinco a dez minutos por estudante, lo que el texto F3 describe como inviável en turmas grandes.\",\n      \"citas\": [\"F3\"]\n    }\n  ]\n}\n```",
+      "segundos": 197,
+      "texto": "academico-pt.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.6,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "{\n  \"tarjetas\": [\n    {\n      \"pregunta\": \"¿Qué se construyó en tiempos antiguos para llevar el agua del río a los campos de regadío?\",\n      \"respuesta\": \"Las acequias\",\n      \"citas\": [\"F2\"]\n    },\n    {\n      \"pregunta\": \"¿Cómo se repartía el agua?\",\n      \"respuesta\": \"Por tandas\",\n      \"citas\": [\"F3\"]\n    },\n    {\n      \"pregunta\": \"¿Qué ocurrió en 1788 en Molinar?\",\n      \"respuesta\": \"Los campos se secaron en plena siega\",\n      \"citas\": [\"F4\"]\n    }\n  ]\n}",
+      "segundos": 58,
+      "texto": "ocr-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.6,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "summary",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.resumen@3",
+      "salida": "{\"puntos\": [{\"texto\": \"Las acequias del valle se construyeron en tiempos antiguos para llevar el agua del rio a los campos de regadío.\", \"citas\": [\"F1\"]}, {\"texto\": \"El reparto del agua se hacía por tandas.\", \"citas\": [\"F3\"]}, {\"texto\": \"Los pleitos por el agua eran frecuentes.\", \"citas\": [\"F4\"]}]}",
+      "segundos": 52,
+      "texto": "ocr-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.6,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "concepts",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.conceptos@2",
+      "salida": "{\"conceptos\": [{\"nombre\": \"acequias del valle\", \"tipo\": \"obra\", \"descripcion\": \"Las acequias del valle se construyeron en tiempos antiguos para llevar el agua del rio a los campos de regadío.\", \"citas\": [\"F1\"]}, {\"nombre\": \"acequiero\", \"tipo\": \"persona\", \"descripcion\": \"El acequiero, elegido cada año por los regantes, abría y cerraba las compuertas y a-notaba en un libro las horas de cada uno.\", \"citas\": [\"F3\"]}, {\"nombre\": \"pleitos por el agua\", \"tipo\": \"concepto\", \"descripcion\": \"Los pleitos por el agua eran frecuentes.\", \"citas\": [\"F4\"]}]}",
+      "segundos": 63,
+      "texto": "ocr-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.6,
+        "descartados": 0,
+        "elementos": 3,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "questions",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.preguntas@2",
+      "salida": "```json\n{\n  \"preguntas\": [\n    {\n      \"enunciado\": \"¿Qué se construyó en tiempos antiguos para llevar el agua del río a los campos de regadío?\",\n      \"opciones\": [\n        \"Las acequias del valle\",\n        \"Las iglesias del valle\",\n        \"Las carreteras del valle\",\n        \"Las casas del valle\"\n      ],\n      \"respuesta\": \"Las acequias del valle\",\n      \"explicacion\": \"El fragmento F2 dice: 'Las acequias del valle se construyeron en tiem- plos antiguos para llevar el agua del rio a los campos de regadío.'\",\n      \"citas\": [\"F2\"]\n    },\n    {\n      \"enunciado\": \"¿Cómo se distribuía el agua en los tiempos antiguos?\",\n      \"opciones\": [\n        \"Por lotes\",\n        \"Por turnos\",\n        \"Por tierras\",\n        \"Por años\"\n      ],\n      \"respuesta\": \"Por turnos\",\n      \"explicacion\": \"El fragmento F3 dice: 'El reparto del agua se hacia por tandas. Cada propietario tenía derecho a regar un numero de horas proporcional a la tierra que poseía, y el turno se contaba desde la salida del sol del lunes.'\",\n      \"citas\": [\"F3\"]\n    },\n    {\n      \"enunciado\": \"¿Qué ocurrió en el año de 1788 en Molinar?\",\n      \"opciones\": [\n        \"Los campos se secaron\",\n        \"Los pleitos por el agua se disminuyeron\",\n        \"El tribunal de las aguas se reunió\",\n        \"Los regantes trabajaron en las acequias\"\n      ],\n      \"respuesta\": \"Los campos se secaron\",\n      \"explicacion\": \"El fragmento F4 dice: 'En el año de 1788 los vecinos de Molinar cerraron el azud durante nueve dias, y los campos del pueblo se secaron en plena siega.'\",\n      \"citas\": [\"F4\"]\n    }\n  ]\n}\n```",
+      "segundos": 133,
+      "texto": "ocr-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.5,
+        "descartados": 0,
+        "elementos": 4,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 0.75,
+        "supera": true
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "```json\n{\n  \"tarjetas\": [\n    {\n      \"pregunta\": \"¿Qué es ET0?\",\n      \"respuesta\": \"La evapotranspiración de referencia, que se expresa en milímetros de agua por día.\",\n      \"citas\": [\"F2\"]\n    },\n    {\n      \"pregunta\": \"¿Cómo se calcula la cantidad que pide un cultivo?\",\n      \"respuesta\": \"ETc = ET0 × Kc\",\n      \"citas\": [\"F3\"]\n    },\n    {\n      \"pregunta\": \"¿Qué es la lámina bruta?\",\n      \"respuesta\": \"La neta dividida por la eficiencia del sistema.\",\n      \"citas\": [\"F6\"]\n    },\n    {\n      \"pregunta\": \"¿Cómo se calcula el tiempo de riego?\",\n      \"respuesta\": \"t = Lb / (q × n / S)\",\n      \"citas\": [\"F7\"]\n    }\n  ]\n}\n```",
+      "segundos": 109,
+      "texto": "formulas-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.5,
+        "descartados": 0,
+        "elementos": 4,
+        "motivos": [],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": true
+      },
+      "funcion": "summary",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.resumen@3",
+      "salida": "{\"puntos\":[{\"texto\":\"El agua que una plantación necesita en un día se calcula como la evapotranspiración de referencia, que se expresa en milímetros de agua por día.\",\"citas\":[\"F2\"]},{\"texto\":\"La cantidad que pide un cultivo concreto no es esa, sino ETc = ET0 × Kc.\",\"citas\":[\"F3\"]},{\"texto\":\"Con una ET0 de cinco milímetros y un tomate en floración, ETc = 5 × 1,15 = 5,75 milímetros al día, es decir, 5.750 litros por cada mil metros cuadrados.\",\"citas\":[\"F5\"]},{\"texto\":\"El tiempo de riego es t = Lb / (q × n / S), donde q es el caudal de un gotero en litros por hora, n el número de goteros y S la superficie en metros cuadrados.\",\"citas\":[\"F7\"]}]}",
+      "segundos": 114,
+      "texto": "formulas-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.125,
+        "descartados": 0,
+        "elementos": 1,
+        "motivos": ["POCOS_ELEMENTOS"],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 1.0,
+        "supera": false
+      },
+      "funcion": "concepts",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.conceptos@2",
+      "salida": "{\"conceptos\":[{\"nombre\":\"ET0\",\"tipo\":\"concepto\",\"descripcion\":\"La evapotranspiración de referencia, que se expresa en milímetros de agua por día y se usa como base para calcular la cantidad de agua que una plantación necesita en un día.\",\"citas\":[\"F2\"]}]}\"",
+      "segundos": 79,
+      "texto": "formulas-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 1.0,
+        "cobertura": 0.25,
+        "descartados": 0,
+        "elementos": 4,
+        "motivos": ["NO_SOSTENIDAS"],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 0.5,
+        "supera": false
+      },
+      "funcion": "questions",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.preguntas@2",
+      "salida": "```json\n{\n    \"preguntas\": [\n        {\n            \"enunciado\": \"¿Qué se mide para calcular la cantidad de agua que una plantación necesita en un día?\",\n            \"opciones\": [\n                \"La evapotranspiración de referencia\",\n                \"La cantidad de agua que se echa hasta que la tierra parece mojada\",\n                \"La eficiencia del sistema de riego\",\n                \"La reserva útil del suelo\"\n            ],\n            \"respuesta\": \"La cantidad de agua que se echa hasta que la tierra parece mojada\",\n            \"explicacion\": \"El texto dice: 'La cifra de partida es la evapotranspiración de referencia, que se expresa en milímetros de agua por día. Un milímetro equivale a un litro por metro cuadrado, de modo que una parcela de mil metros cuadrados con una ET0 de cinco milímetros pierde cinco mil litros en un día.'\",\n            \"citas\": [\"F2\"]\n        },\n        {\n            \"enunciado\": \"¿Qué es ETc?\",\n            \"opciones\": [\n                \"La evapotranspiración de referencia\",\n                \"La cantidad de agua que se echa hasta que la tierra parece mojada\",\n                \"El coeficiente del cultivo\",\n                \"La reserva útil del suelo\"\n            ],\n            \"respuesta\": \"El coeficiente del cultivo\",\n            \"explicacion\": \"El texto dice: 'La cantidad que pide un cultivo concreto no es esa, sino ETc = ET0 × Kc, donde Kc es el coeficiente del cultivo.'\",\n            \"citas\": [\"F3\"]\n        },\n        {\n            \"enunciado\": \"¿Qué es Lb?\",\n            \"opciones\": [\n                \"La evapotranspiración de referencia\",\n                \"La cantidad de agua que se echa hasta que la tierra parece mojada\",\n                \"El coeficiente del cultivo\",\n                \"La reserva útil del suelo\"\n            ],\n            \"respuesta\": \"La cantidad de agua que se echa hasta que la tierra parece mojada\",\n            \"explicacion\": \"El texto dice: 'La cantidad que pide un cultivo concreto no es esa, sino ETc = ET0 × Kc, donde Kc es el coeficiente del cultivo. El coeficiente cambia con la fase: en la siembra la planta cubre poco suelo y evapora poco; en plena floración cubre todo el suelo y evapora lo máximo.'\",\n            \"citas\": [\"F3\"]\n        },\n        {\n            \"enunciado\": \"¿Qué es Ef?\",\n            \"opciones\": [\n                \"La evapotranspiración de referencia\",\n                \"La cantidad de agua que se echa hasta que la tierra parece mojada\",\n                \"El coeficiente del cultivo\",\n                \"La reserva útil del suelo\"\n            ],\n            \"respuesta\": \"La cantidad de agua que se echa hasta que la tierra parece mojada\",\n            \"explicacion\": \"El texto dice: 'La cantidad que pide un cultivo concreto no es esa, sino ETc = ET0 × Kc, donde Kc es el coeficiente del cultivo. El coeficiente cambia con la fase: en la siembra la planta cubre poco suelo y evapora poco; en plena floración cubre todo el suelo y evapora lo máximo.'\",\n            \"citas\": [\"F3\"]\n        }\n    ]\n}\n```",
+      "segundos": 267,
+      "texto": "formulas-es.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 0.7777777777777778,
+        "cobertura": 0.2727272727272727,
+        "descartados": 0,
+        "elementos": 9,
+        "motivos": ["SIN_CITAS"],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 0.7777777777777778,
+        "supera": false
+      },
+      "funcion": "flashcards",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.tarjetas@1",
+      "salida": "```json\n{\n  \"tarjetas\": [\n    {\n      \"pregunta\": \"What year was the Vellmar Bridge built?\",\n      \"respuesta\": \"1847\",\n      \"citas\": [\"F1\"]\n    },\n    {\n      \"pregunta\": \"Who was the keeper of the Vellmar Bridge before Anna Wrede?\",\n      \"respuesta\": \"Petersen\",\n      \"citas\": [\"F5\"]\n    },\n    {\n      \"pregunta\": \"What was the toll for a handcart in 1873?\",\n      \"respuesta\": \"Four pfennig\",\n      \"citas\": [\"F12\"]\n    },\n    {\n      \"pregunta\": \"What did Anna Wrede find in the ledger on the ninth evening?\",\n      \"respuesta\": \"A discrepancy\",\n      \"citas\": [\"F8\"]\n    },\n    {\n      \"pregunta\": \"How did Anna Wrede calculate the number of carts?\",\n      \"respuesta\": \"Week by week\",\n      \"citas\": [\"F13\"]\n    },\n    {\n      \"pregunta\": \"What did Anna Wrede find in the clerk's office about the letters?\",\n      \"respuesta\": \"Two letters\",\n      \"citas\": [\"F17\"]\n    },\n    {\n      \"pregunta\": \"What did Anna Wrede write in the ledger about the arithmetic?\",\n      \"respuesta\": \"She did so\",\n      \"citas\": [\"F20\"]\n    },\n    {\n      \"pregunta\": \"What did Anna Wrede write in the right-hand column of the ledger?\",\n      \"respuesta\": \"She had done so\",\n      \"citas\": [\"F21\"]\n    },\n    {\n      \"pregunta\": \"What did Anna Wrede keep the post until?\",\n      \"respuesta\": \"1911\",\n      \"citas\": [\"F22\"]\n    }\n  ]\n}\n```",
+      "segundos": 182,
+      "texto": "narrativo-largo-en.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 0.9166666666666666,
+        "cobertura": 0.2727272727272727,
+        "descartados": 0,
+        "elementos": 12,
+        "motivos": ["REPETIDAS"],
+        "no_triviales": 1.0,
+        "repetidas": 2,
+        "sostenidas": 0.9166666666666666,
+        "supera": false
+      },
+      "funcion": "summary",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.resumen@3",
+      "salida": "{\n  \"puntos\": [\n    {\n      \"texto\": \"The Vellmar Bridge was built in 1847 and later became the property of the county.\",\n      \"citas\": [\"F1\", \"F2\"]\n    },\n    {\n      \"texto\": \"Anna Wrede inherited the bridge ledger in 1889 and spent eleven evenings reading it.\",\n      \"citas\": [\"F2\", \"F3\"]\n    },\n    {\n      \"texto\": \"Anna found a discrepancy in the ledger on the ninth evening.\",\n      \"citas\": [\"F4\", \"F5\"]\n    },\n    {\n      \"texto\": \"Anna asked the county clerk about the tolls and received a copy of the schedule.\",\n      \"citas\": [\"F6\", \"F7\"]\n    },\n    {\n      \"texto\": \"Anna worked out the number of carts implied by the tolls and found it was lower than the recorded number.\",\n      \"citas\": [\"F8\", \"F9\"]\n    },\n    {\n      \"texto\": \"Anna understood the discrepancy by reading a sentence in Petersen's column.\",\n      \"citas\": [\"F10\", \"F11\"]\n    },\n    {\n      \"texto\": \"Anna wrote her own letter in March 1890, describing the arithmetic instead of the crack.\",\n      \"citas\": [\"F12\", \"F13\"]\n    },\n    {\n      \"texto\": \"The inspection came in May, and the second pier was shored in June and rebuilt over the following winter.\",\n      \"citas\": [\"F14\", \"F15\"]\n    },\n    {\n      \"texto\": \"Anna kept the post until 1911, and the ledger records no weather, no debts, and no dogs, but only carts.\",\n      \"citas\": [\"F16\", \"F17\"]\n    },\n    {\n      \"texto\": \"Anna's work on the bridge led to the repair of the second pier, and the bridge stayed open.\",\n      \"citas\": [\"F18\", \"F19\"]\n    },\n    {\n      \"texto\": \"Anna kept the post until 1911, and the ledger records no weather, no debts, and no dogs, but only carts.\",\n      \"citas\": [\"F20\", \"F21\"]\n    },\n    {\n      \"texto\": \"Anna's work on the bridge led to the repair of the second pier, and the bridge stayed open.\",\n      \"citas\": [\"F22\"]\n    }\n  ]\n}",
+      "segundos": 231,
+      "texto": "narrativo-largo-en.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 0.23076923076923078,
+        "cobertura": 0.09090909090909091,
+        "descartados": 2,
+        "elementos": 13,
+        "motivos": ["SIN_CITAS", "NO_SOSTENIDAS"],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 0.23076923076923078,
+        "supera": false
+      },
+      "funcion": "concepts",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.conceptos@2",
+      "salida": "{\"conceptos\": [{\"nombre\": \"The Ledger of the Vellmar Bridge\", \"tipo\": \"obra\", \"descripcion\": \"El registro de la valla de Vellmar\", \"citas\": [\"F1\"]}], \"conceptos\": [{\"nombre\": \"Anna Wrede\", \"tipo\": \"persona\", \"descripcion\": \"La mujer que tomó el cargo\", \"citas\": [\"F2\", \"F4\"]}], \"conceptos\": [{\"nombre\": \"The Vellmar Bridge\", \"tipo\": \"obra\", \"descripcion\": \"La valla de Vellmar\", \"citas\": [\"F1\"]}], \"conceptos\": [{\"nombre\": \"County\", \"tipo\": \"organizacion\", \"descripcion\": \"El gobierno del condado\", \"citas\": [\"F1\"]}], \"conceptos\": [{\"nombre\": \"Keeper\", \"tipo\": \"persona\", \"descripcion\": \"El empleado que mantenía el registro\", \"citas\": [\"F2\", \"F3\"]}], \"conceptos\": [{\"nombre\": \"County clerk\", \"tipo\": \"persona\", \"descripcion\": \"El empleado del condado que mantenía el registro\", \"citas\": [\"F2\", \"F3\"]}], \"conceptos\": [{\"nombre\": \"Brickworks\", \"tipo\": \"obra\", \"descripcion\": \"El lugar donde Anna Wrede trabajó\", \"citas\": [\"F4\"]}], \"conceptos\": [{\"nombre\": \"Railway\", \"tipo\": \"obra\", \"descripcion\": \"El lugar donde Anna Wrede trabajó\", \"citas\": [\"F12\"]}], \"conceptos\": [{\"nombre\": \"Carts\", \"tipo\": \"obra\", \"descripcion\": \"Los vehículos que cruzaban la valla\", \"citas\": [\"F13\", \"F14\", \"F15\", \"F16\", \"F17\", \"F18\", \"F19\", \"F20\", \"F21\", \"F22\"]}], \"conceptos\": [{\"nombre\": \"Pier\", \"tipo\": \"obra\", \"descripcion\": \"El lugar donde Anna Wrede trabajó\", \"citas\": [\"F16\", \"F17\", \"F18\", \"F19\", \"F20\", \"F21\", \"F22\"]}], \"conceptos\": [{\"nombre\": \"Ore\", \"tipo\": \"obra\", \"descripcion\": \"El lugar donde Anna Wrede trabajó\", \"citas\": [\"F16\", \"F17\", \"F18\", \"F19\", \"F20\", \"F21\", \"F22\"]}], \"conceptos\": [{\"nombre\": \"House\", \"tipo\": \"obra\", \"descripcion\": \"El lugar donde Anna Wrede trabajó\", \"citas\": [\"F22\"]}], \"conceptos\": [{\"nombre\": \"Tolls\", \"tipo\": \"obra\", \"descripcion\": \"El lugar donde Anna Wrede trabajó\", \"citas\": [\"F12\", \"F13\", \"F14\", \"F15\", \"F16\", \"F17\", \"F18\", \"F19\", \"F20\", \"F21\", \"F22\"]}], \"conceptos\": [{\"nombre\": \"Carts\", \"tipo\": \"obra\", \"descripcion\": \"El lugar donde Anna Wrede trabajó\", \"citas\": [\"F13\", \"F14\", \"F15\", \"F16\", \"F17\", \"F18\", \"F19\", \"F20\", \"F21\", \"F22\"]}], \"conceptos\": [{\"nombre\": \"Carts\", \"tipo\": \"obra\", \"descripcion\": \"El lugar donde Anna Wrede trabajó\", \"citas\": [\"F13\", \"F14\", \"F15\", \"F16\", \"F17\", \"F18\", \"F19\", \"F20\", \"F21\", \"F22\"]}], \"conceptos\": [{\"nombre\": \"Carts\", \"tipo\": \"obra\", \"descripcion\": \"El lugar donde Anna Wrede trabajó\", \"citas\": [\"F13\", \"F1",
+      "segundos": 353,
+      "texto": "narrativo-largo-en.txt"
+    },
+    {
+      "evaluacion": {
+        "citadas": 0.8333333333333334,
+        "cobertura": 0.18181818181818182,
+        "descartados": 2,
+        "elementos": 6,
+        "motivos": ["NO_SOSTENIDAS"],
+        "no_triviales": 1.0,
+        "repetidas": 0,
+        "sostenidas": 0.6666666666666666,
+        "supera": false
+      },
+      "funcion": "questions",
+      "modelo": "qwen25-15b-instruct-q4km",
+      "plantilla": "estudio.preguntas@2",
+      "salida": "```json\n{\n  \"preguntas\": [\n    {\n      \"enunciado\": \"What year was the Vellmar Bridge built?\",\n      \"opciones\": [\"1847\", \"1851\", \"1889\", \"1911\"],\n      \"respuesta\": \"1847\",\n      \"explicacion\": \"The bridge was built in 1847, as stated in Fragment F1.\",\n      \"citas\": [\"F1\"]\n    },\n    {\n      \"enunciado\": \"Who was the keeper of the Vellmar Bridge in 1889?\",\n      \"opciones\": [\"Anna Wrede\", \"Anna's husband\", \"Anna's widowed sister\", \"Anna's brother\"],\n      \"respuesta\": \"Anna Wrede\",\n      \"explicacion\": \"Anna Wrede took the post in 1889, as stated in Fragment F4.\",\n      \"citas\": [\"F4\"]\n    },\n    {\n      \"enunciado\": \"What was the keeper's job at the Vellmar Bridge?\",\n      \"opciones\": [\"Raising the toll gate\", \"Sweeping the deck after storms\", \"Writing in the ledger\", \"All of the above\"],\n      \"respuesta\": \"All of the above\",\n      \"explicacion\": \"The keeper's job was to raise the toll gate, to sweep the deck after storms, and to write in the ledger, as stated in Fragment F2.\",\n      \"citas\": [\"F2\"]\n    },\n    {\n      \"enunciado\": \"What did Petersen record in the right-hand column of the ledger?\",\n      \"opciones\": [\"Weather\", \"Debts\", \"Names of dogs\", \"Weather, debts, and names of dogs\"],\n      \"respuesta\": \"Weather, debts, and names of dogs\",\n      \"explicacion\": \"Petersen used the right-hand column to record the weather, his debts, and the names of the dogs that crossed with the drovers, as stated in Fragment F5.\",\n      \"citas\": [\"F5\"]\n    },\n    {\n      \"enunciado\": \"What did Anna find on the ninth evening?\",\n      \"opciones\": [\"A discrepancy\", \"A sentence\", \"A letter\", \"A bridge\"],\n      \"respuesta\": \"A discrepancy\",\n      \"explicacion\": \"Anna found the discrepancy on the ninth evening, as stated in Fragment F8.\",\n      \"citas\": [\"F8\"]\n    },\n    {\n      \"enunciado\": \"What did Anna read the whole ledger in her first month?\",\n      \"opciones\": [\"The weather\", \"The debts\", \"The dogs\", \"The tolls\"],\n      \"respuesta\": \"The tolls\",\n      \"explicacion\": \"Anna read the whole ledger in her first month to understand the tolls, as stated in Fragment F7.\",\n      \"citas\": [\"F7\"]\n    },\n    {\n      \"enunciado\": \"What did Anna find in the clerk's office about the tolls?\",\n      \"opciones\": [\"The tolls were raised\", \"The tolls were not raised\", \"The tolls were counted\", \"The tolls were not counted\"],\n      \"respuesta\": \"The tolls were not counted\",\n      \"explicacion\": \"Anna found the discrepancy on the ninth evening, as stated in Fragment F8.\",\n      \"citas\": [\"F8\"]\n    },\n    {\n      \"enunciado\": \"What did Anna understand about the tolls in 1890?\",\n      \"opciones\": [\"The tolls were raised\", \"The tolls were not raised\", \"The tolls were counted\", \"The tolls were not counted\"],\n      \"respuesta\": \"The tolls were not counted\",\n      \"explicacion\": \"Anna understood it because of a sentence in Petersen's column, written twelve years before Brandt arrived, as stated in Fragment F16.\",\n      \"citas\": [\"F16\"]\n    },\n    {\n      \"enunciado\": \"What did Anna write in the ledger in 1890?\",\n      \"opciones\": [\"The tolls were raised\", \"The tolls were not raised\", \"The tolls were counted\", \"The tolls were not counted\"],\n      \"respuesta\": \"The tolls",
+      "segundos": 375,
+      "texto": "narrativo-largo-en.txt"
+    }
+  ]
+}
